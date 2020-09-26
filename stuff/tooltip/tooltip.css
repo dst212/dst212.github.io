@@ -1,0 +1,62 @@
+/**********************************************************************
+ *
+ * Made by dst212
+ * - 212dst212@gmail.com
+ * - https://github.com/dst212/dst212.github.io/
+ *
+ * CSS for tooltips, use with
+ * https://dst212,github.io/stuff/tooltip/tooltip.js.
+ **********************************************************************/
+
+.tooltip {
+	position: relative;
+}
+.tooltip > .item {
+	color: var(--invalid);
+	/*color: #f70; */
+	/*color: var(--accent);
+	background-color: var(--body-fg);
+	filter: invert(1);*/
+	text-decoration: underline;
+}
+.tooltip:hover > .item{
+	/*filter: invert(0);
+	background-color: inherit;*/
+	box-shadow: var(--box-shadow);
+}
+.tooltip > .content {
+	display: inline-block;
+	/*position: absolute;
+	top: 100%;
+	left: 0;*/
+	position: fixed;
+	top: -100%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	padding: var(--spacing);
+/* 	max-height: 20vh; */
+	width: 20em;
+	max-width: var(--body-width);
+	background-color: var(--body-bg);
+	color: var(--body-fg);
+	border-radius: var(--border-radius);
+	border: var(--general-border) solid var(--accent);
+	overflow: hidden;
+	animation-timing-function: linear;
+}
+.tooltip:hover > .content,
+.tooltip:focus > .content,
+.tooltip > .item:focus ~ .content {
+	top: calc(var(--header-height) + var(--spacing));
+	box-shadow: var(--box-shadow);
+}
+.tooltip:hover > .content {
+	z-index: 2;
+}
+.tooltip:focus > .content,
+.tooltip > .item:focus ~ .content {
+	z-index: 1;
+}
+
+/*END*/

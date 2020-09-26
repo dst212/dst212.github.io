@@ -1,0 +1,110 @@
+/**********************************************************************
+ *
+ * Made by dst212
+ * - 212dst212@gmail.com
+ * - https://github.com/dst212/dst212.github.io/
+ *
+ * Here are stored all the theme-schemes. Use them with
+ * https://dst212,github.io/stuff/theme/theme.js.
+ **********************************************************************/
+
+:root{
+
+	--accent:				rgba(255,255,255,1);
+	--accent-faded:			rgba(255,255,255,0.4);
+	--accent-dark:			rgba(0,0,0,1);
+	--accent-dark-faded:	rgba(0,0,0,1);
+
+	--invalid:				rgba(255,000,000,1);
+	--invalid-faded:		rgba(255,000,000,0.4);
+
+	--header-bg:			var(--accent);
+	--header-fg:			rgba(000,000,000,1);
+
+	--title-bg:				var(--accent-dark);
+	--title-fg:				rgba(255,255,255,1);
+
+	--body-bg:				rgba(000,000,000,1);
+	--body-fg:				rgba(255,255,255,1);
+
+	--footer-bg:			var(--accent);
+	--footer-fg:			var(--body-bg);
+
+	--red:					#f00;
+	--yellow:				#ff0;
+	--lime:					#0f0;
+	--cyan:					#0ff;
+	--blue:					#00f;
+	--magenta:				#f0f;
+
+	--red-dark:				#800;
+	--yellow-dark:			#880;
+	--lime-dark:			#080;
+	--cyan-dark:			#088;
+	--blue-dark:			#008;
+	--magenta-dark:			#808;
+}
+.white-mode{
+
+	--accent:				rgba(0,0,0,1);
+	--accent-faded:			rgba(0,0,0,1);
+	--accent-dark:			rgba(255,255,255,1);
+	--accent-dark-faded:	rgba(255,255,255,0.4);
+
+	--invalid:				rgba(255,000,000,1);
+	--invalid-faded:		rgba(255,000,000,0.4);
+
+	--header-bg:			var(--accent);
+	--header-fg:			rgba(255,255,255,1);
+
+	--title-bg:				var(--accent-dark);
+	--title-fg:				rgba(000,000,000,1);
+
+	--body-bg:				rgba(255,255,255,1);
+	--body-fg:				rgba(000,000,000,1);
+
+	--footer-bg:			var(--accent);
+	--footer-fg:			var(--body-bg);
+
+	--red:					#800;
+	--yellow:				#880;
+	--lime:					#080;
+	--cyan:					#088;
+	--blue:					#008;
+	--magenta:				#808;
+
+	--red-dark:				#f00;
+	--yellow-dark:			#ff0;
+	--lime-dark:			#0f0;
+	--cyan-dark:			#0ff;
+	--blue-dark:			#00f;
+	--magenta-dark:			#f0f;
+}
+
+.light-black-theme	{--accent:rgba(255,255,255,1);--accent-faded:rgba(255,255,255,0.4);--accent-dark:rgba(000,000,000,1);--accent-dark-faded:rgba(000,000,000,1.0);}
+.dark-black-theme	{--accent:rgba(000,000,000,1);--accent-faded:rgba(000,000,000,1.0);--accent-dark:rgba(255,255,255,1);--accent-dark-faded:rgba(255,255,255,0.4);}
+
+.light-white-theme	{--accent:rgba(220,220,220,1);--accent-faded:rgba(220,220,220,0.4);--accent-dark:rgba(110,110,110,1);--accent-dark-faded:rgba(110,110,110,0.4);}
+.dark-white-theme	{--accent:rgba(110,110,110,1);--accent-faded:rgba(110,110,110,0.4);--accent-dark:rgba(220,220,220,1);--accent-dark-faded:rgba(220,220,220,0.4);}
+
+.light-red-theme	{--accent:rgba(220,000,000,1);--accent-faded:rgba(220,000,000,0.4);--accent-dark:rgba(110,000,000,1);--accent-dark-faded:rgba(110,000,000,0.4);--invalid:rgba(220,110,000,1);--invalid-faded:rgba(220,110,000,0.4);}
+.dark-red-theme		{--accent:rgba(110,000,000,1);--accent-faded:rgba(110,000,000,0.4);--accent-dark:rgba(220,000,000,1);--accent-dark-faded:rgba(220,000,000,0.4);--invalid:rgba(220,110,000,1);--invalid-faded:rgba(220,110,000,0.4);}
+
+.light-yellow-theme	{--accent:rgba(220,220,000,1);--accent-faded:rgba(220,220,000,0.4);--accent-dark:rgba(110,110,000,1);--accent-dark-faded:rgba(110,110,000,0.4);}
+.dark-yellow-theme	{--accent:rgba(110,110,000,1);--accent-faded:rgba(110,110,000,0.4);--accent-dark:rgba(220,220,000,1);--accent-dark-faded:rgba(220,220,000,0.4);}
+
+.light-green-theme	{--accent:rgba(000,220,000,1);--accent-faded:rgba(000,220,000,0.4);--accent-dark:rgba(000,110,000,1);--accent-dark-faded:rgba(000,110,000,0.4);}
+.dark-green-theme	{--accent:rgba(000,110,000,1);--accent-faded:rgba(000,110,000,0.4);--accent-dark:rgba(000,220,000,1);--accent-dark-faded:rgba(000,220,000,0.4);}
+
+.light-cyan-theme	{--accent:rgba(000,220,220,1);--accent-faded:rgba(000,220,220,0.4);--accent-dark:rgba(000,110,110,1);--accent-dark-faded:rgba(000,110,110,0.4);}
+.dark-cyan-theme	{--accent:rgba(000,110,110,1);--accent-faded:rgba(000,110,110,0.4);--accent-dark:rgba(000,220,220,1);--accent-dark-faded:rgba(000,220,220,0.4);}
+
+.light-blue-theme	{--accent:rgba(000,000,220,1);--accent-faded:rgba(000,000,220,0.4);--accent-dark:rgba(000,000,110,1);--accent-dark-faded:rgba(000,000,110,0.4);}
+.dark-blue-theme	{--accent:rgba(000,000,110,1);--accent-faded:rgba(000,000,110,0.4);--accent-dark:rgba(000,000,220,1);--accent-dark-faded:rgba(000,000,220,0.4);}
+
+.light-magenta-theme{--accent:rgba(220,000,220,1);--accent-faded:rgba(220,000,220,0.4);--accent-dark:rgba(110,000,110,1);--accent-dark-faded:rgba(110,000,110,0.4);}
+.dark-magenta-theme	{--accent:rgba(110,000,110,1);--accent-faded:rgba(110,000,110,0.4);--accent-dark:rgba(220,000,220,1);--accent-dark-faded:rgba(220,000,220,0.4);}
+
+.disable-transitions{--transition:0s;}
+
+/*END*/

@@ -1,0 +1,37 @@
+/**********************************************************************
+ *
+ * Made by dst212
+ * - 212dst212@gmail.com
+ * - https://github.com/dst212/dst212.github.io/
+ *
+ * Still building...
+ **********************************************************************/
+
+#music-player {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	/*whjdg gjwvbd kjwdkjwbdkjwvdkjwvdkjwvdkjwvkdjhva wkjwhdv awkjhdv kawjhvd kjwv kjw dkjav (it means: this must be completed (probably won't even happen))*/
+}
+#lighting{
+	/*background-image: none;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;*/
+	opacity: 0;
+
+	display: block;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	min-width: 100vw;
+	min-height: 100vh;
+	z-index: -1;
+	transition-duration: 0s;
+}
+
+/*END*/
