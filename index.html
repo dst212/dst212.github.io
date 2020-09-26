@@ -1,0 +1,90 @@
+<!--
+  - made by dst212
+  - https://github.com/dst212/dst212.github.io/
+  -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+
+		<link rel="stylesheet" title="Default" type="text/css" href="/css/main.css?0"/>
+		<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+
+		<script id="dst212-js" type="text/javascript" src="/js/dst212.js?0">/*some functions to do stuff*/</script>
+		<script id="ajax-links" type="text/javascript" src="/js/ajax-links.js?0">/*change document content fetching new content with ajax*/</script>
+		<!-- <script id="settings-js" type="text/javascript" src="/files/js/settings.js?0">/*Settings*/</script> -->
+
+		<script id="notify-js" type="text/javascript" src="/stuff/notify/notify.js?0">/*Notifications' functions*/</script>
+		<script id="dst-alerts-js" type="text/javascript" src="/js/dst-alerts.js?0">/*Various alerts related to my website's settings/cookies etc.*/</script>
+
+		<!-- <script id="magnifier-js" type="text/javascript" src="/stuff/magnifier/magnifier.js?0">/*Photo wiever, used to magnify images*/</script> -->
+		<script id="tooltip-js" type="text/javascript" src="/stuff/tooltip/tooltip.js?0">/*Tooltips, those popup that pop up when you hover on something*/</script>
+
+		<title>Home</title>
+	</head>
+	<body>
+		<audio id="disco-song" loop><source src="https://dst.altervista.org/files/audios/disco.mp3" type="audio/mpeg"/></audio>
+		<script id="music-js" type="text/javascript" src="/stuff/music/music.js?0">/*Music!!!*/</script>
+
+		<script id="theme-js" type="text/javascript" src="/stuff/theme/theme.js?0">/*Themes and colors*/</script>
+
+		<script id="magic-stuff-js" type="text/javascript" src="/js/dst212-magic-stuff.js?0">/*Magic stuff*/</script>
+
+		<header>
+			<nav>
+				<ul>
+					<li><a href="javascript:fetch_page('home')" title="Home page"><i class="material-icons md-nav">home</i></a></li>
+					<li><a href="javascript:fetch_page('info')" title="Info page"><i class="material-icons md-nav">info</i></a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<section id="title">Loading</section>
+
+		<main>
+			<div class="loading-anim">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+		</main>
+		<div id="cc-floating">
+			<div class="tooltip" title="Creative Commons License">
+				<a class="item" href="javascript:void(0)" title="Creative Commons License"></a>
+				<div class="content" id="cc-floating-content">
+					<script id="cc-script" type="text/javascript">
+						fetch('res/html/cc.html')
+							.then(response => response.text())
+							.then(data => document.getElementById('cc-floating-content').innerHTML = data);
+					</script>
+				</div>
+			</div>
+		</div>
+
+		<div id="load-theme-menu">
+			<script type="text/javascript">
+				fetch('res/html/theme-menu.html')
+					.then(response => response.text())
+					.then(data => document.getElementById('load-theme-menu').innerHTML = data);
+			</script>
+		</div>
+
+		<footer>
+			<style>footer a{color:var(--body-bg);}</style>
+			<div>
+				<div id="copyright-notice">
+					Copyright <i class="material-icons md-same">copyright</i> 2019-2020 <a href="mailto:212dst212@gmail.com" title="Emanuele De Stefani's e-mail address">Emanuele De Stefani</a>.
+					<br/>The <i>dst212</i> name and logo are unregistered trendmarks.
+				</div>
+				<br/><a href="javascript:fetch_page('info');" title="Informazioni sul sito e contatti">Info</a>
+			</div>
+		</footer>
+	</body>
+</html>
+
+<!--END-->

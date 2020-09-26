@@ -1,0 +1,70 @@
+/**********************************************************************
+ *
+ * Made by dst212
+ * - 212dst212@gmail.com
+ * - https://github.com/dst212/dst212.github.io/
+ *
+ **********************************************************************/
+
+:root {
+
+	--font-size:			15px; /*meter*/
+
+	--header-height:		calc(var(--font-size) * 3);
+	--title-height-initial:	calc(var(--font-size) * 3.8);
+/* 	--title-height-final:	calc(var(--font-size) * 1.25); */
+	--title-height-final:	0.1px;
+	--title-height:			var(--title-height-initial);
+	--footer-height:		calc(var(--font-size) * 4);
+	--body-height:			calc(100vh - var(--header-height) - var(--title-height) - var(--footer-height) /*- 1px*/);
+	--body-padding:			3em;
+	--body-width:			calc(var(--font-size) * 80 - var(--body-padding)*2 );/*80%;/*calc(var(--font-size)*73);*/
+
+	--title-font-size:		1.65em;
+
+	--icon-size:			1.00em;
+	--icon-size-18:			1.21em;
+	--icon-size-24:			1.61em;
+	--icon-size-nav:		1.61em;
+	--spacing:				calc(0.50 * var(--font-size));
+
+	--general-max-height:	70vh;
+
+	--general-margin:		0.33em;
+
+	--half-body:			49%;
+	--one-third-body:		32%;
+	--col-margin:			1%;
+
+	--general-border:		calc(var(--font-size) * 0.15);
+	--general-border-bold:	calc(var(--general-border) * 2);
+	--border-radius:		0.50em;
+	--half-border-radius:	calc(var(--border-radius) / 2);
+
+	--font-family:			'Ubuntu Mono',Consolas,monospace;
+	--transition:			0.35s;
+	--footer-transition:	0.7s;
+
+	--box-shadow:			calc(var(--font-size)*0.33)	calc(var(--font-size)*0.33)	calc(var(--font-size)*0.33)	0							rgba(0,0,0,0.4);
+	--bottom-shadow:		0							calc(var(--font-size)*0.33)	calc(var(--font-size)*0.33)	0							rgba(0,0,0,0.5);
+	--grey-shadow-frame:	0							0							calc(var(--font-size)*0.14)	calc(var(--font-size)*0.2)	rgba(127,127,127,0.45);
+/* 	--general-shadow:		calc(var(--font-size)*0.2)	calc(var(--font-size)*0.2)	calc(var(--font-size)*0.14)	0							rgba(127,127,127,0.45); */
+	--general-shadow:		var(--grey-shadow-frame);
+/* 	--black-shadow-frame:	0							0							calc(var(--font-size)*0.14)	calc(var(--font-size)*0.2)	rgba(0,0,0,0.4); */
+	--black-shadow-frame:	var(--grey-shadow-frame);
+
+	--small-image-width:	10em;
+	--logo-size:			10em;
+
+	--ddi-margin:			0.40em;
+	--ddi-width:			calc(var(--font-size) * 2.22);
+	--ddi-border-radius:	calc(var(--ddi-width) / 2);
+}
+
+@keyframes overflow {
+	0% { overflow: hidden; }
+	99% { overflow: hidden; }
+	100% { overflow: visible; }
+}
+
+/*END*/

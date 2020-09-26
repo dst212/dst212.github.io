@@ -1,0 +1,55 @@
+/**********************************************************************
+ *
+ * Made by dst212
+ * - 212dst212@gmail.com
+ * - https://github.com/dst212/dst212.github.io/
+ *
+ * This CSS sets the notifications' area. Use it with
+ * https://dst212,github.io/stuff/notify/notify.js.
+ **********************************************************************/
+
+#notifications {
+	position: fixed;
+	top: var(--header-height);
+	right: 0;
+	padding: var(--general-margin);
+	max-width: 35em;
+	max-height: var(--body-height);
+	background-color: none;
+	color: none;
+	overflow: hidden;
+	text-overflow: clip;
+	text-align: justify;
+	z-index: 100;
+}
+#notifications > * {
+	margin: var(--spacing);
+	padding: var(--spacing);
+	max-height: 0;
+	max-width: 0;
+	opacity: 0;
+	overflow: hidden;
+	text-overflow: clip;
+	box-shadow: var(--box-shadow);
+	border-radius: var(--border-radius);
+}
+#notifications > * .title{
+	display: block;
+	height: 1.5em;
+	font-weight: bold;
+}
+#notifications > * .msg{
+	padding-top: var(--general-margin);
+	display: block;
+	max-height: 5em;
+	overflow: auto;
+	text-overflow: clip;
+}
+#notifications > * .btn{
+	padding-top: var(--general-margin);
+	max-height: 4em;
+	display: block;
+	text-align: center;
+}
+
+/*END*/
