@@ -11,16 +11,19 @@
 
 function init_tooltips() {
 	var tt=document.getElementsByClassName('tooltip');
-	var title,i;
-	for(i=0;i<tt.length;i++) {
+	var i, newtitle, tooltip;
+	console.log('Initializing tooltips...');
+	for(i = 0; i < tt.length; i++) {
 		tt[i].href = 'javascript:void(0);';
 		tt[i].getElementsByClassName('item')[0].href = 'javascript:void(0);';
-		title=tt[i].title;
-		if(title=='') title = 'Tooltip: <i>' + tt[i].getElementsByClassName('item')[0].innerHTML + '</i>';
-		else title='<b>' + title + '</b>';
-		tooltip=tt[i].getElementsByClassName('content')[0];
-		tooltip.innerHTML='<span style="display:block;text-align:center;">' + title + '</span><br/>' + tooltip.innerHTML;
+		newtitle =
+			'<span style="display:block;text-align:center;">' +
+				(tt[i].title == '' ? 'Tooltip: <i>' + tt[i].getElementsByClassName('item')[0].innerHTML + '</i>' : '<b>' + tt[i].title + '</b>') +
+			'</span><br/>';
+		tooltip = tt[i].getElementsByClassName('content')[0];
+		if(tooltip.innerHTML.search(newtitle) == -1) tooltip.innerHTML = newtitle + tooltip.innerHTML;
 	}
+	console.log('Initialized ' + tt.length + ' tooltip' + (tt.length != 1 ? 's' : '') + '.');
 }
 
 //END
