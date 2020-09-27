@@ -193,6 +193,12 @@ main p {
 	margin: 0;
 	margin-bottom: var(--font-size);
 }
+code {
+	padding: auto 0.2em;
+	color: #fff;
+	background-color: #333;
+	border-radius: 0.2em;
+}
 
 /*************************************************************sections*/
 @media screen and (max-width: 865px) {
