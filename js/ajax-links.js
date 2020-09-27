@@ -14,9 +14,7 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 	xhttp.onreadystatechange = function() {
 		var newpage, parser;
 		if(this.readyState == 4) {
-			console.log(file + ' fetched:');
-			console.log('Status: ' + this.status);
-			console.log('Status text: ' + this.statusText);
+			console.log('Fetch of ' + file + ' results: ' + this.status + ' (' + this.statusText + ')');
 			//unfocus the clicked element
 			document.activeElement.blur();
 			//go back on the top of the page
@@ -30,7 +28,7 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 				if(!skip_onload)
 					page_onload();
 			} else {
-				// fetch_page('status/' + this.status);
+				// fetch_page('/status/' + this.status);
 				document.title = '' + this.status + ' - ' + this.statusText;
 				document.getElementById('title').innerHTML = document.title;
 				where.innerHTML = '<div style="display:block; width:100%; text-align: center;"><span style="display:block; font-size: 4em; margin: 0.5em auto;">:(</span><span>The page <i>' + name + '</i> couldn\'t be reached.</span></div>';
