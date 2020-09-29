@@ -329,6 +329,9 @@ form fieldset.personal-data {
 form fieldset.account-data {
 	float: left;
 }
+*:disabled {
+	opacity: 0.5;
+}
 input,
 textarea {
 	color: var(--body-fg);
@@ -425,6 +428,22 @@ input[type=button]:hover {
 	-ms-user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
+}
+
+@keyframes shake {
+	0%		{ transform: rotate(0deg); }
+	33%		{ transform: rotate(15deg); }
+	67%		{ transform: rotate(-15deg); }
+	100%	{ transform: rotate(0deg); }
+}
+button:disabled:hover,
+input[type=submit]:disabled:hover,
+input[type=reset]:disabled:hover,
+input[type=button]:disabled:hover {
+	animation-name: shake;
+	animation-duration: 0.33s;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in-out;
 }
 
 .redButton { color: var(--red); border-color: var(--red); }
