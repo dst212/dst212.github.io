@@ -12,7 +12,7 @@ var toggleTheme = (function () {
 	var darkThemes =	['dark-black-theme',	'dark-white-theme',	'dark-red-theme',	'dark-yellow-theme',	'dark-green-theme',	'dark-cyan-theme',	'dark-blue-theme',	'dark-magenta-theme'];
 	var lightThemes =	['light-black-theme',	'light-white-theme','light-red-theme',	'light-yellow-theme',	'light-green-theme','light-cyan-theme',	'light-blue-theme',	'light-magenta-theme'];
 	// var disco = document.getElementById('disco-song');
-	var disco = new Audio('http://dst.altervista.org/files/audios/disco.mp3');
+	var disco = new Audio('https://dst.altervista.org/files/audios/disco.mp3');
 	disco.loop = true;
 	return function() {
 		function removeClasses() {
