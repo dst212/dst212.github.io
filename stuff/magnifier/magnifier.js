@@ -10,7 +10,7 @@
  */
 
 function magnifyPhoto(elem) {
-	var mag = document.getElementById'(magnifier');
+	var mag = document.getElementById('magnifier');
 	document.getElementById('magnifier-img').src = elem.src;
 	document.getElementById('magnifier-content').innerHTML = elem.title;
 	mag.style.bottom = '0';
