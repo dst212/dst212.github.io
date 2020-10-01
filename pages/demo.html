@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo</title>
+	</head>
+	<body>
+		<h1>This is a demonstration page</h1>
+		<!--loading animation-->
+		<div id="demo-loading">
+			<div class="loading-anim">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<span style="display: block; width:100%; text-align: center;">Loading...</span>
+		</div>
+		<center id="demos">
+			<style>
+				center#demos > div {
+					display: inline-block;
+					margin: 1em;
+				}
+				center#demos > div {
+					text-align: justify;
+				}
+			</style>
+			<!--search bar-->
+			<div id="demo-searchbar" class="searchbar">
+				<input type="text" placeholder="Search...">
+				<i class="material-icons">search</i>
+			</div>
+			<br>
+			<!--radio input-->
+			<div class="radio">
+				Is this website awful?
+				<label><input type="radio" name="radio" value="yes"/><span></span>Yes</label>
+				<label><input type="radio" name="radio" value="no"/><span></span>No</label>
+				<label><input type="radio" name="radio" value="maybe"/><span></span>Maybe</label>
+				<label><input type="radio" name="radio" value="Disa"/><span></span>Disa</label>
+				<label><input type="radio" name="radio" value="totally"/><span></span>Totally</label>
+				<label><input type="radio" name="radio" value="Absolutely"/><span></span>Absolutely</label>
+			</div>
+			<!--checkboxes-->
+			<div class="checkbox">
+				Which color is the best?
+				<label><input type="checkbox" name="checkbox" required/><span></span><a class="red">Tomato</a></label>
+				<label><input type="checkbox" name="checkbox" required/><span></span><a class="yellow">Banana</a></label>
+				<label><input type="checkbox" name="checkbox" required/><span></span><a class="lime">Lime</a></label>
+				<label><input type="checkbox" name="checkbox" required/><span></span><a class="cyan">Do cyan vegetables even exist?</a></label>
+				<label><input type="checkbox" name="checkbox" required/><span></span><a class="blue">Blueberrie</a></label>
+				<label><input type="checkbox" name="checkbox" required/><span></span><a class="magenta">Dragon fruit</a></label>
+			</div>
+		</center>
+		<div id="demo-tooltips">
+			This is a normal section, which content has to do with
+			<span class="tooltip" title="What's a tooltip?">
+				<a class="item">tooltips</a>
+				<div class="content">
+					A <i>tooltip</i> is exactly this: a small pop-up which appears when the cursors hovers on the related text, which generally explains what the text refers, what it is or what it does.
+					<br>So basically this is a tooltip about a tooltip on this website. Such recursion. Wow.
+				</div>
+			</span>.
+			<br>Hover
+			<span class="tooltip" title="Permanent tooltips">
+				<a class="item">here</a>
+				<div class="content">
+					It's possible to click on a text-label of a tooltip, focusing it, to keep the tooltip there until a new element is focused.
+				</div>
+			</span> to get some tips.
+			<br>What about
+			<span class="tooltip" title="Tooltips titles">
+				<a class="item">tooltips' titles</a>
+				<div class="content">
+					The title is the label above this text. It can be set by applying the <code>title</code> property to the <code>.item</code> element.
+					<br>If nothing is set, a default title will show up.
+					<br>By fixing this tooltip and hovering
+					<span class="tooltip">
+						<a class="item">here</a>
+						<div class="content">
+							The title is the same as the <code>.tooltip</code> element's content, with "Tooltip:" before it.
+						</div>
+					</span>, an example will be shown of a tooltip without a title set.
+				</div>
+			</span>?
+			<br>The code may look a mess... At least the page's content are lighter.
+		</div>
+	</body>
+</html>
