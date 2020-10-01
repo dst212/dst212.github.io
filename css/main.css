@@ -7,7 +7,8 @@
  **********************************************************************/
 
 @import url('rules.css?0');
-@import url('loading.css?1');
+@import url('loading.css?0');
+@import url('searchbar.css?0');
 @import url('../stuff/theme/theme.css?0');
 @import url('../stuff/notify/notify.css?0');
 @import url('../stuff/music/music.css?0');

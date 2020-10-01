@@ -1,0 +1,34 @@
+/**********************************************************************
+ *
+ * Made by dst212
+ * - 212dst212@gmail.com
+ * - https://github.com/dst212/dst212.github.io/
+ *
+ **********************************************************************/
+
+.searchbar {
+	position: relative;
+}
+.searchbar > input[type=text]{
+	position: relative;
+	display: inline-block;
+	height: 2em;
+	padding: 0.2em 0.2em 0.2em 1.6em;
+	border: var(--general-border) solid var(--accent-faded);
+	border-radius: var(--border-radius);
+}
+.searchbar > input[type=text]:hover,
+.searchbar > input[type=text]:focus {
+	border-color: var(--accent);
+}
+.searchbar > input[type=text] ~ .material-icons {
+	position: absolute;
+	left: 0;
+	color: var(--accent-faded);
+	font-size: 1.2em;
+	padding: 0.3em;
+}
+.searchbar > input[type=text]:hover ~ .material-icons,
+.searchbar > input[type=text]:focus ~ .material-icons {
+	color: var(--accent);
+}
