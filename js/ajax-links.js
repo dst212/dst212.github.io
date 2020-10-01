@@ -48,7 +48,8 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 			window.history.pushState({page: 0}, document.title, '?page=' + name);
 		}
 	}
-	xhttp.open('GET', file, true);
+	//Math.random() makes the link different each time, so the file will be downloaded even if cached
+	xhttp.open('GET', file + '?' + Math.random(), true);
 	xhttp.send();
 }
 
