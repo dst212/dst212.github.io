@@ -15,7 +15,7 @@
 @import url('../stuff/magnifier/magnifier.css?0');
 
 main::before {
-	/* content:'Il sito è in manutenzione in questo esatto istante e potrebbe subire modifiche inaspettate.'; */
+	/* content:'The website is being modified in this exact moment and may undergo changes unexpectedly.'; */
 }
 
 /* Rules for using icons as black on a light background. */
@@ -605,16 +605,16 @@ iframe.youtube {
 	margin: var(--spacing) 0;
 }
 .updating::after {
-	content: 'Questa sezione è in fase di aggiornamento in questo esatto istante e potrebbe subire modifiche inaspettate.';
+	content: 'This section is being updated in this exact moment and may undergo changes unexpectedly.';
 }
 .coming::after {
-	content: 'Sezione in arrivo...';
+	content: 'Coming...';
 }
 .building::after {
-	content: 'Sezione non ancora completa.';
+	content: 'Uncompleted section.';
 }
 .beta::after {
-	content: 'Sezione in fase sperimentale.';
+	content: 'Experimental section.';
 }
 main::before {
 	display: block;
