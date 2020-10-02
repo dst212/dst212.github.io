@@ -93,15 +93,11 @@ main::before {
 html {
 	scrollbar-color: var(--accent) rgba(127,127,127,0.2);
 	scrollbar-width: thin;
+	height:100%;
 }
-html { height:100%; }
 body {
 	position: relative;
 	background-color: var(--body-bg);
-/* 	background-image: url('/files/images/lighting.jpg'); */
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
 	color: var(--body-fg);
 	font-family: var(--font-family);
 	font-size: var(--font-size);
@@ -442,7 +438,7 @@ input[type=submit]:disabled:hover,
 input[type=reset]:disabled:hover,
 input[type=button]:disabled:hover {
 	animation-name: shake;
-	animation-duration: 0.33s;
+	animation-duration: var(--transition);
 	animation-iteration-count: 1;
 	animation-timing-function: ease-in-out;
 }
