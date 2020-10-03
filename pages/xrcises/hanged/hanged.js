@@ -39,8 +39,6 @@ function initButtons() {
 	let i, buttons = document.getElementById('init-buttons');
 	buttons.innerHTML = '';
 	for(i = 'A'.charCodeAt(); i <= 'Z'.charCodeAt(); i++) {
-		if((i - 'A'.charCodeAt()) % 5 == 0 && i != 'A'.charCodeAt())
-		buttons.innerHTML += '<br/>';
 		buttons.innerHTML += '<input type="button" id="' + String.fromCharCode(i) + '" value="' + String.fromCharCode(i) + '" onclick="checkWord(this.id)">';
 	}
 }
