@@ -1,5 +1,5 @@
 var checkWord = (function(char = '') {
-	let words = ['HELLO', 'WORLD', 'VANJA', 'T-SHIRT'];
+	let words = ['HELLO', 'WORLD', 'VANJA', 'T-SHIRT', 'UNPREDICTABLE', 'AMAZING', 'DISA', 'BISCARO', 'PULL DOWN', 'BLACKBOARD', 'EXPECTED', 'ALKSDLSKD', 'FISHING', 'RED PILL', 'CLOUD', 'BASKETBALL', 'NOTHING', 'WORD'];
 	let i, errors, toGuess, outGuess, wrongAttempt;
 	return function(char) {
 		let i, button;
