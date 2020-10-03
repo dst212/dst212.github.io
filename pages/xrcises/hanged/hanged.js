@@ -28,7 +28,7 @@ var checkWord = (function(char = '') {
 				notify('hanged-msg', 'You lost!', 'The word was ' + toGuess + '.<br><br>A new word to guess will be given.');
 				initHanged();
 			} else if(outGuess == toGuess) {
-				notify('hanged-msg', 'You win!', 'You found the world: ' + toGuess + '!<br><br>A new word to guess will be given.');
+				notify('hanged-msg', 'You win!', 'You found the word: ' + toGuess + '!<br><br>A new word to guess will be given.');
 				initHanged();
 			}
 		}
