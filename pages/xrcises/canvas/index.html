@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<title>Canvas</title>
+</head>
+
+<body>
+	<script type="text/javascript" src="/pages/xrcises/canvas/canvas.js"></script>
+	<style>
+		div#canvas > div {
+		  display: inline-block;
+		}
+		div#canvas canvas {
+			border: var(--general-border) solid var(--accent);
+			width: calc(var(--font-size) * 20);
+			height: calc(var(--font-size) * 10);
+		}
+		div#canvas canvas,
+		div#canvas input[type=button] {
+			margin: 0.5em;
+			box-shadow: var(--box-shadow);
+		}
+	</style>
+	<div id="canvas" style="text-align: center;">
+		<div>
+			<p>Square</p>
+			<canvas id="canvasRect"></canvas><br>
+
+			<input type="button" name="" value="Start" onclick="objRect.start();">
+			<input type="button" name="" value="Stop" onclick="objRect.stop();">
+		</div>
+		<div>
+			<p>Image</p>
+			<canvas id="canvasImage"></canvas><br>
+
+			<input type="button" name="" value="Start" onclick="objImage.start();">
+			<input type="button" name="" value="Stop" onclick="objImage.stop();">
+		</div>
+		<div>
+			<p>Text</p>
+			<canvas id="canvasText"></canvas><br>
+
+			<input type="button" name="" value="Start" onclick="objText.start();">
+			<input type="button" name="" value="Stop" onclick="objText.stop();">
+		</div>
+  </div>
+</body>
+
+</html>
