@@ -8,9 +8,18 @@
 
 var page_onload = () => {};
 
+function page_error(params = {url: '', status: '0'}, where = document.body.getElementsByTagName('MAIN')[0]) {
+	document.title = '' + params.status + ' - ' + (params.statusText ? params.statusText : 'Error');
+	document.getElementById('title').innerHTML = document.title;
+	where.innerHTML = '<div style="display:block; width:100%; text-align: center;"><span style="display:block; font-size: 4em; margin: 0.5em auto;">:(</span><span>The page <i>' + (params.url ? params.url : name) + '</i> couldn\'t be reached.</span></div>';
+	if(params.url)
+		window.history.replaceState({page: 0}, document.title, params.url);
+}
+
 function fetch_page(name, skip_onload = false, where = document.body.getElementsByTagName('MAIN')[0]) {
-	var file = '/pages/' + name + ((name[name.length - 1] == '/') ?  'index.html' :  '.html');
-	var xhttp = new XMLHttpRequest();
+	var file, xhttp;
+	file = '/pages/' + name + ((name[name.length - 1] == '/') ?  'index.html' :  '.html');
+	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		var newpage, parser, scripts, script, i;
 		if(this.readyState == 4) {
@@ -39,25 +48,34 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 						script = undefined;
 					}
 				}
+				//update the browser's search-bar
+				window.history.pushState({page: 0}, document.title, '?page=' + name);
 			} else {
-				document.title = '' + this.status + ' - ' + this.statusText ? this.statusText : 'Error';
-				document.getElementById('title').innerHTML = document.title;
-				where.innerHTML = '<div style="display:block; width:100%; text-align: center;"><span style="display:block; font-size: 4em; margin: 0.5em auto;">:(</span><span>The page <i>' + name + '</i> couldn\'t be reached.</span></div>';
+				page_error({status: this.status, statusText: this.statusText, url: document.URL}, where);
 			}
-			//update the browser's search-bar
-			window.history.pushState({page: 0}, document.title, '?page=' + name);
 		}
 	}
 	//Math.random() makes the link different each time, so the file will be downloaded even if cached
-	xhttp.open('GET', file + '?' + Math.random(), true);
+	xhttp.open('GET', file + '?' + ("" + Math.random()).replace(/./gi, ''), true);
 	xhttp.send();
 }
 
+window.onpopstate = (e) => location.reload();
+
 window.onload = addFunction(window.onload, function(){
-	let onload_page = new URL(document.URL).searchParams.get('page');
-	if(!onload_page)
-		onload_page = 'home';
-	fetch_page(onload_page);
+	var onload_page = {}, page_url = new URL(document.URL);
+	onload_page.status = page_url.searchParams.get('error');
+	if(onload_page.status) {
+		onload_page.page = page_url.searchParams.get('page');
+		onload_page.url = page_url.searchParams.get('url');
+		if(onload_page.status == 404) onload_page.statusText = 'Not found';
+		page_error(onload_page);
+	} else {
+		if(!onload_page.page) {
+			onload_page.page = 'home';
+		}
+		fetch_page(onload_page.page);
+	}
 });
 
 //END
