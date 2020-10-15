@@ -65,8 +65,8 @@ window.onpopstate = (e) => location.reload();
 window.onload = addFunction(window.onload, function(){
 	var onload_page = {}, page_url = new URL(document.URL);
 	onload_page.status = page_url.searchParams.get('error');
+	onload_page.page = page_url.searchParams.get('page');
 	if(onload_page.status) {
-		onload_page.page = page_url.searchParams.get('page');
 		onload_page.url = page_url.searchParams.get('url');
 		if(onload_page.status == 404) onload_page.statusText = 'Not found';
 		page_error(onload_page);
