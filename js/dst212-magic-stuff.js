@@ -17,26 +17,6 @@ function fetch_section(file, className) {
 	}
 }
 
-function coverPage(color = 'transparent', id = 'cover-page-id') {
-	var div = document.createElement('DIV');
-	div.style.position = 'fixed'; //note: <body> must have absolute or relative position
-	div.style.top = '0';
-	div.style.left = '0';
-	div.style.display = 'block';
-	div.style.height = '100vh';
-	div.style.width = '100vw';
-	div.style.backgroundColor = color;
-	div.style.zIndex = 1; //everything above won't be hidden below
-	div.setAttribute('id', id);
-	document.body.appendChild(div);
-	return div;
-}
-function uncoverPage(id = 'cover-page-id') {
-	var div = document.getElementById(id);
-	if(div)
-		document.body.removeChild(div);
-}
-
 page_onload = addFunction(page_onload, () => {
 	fetch_section('logo.html', 'fetch-dst212-logo');
 	fetch_section('copyright.html', 'fetch-copyright-notice');
