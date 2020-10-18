@@ -1,0 +1,54 @@
+/**********************************************************************
+ *
+ * Made by dst212
+ * - 212dst212@gmail.com
+ * - https://github.com/dst212/dst212.github.io/
+ *
+ * CSS for windows, use with
+ * https://dst212,github.io/stuff/window/window.js.
+ **********************************************************************/
+
+.window-element {
+	display: block;
+	position: fixed;
+	margin: 0;
+	padding: var(--spacing);
+	color: var(--body-fg);
+	background-color: var(--body-bg);
+	border: var(--general-border) solid var(--accent);
+	border-radius: var(--border-radius);
+	text-align: justify;
+	z-index: -1;
+}
+
+.window-element > .titlebar {
+	display: block;
+	padding: 0.1em 1.5em /*space left for the X button*/ 0.1em 0;
+	margin-bottom: var(--spacing);
+	height: 1.2em;
+	text-overflow: ellipsis;
+}
+.window-element > .close {
+	display: block;
+	position: absolute;
+	top: calc(var(--general-border) * -1 + 1px);
+	right: calc(var(--general-border) * -1 + 1px);
+	padding: 0.2em;
+	color: var(--accent);
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0 var(--border-radius);
+	box-sizing: border-box;
+}
+.window-element > .close:hover {
+	background-color: var(--accent);
+	color: var(--body-bg);
+}
+.window-element > .buttons {
+	display: block;
+	margin: var(--spacing) auto auto;
+	text-align: center;
+}
+.window-element > .buttons > * {
+	margin: 0 0.25em;
+}
