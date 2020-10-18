@@ -32,7 +32,7 @@ function closeNtf(id) {
 	} else console.log('Unable to find element ' + x);
 }
 
-function init_notifications() {
+function initNotifications() {
 	var x = document.createElement('DIV');
 	x.setAttribute('id', 'notifications');
 	document.body.appendChild(x);
