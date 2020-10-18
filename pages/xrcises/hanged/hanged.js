@@ -20,15 +20,17 @@ var checkWord = (function(char = '') {
 					outGuess = outGuess.slice(0, i) + char + outGuess.slice(i + 1), wrongAttempt = false;
 			if(wrongAttempt)
 				errors++;
-			if(button)
+			if(button) {
 				button.setAttribute('disabled', '');
+				document.activeElement.blur();
+			}
 			document.getElementById('output').value = outGuess;
 			document.getElementById('errors').innerHTML = errors;
 			if(errors >= 5) {
-				notify('hanged-msg', 'You lost!', 'The word was ' + toGuess + '.<br><br>A new word to guess will be given.');
+				win('Game over!', 'The word was ' + toGuess + '.<br><br>A new word to guess will be given.', [{innerHTML: 'OK', onclick: ''}], '', true);
 				initHanged();
 			} else if(outGuess == toGuess) {
-				notify('hanged-msg', 'You win!', 'You found the word: ' + toGuess + '!<br><br>A new word to guess will be given.');
+				win('You won!', 'You found the word: ' + toGuess + '!<br><br>A new word to guess will be given.', [{innerHTML: 'OK', onclick: ''}], '', true);
 				initHanged();
 			}
 		}
