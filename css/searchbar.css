@@ -20,6 +20,7 @@
 .searchbar > input[type=text]:hover,
 .searchbar > input[type=text]:focus {
 	border-color: var(--accent);
+	border-radius: var(--half-border-radius);
 }
 .searchbar > input[type=text] ~ .material-icons {
 	position: absolute;
