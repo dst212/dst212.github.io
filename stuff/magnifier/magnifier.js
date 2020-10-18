@@ -27,6 +27,7 @@ window.onload = addFunction(window.onload, function() {
 	magnifierElement.setAttribute('id', 'magnifier');
 	magnifierElement.innerHTML = '<img id="magnifier-img"><div id="magnifier-content"></div><button class="exit square material-icons md-same" onclick="minimizePhoto();">close</button>'
 	document.body.appendChild(magnifierElement);
+	console.log('Photo magnifier appended.');
 });
 
 //END
