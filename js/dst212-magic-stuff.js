@@ -6,7 +6,7 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
-function fetch_section(file, className) {
+function fetchSection(file, className) {
 	var collection = document.getElementsByClassName(className), i;
 	if(collection.length > 0) {
 		for(i = 0; i < collection.length; i++)
@@ -17,13 +17,17 @@ function fetch_section(file, className) {
 	}
 }
 
-page_onload = addFunction(page_onload, () => {
-	fetch_section('logo.html', 'fetch-dst212-logo');
-	fetch_section('copyright.html', 'fetch-copyright-notice');
-	fetch_section('cc.html', 'fetch-cc-content');
-	fetch_section('contacts.html', 'fetch-contacts');
+pageOnload = addFunction(pageOnload, () => {
+	fetchSection('logo.html', 'fetch-dst212-logo');
+	fetchSection('copyright.html', 'fetch-copyright-notice');
+	fetchSection('cc.html', 'fetch-cc-content');
+	fetchSection('contacts.html', 'fetch-contacts');
 	document.title += ' - dst212';
-	init_tooltips();
+	initTooltips();
+});
+
+window.onload = addFunction(window.onload, () => {
+	initMagnifier();
 });
 
 //END

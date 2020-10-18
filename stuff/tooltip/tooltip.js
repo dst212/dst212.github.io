@@ -9,7 +9,7 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
-function init_tooltips() {
+function initTooltips() {
 	var tt=document.getElementsByClassName('tooltip');
 	var i, j, newtitle, tooltip;
 	for(i = 0, j = 0; i < tt.length; i++) {

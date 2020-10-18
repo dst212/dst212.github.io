@@ -17,7 +17,7 @@ function discoModeIncoming() {
 }
 
 window.onload = addFunction(window.onload, function() {
-	init_notifications();
+	initNotifications();
 	if(localStorage.cookie4 != 214){
 		notify(
 			'cookies',

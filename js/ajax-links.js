@@ -6,9 +6,9 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
-var page_onload = () => {};
+var pageOnload = () => {};
 
-function page_error(params = {url: '', status: '0'}, where = document.body.getElementsByTagName('MAIN')[0]) {
+function pageError(params = {url: '', status: '0'}, where = document.body.getElementsByTagName('MAIN')[0]) {
 	document.title = '' + params.status + ' - ' + (params.statusText ? params.statusText : 'Error');
 	document.getElementById('title').innerHTML = document.title;
 	where.innerHTML = '<div style="display:block; width:100%; text-align: center;"><span style="display:block; font-size: 4em; margin: 0.5em auto;">:(</span><span>The page <i>' + (params.url ? params.url : name) + '</i> couldn\'t be reached.</span></div>';
@@ -16,7 +16,7 @@ function page_error(params = {url: '', status: '0'}, where = document.body.getEl
 		window.history.replaceState({page: 0}, document.title, params.url);
 }
 
-function fetch_page(name, skip_onload = false, where = document.body.getElementsByTagName('MAIN')[0]) {
+function pageFetch(name, skipOnload = false, where = document.body.getElementsByTagName('MAIN')[0]) {
 	var file, xhttp;
 	file = '/pages/' + name + ((name[name.length - 1] == '/') ?  'index.html' :  '.html');
 	xhttp = new XMLHttpRequest();
@@ -34,8 +34,8 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 				document.title = newpage.title;
 				document.getElementById('title').innerHTML = newpage.title;
 				where.innerHTML = newpage.body.innerHTML;
-				if(!skip_onload) {
-					page_onload();
+				if(!skipOnload) {
+					pageOnload();
 					//add all the javascript scripts from the source page
 					scripts = newpage.getElementsByTagName('SCRIPT');
 					for(i = 0; i < scripts.length; i++) {
@@ -51,7 +51,7 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 				//update the browser's search-bar
 				window.history.pushState({page: 0}, document.title, '?page=' + name);
 			} else {
-				page_error({status: this.status, statusText: this.statusText, url: document.URL}, where);
+				pageError({status: this.status, statusText: this.statusText, url: document.URL}, where);
 			}
 		}
 	}
@@ -63,18 +63,18 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 window.onpopstate = (e) => location.reload();
 
 window.onload = addFunction(window.onload, function(){
-	var onload_page = {}, page_url = new URL(document.URL);
-	onload_page.status = page_url.searchParams.get('error');
-	onload_page.page = page_url.searchParams.get('page');
-	if(onload_page.status) {
-		onload_page.url = page_url.searchParams.get('url');
-		if(onload_page.status == 404) onload_page.statusText = 'Not found';
-		page_error(onload_page);
+	var onloadPage = {}, page_url = new URL(document.URL);
+	onloadPage.status = page_url.searchParams.get('error');
+	onloadPage.page = page_url.searchParams.get('page');
+	if(onloadPage.status) {
+		onloadPage.url = page_url.searchParams.get('url');
+		if(onloadPage.status == 404) onloadPage.statusText = 'Not found';
+		pageError(onloadPage);
 	} else {
-		if(!onload_page.page) {
-			onload_page.page = 'home';
+		if(!onloadPage.page) {
+			onloadPage.page = 'home';
 		}
-		fetch_page(onload_page.page);
+		pageFetch(onloadPage.page);
 	}
 });
 
