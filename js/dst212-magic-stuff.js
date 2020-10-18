@@ -6,15 +6,6 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
-function lighting() {
-	var lightingEl = document.getElementById('lighting');
-	lightingEl.style.opacity = '1';
-// 	playAudio("lighting-audio");
-	setTimeout(function() {
-		lightingEl.style.opacity = '0';
-	}, 175);
-}
-
 function fetch_section(file, className) {
 	var collection = document.getElementsByClassName(className), i;
 	if(collection.length > 0) {
