@@ -200,13 +200,6 @@ code {
 }
 
 /*************************************************************sections*/
-@media screen and (max-width: 865px) {
-	:root {
-		--half-body: 100%;
-		--one-third-body: 100%;
-		--col-margin: 0;
-	}
-}
 
 section, div {
 	word-wrap: break-word;

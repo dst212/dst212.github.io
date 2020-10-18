@@ -61,6 +61,14 @@
 	--ddi-border-radius:	calc(var(--ddi-width) / 2);
 }
 
+@media screen and (max-width: 865px) {
+	:root {
+		--half-body: 100%;
+		--one-third-body: 100%;
+		--col-margin: 0;
+	}
+}
+
 @keyframes overflow {
 	0% { overflow: hidden; }
 	99% { overflow: hidden; }
