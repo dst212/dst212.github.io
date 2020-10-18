@@ -56,7 +56,7 @@ function fetch_page(name, skip_onload = false, where = document.body.getElements
 		}
 	}
 	//Math.random() makes the link different each time, so the file will be downloaded even if cached
-	xhttp.open('GET', file + '?' + ("" + Math.random()).replace(/./gi, ''), true);
+	xhttp.open('GET', file + '?' + ('' + Math.random()).replace(/\./gi, ''), true);
 	xhttp.send();
 }
 
