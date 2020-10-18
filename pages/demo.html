@@ -55,7 +55,9 @@
 				<label><input type="checkbox" name="checkbox" required/><span></span><a class="magenta">Dragon fruit</a></label>
 			</div>
 		</div>
+		<hr>
 		<div id="demo-tooltips">
+			<h2>Tooltips</h2>
 			This is a normal section, which content has to do with
 			<span class="tooltip" title="What's a tooltip?">
 				<a class="item">tooltips</a>
@@ -87,6 +89,12 @@
 				</div>
 			</span>?
 			<br>The code may look a mess... At least the page's content are lighter.
+		</div>
+		<hr>
+		<div id="demo-windows">
+			<h2>Windows<br><small>(Has nothing to do with <span style="display: none;">the shitty OS by</span> Microsoft)</small></h2>
+			<a hreff="javascript:void(0);" href="javascript:void(win('Popup', 'Simple popup example. Click <code>OK</code> below or the <code>x</code> button on the right corner on the top to close this popup.', [{innerHTML: 'OK', onclick: ''}]));">Click here</a> to see a simple popup.
+			<br><a href="javascript:void(win('Popdown', 'Now other elements on page can\'t be clicked nor selected unless this popup is closed.', [{innerHTML: 'I don\'t care', onclick: ''}], '', true));">Click here</a> to see popup which blocks the other elements on the page (it covers them with a giant <code>&lt;div&gt;</code>).
 		</div>
 	</body>
 </html>
