@@ -22,4 +22,11 @@ function minimizePhoto() {
 	mag.style.opacity = '0';
 }
 
+window.onload = addFunction(window.onload, function() {
+	var magnifierElement = document.createElement('DIV');
+	magnifierElement.setAttribute('id', 'magnifier');
+	magnifierElement.innerHTML = '<img id="magnifier-img"><div id="magnifier-content"></div><button class="exit square material-icons md-same" onclick="minimizePhoto();">close</button>'
+	document.body.appendChild(magnifierElement);
+});
+
 //END
