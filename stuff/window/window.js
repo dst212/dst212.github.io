@@ -25,7 +25,9 @@ var win = (function() {
 			for(i = 0; i < buttons.length; i++) {
 				if(!buttons[i].onclick) buttons[i].onclick = closeWinStr;
 				else buttons[i].onclick += ';' + closeWinStr;
-				buttonsHTML += '<button onclick="' + buttons[i].onclick + '">' + buttons[i].innerHTML + '</button>';
+				buttonsHTML += '<button ';
+				if(buttons[i].properties) buttonsHTML += buttons[i].properties + ' ';
+				buttonsHTML += 'onclick="' + buttons[i].onclick + '">' + buttons[i].innerHTML + '</button>';
 			}
 			buttonsHTML += '</div>';
 		}
