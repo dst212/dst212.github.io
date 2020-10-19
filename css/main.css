@@ -802,6 +802,9 @@ footer {
 	background-color: var(--footer-bg);
 	font-size: 0.7em;
 }
+footer a {
+	color: var(--body-bg);
+}
 footer::selection,
 footer *::selection {
 	color: var(--footer-bg);
