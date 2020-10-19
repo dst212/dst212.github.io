@@ -9,7 +9,7 @@
 var win = (function() {
 	let winCount = 0;
 	return function(title, content, buttons = [], onclose = '', disablePage = false, width = undefined, left = undefined, top = undefined) {
-		var newWin = document.createElement('DIV'), id = 'window-' + (winCount++), closeWinStr = 'document.body.removeChild(document.getElementById(\'' + id + '\'));' + onclose + ';';
+		var newWin = document.createElement('DIV'), id = 'window-' + (winCount++), closeWinStr = 'document.getElementById(\'' + id + '\').remove();' + onclose + ';';
 		var buttonsHTML = '';
 		let i;
 		if(disablePage) {
