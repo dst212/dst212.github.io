@@ -28,16 +28,6 @@ window.onload = addFunction(window.onload, function() {
 			'var(--body-bg)'
 		);
 	}
-	/*if(document.location.protocol == 'http:') {
-		notify(
-			'https-notice',
-			'Ora il sito è sicuro!',
-			'Questo sito, finalmente, supporta la connessione sicura HTTPS!<br/>Le impostazioni salvate attualmente verranno mantenute soltanto nella sessione HTTP.',
-			'<button class="normalButton" onclick="window.location.href=\'https://dst.altervista.org/\'">Vai al sito</button> <button class="normalButton" onclick="closeNtf(\'https-notice\');">Ignora</button>',
-			'black',
-			'red'
-		);
-	}*/
 });
 
 //END
