@@ -6,6 +6,15 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+/*var mousePos = (function() {
+	let pos = {x: 0, y: 0};
+	document.onmousemove = function(e) {
+		pos.x = e.clientX;
+		pos.y = e.clientY;
+	};
+	return function() { return pos; };
+})();*/
+
 var win = (function() {
 	let winCount = 0;
 	return function(title, content, buttons = [], onclose = '', disablePage = false, width = undefined, left = undefined, top = undefined) {

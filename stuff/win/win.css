@@ -17,6 +17,7 @@
 	background-color: var(--body-bg);
 	border: var(--general-border) solid var(--accent);
 	border-radius: var(--border-radius);
+	box-shadow: var(--box-shadow);
 	text-align: justify;
 	z-index: -1;
 }
@@ -50,5 +51,6 @@
 	text-align: center;
 }
 .window-element > .buttons > * {
-	margin: 0 0.25em;
+	margin-left: 0.25em;
+	margin-right: 0.25em;
 }
