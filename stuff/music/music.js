@@ -2,8 +2,7 @@
 // https://github.com/dst212/dst212.github.io
 
 function playAudio(au) {
-	var music = document.getElementById(au);
-	music.play();
+	document.getElementById(au).play();
 	console.log('Now playing ' + au + '.');
 }
 function pauseAudio(au) {
