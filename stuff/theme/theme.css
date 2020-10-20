@@ -93,8 +93,8 @@
 .light-yellow-theme	{--accent:rgba(220,220,000,1);--accent-faded:rgba(220,220,000,0.4);--accent-dark:rgba(110,110,000,1);--accent-dark-faded:rgba(110,110,000,0.4);}
 .dark-yellow-theme	{--accent:rgba(110,110,000,1);--accent-faded:rgba(110,110,000,0.4);--accent-dark:rgba(220,220,000,1);--accent-dark-faded:rgba(220,220,000,0.4);}
 
-.light-green-theme	{--accent:rgba(000,220,000,1);--accent-faded:rgba(000,220,000,0.4);--accent-dark:rgba(000,110,000,1);--accent-dark-faded:rgba(000,110,000,0.4);}
-.dark-green-theme	{--accent:rgba(000,110,000,1);--accent-faded:rgba(000,110,000,0.4);--accent-dark:rgba(000,220,000,1);--accent-dark-faded:rgba(000,220,000,0.4);}
+.light-lime-theme	{--accent:rgba(000,220,000,1);--accent-faded:rgba(000,220,000,0.4);--accent-dark:rgba(000,110,000,1);--accent-dark-faded:rgba(000,110,000,0.4);}
+.dark-lime-theme	{--accent:rgba(000,110,000,1);--accent-faded:rgba(000,110,000,0.4);--accent-dark:rgba(000,220,000,1);--accent-dark-faded:rgba(000,220,000,0.4);}
 
 .light-cyan-theme	{--accent:rgba(000,220,220,1);--accent-faded:rgba(000,220,220,0.4);--accent-dark:rgba(000,110,110,1);--accent-dark-faded:rgba(000,110,110,0.4);}
 .dark-cyan-theme	{--accent:rgba(000,110,110,1);--accent-faded:rgba(000,110,110,0.4);--accent-dark:rgba(000,220,220,1);--accent-dark-faded:rgba(000,220,220,0.4);}
