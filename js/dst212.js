@@ -29,4 +29,17 @@ function uncoverPage(id = 'cover-page-id') {
 	if(div)
 		document.body.removeChild(div);
 }
+
+var beep = (function() {
+	var actx = new (window.AudioContext || window.webkitAudioContext)();
+	return function(freq, ms = 500) {
+		var osc = actx.createOscillator();
+		osc.type = 'sine';
+		osc.frequency.value = freq;
+		osc.start(actx.currentTime);
+		osc.stop(actx.currentTime + (ms/1000));
+		osc.connect(actx.destination);
+		osc = null;
+	}
+})();
 //END
