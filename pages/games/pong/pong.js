@@ -23,7 +23,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 		}
 	};
 
-	this.collide = function(rect, change = false) {
+	this.collide = function(rect) {
 		var collision = false;
 		if(
 			rect.minY() < this.y + this.dy + this.ray &&
@@ -37,16 +37,6 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 					this.dy *= -1; //bounce
 				beep(pong.freq.ballBounce + 150, pong.beeptime);
 				collision = true;
-				if(change) {
-					change = Math.random() * 6 - 3;
-					if(this.dy + change < 0 && this.dx - change > 0) {
-						this.dy -= change;
-						this.dx += change;
-					} else {
-						this.dy += change;
-						this.dx -= change;
-					}
-				}
 				this.cornerCollision(rect);
 			}
 		}
