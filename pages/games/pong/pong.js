@@ -1,3 +1,11 @@
+// made by dst212
+
+/*
+ * Pong-like game.
+ *
+ * Visit https://github.com/dst212/dst212.github.io/ to get more details.
+ */
+
 function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, speedy = undefined, ray = 20, color = undefined) {
 	this.init = function() {
 		this.ctx = canvas.getContext('2d');
@@ -264,3 +272,5 @@ function createPongDiv() {
 }
 
 pong.init(createPongDiv());
+
+//END
