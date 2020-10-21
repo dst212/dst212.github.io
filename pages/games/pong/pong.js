@@ -160,11 +160,13 @@ var pong = {
 				if(e.keyCode == 13)
 					pong.start();
 			}
+			if(e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40)
+				return false;
 		};
 		document.onkeyup = function(e) {
 			if(pong.running == 1)
 				pong.move = 0; //stop moving the player on key release
-		}
+		};
 		body.insertBefore(this.canvas, body.childNodes[0]);
 		this.printCenter('Press ENTER to play', undefined, 20);
 	},
