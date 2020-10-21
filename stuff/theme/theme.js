@@ -2,10 +2,10 @@
 
 /*
  * This script contains some functions to customize the website's theme.
- * It does not work without https://dst212.github.io/stuff/theme/Theme.css,
+ * It does not work without https://dst212.github.io/stuff/theme/theme.css,
  * where all theme-schemes are stored.
  *
- * Visit to https://github.com/dst212/dst212.github.io/ to get more details.
+ * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
 var Theme = {
