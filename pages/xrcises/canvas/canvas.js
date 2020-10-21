@@ -2,7 +2,7 @@
 
 var objRect, objImage, objText;
 
-function CanvasObj(type, width = 40, height = 40, startx = undefined, starty = undefined, speedx = undefined, speedy = undefined, delay = 1000/60, color = 'transparent', background = '#00ff00') {
+function CanvasObj(type, width = 40, height = 40, startx = undefined, starty = undefined, speedx = undefined, speedy = undefined, delay = 1000/60, color = Theme.background.get(), background = Theme.get('accent')) {
 	this.init = () => {
 		this.canvas = document.getElementById('canvas' + type[0]);
 		this.ctx = this.canvas.getContext('2d');
@@ -58,6 +58,17 @@ function CanvasObj(type, width = 40, height = 40, startx = undefined, starty = u
 				this.ctx.fillText(this.text, this.x, this.y + this.height);
 			}
 			break;
+		case 'ball':
+			this.objInit = () => {
+				this.ray = type[1] ? type[1] : Math.random() * 10 + 5;
+				this.height = this.width = this.ray * 2;
+			}
+			this.print = () => {
+				this.ctx.arc(this.x + this.ray , this.y + this.ray, this.width, 0, 2 * Math.PI);
+				this.ctx.strokeStyle = this.color;
+				this.ctx.fillStyle = this.background;
+			}
+			break;
 	}
 	this.draw = () => {
 		this.ctx.beginPath();
@@ -66,8 +77,11 @@ function CanvasObj(type, width = 40, height = 40, startx = undefined, starty = u
 		this.ctx.stroke();
 		this.ctx.closePath();
 	}
-	this.move = () => {
+	this.clear = () => {
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+	this.move = () => {
+		this.clear();
 		this.draw();
 		this.collide();
 		if(this.active)
@@ -81,9 +95,22 @@ function CanvasObj(type, width = 40, height = 40, startx = undefined, starty = u
 	this.objInit();
 }
 
+function multiplePrint(obj) {
+	var i;
+	obj[0].clear();
+	for(i = 0; i < obj.length; i++) {
+		obj[i].draw();
+		obj[i].collide();
+	}
+	if(obj[0].active)
+		setTimeout(multiplePrint, obj[0].delay, obj);
+}
+
 function initCanvas() {
 	objRect = new CanvasObj(['Rect']);
 	objImage = new CanvasObj(['Image', '/favicon.ico']);
 	objText = new CanvasObj(['Text', 'Disa', 'monospace'], 40, 20);
+	objBall = [];
+	objBall.push(new CanvasObj(['Ball']));
 }
 initCanvas();
