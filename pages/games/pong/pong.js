@@ -125,7 +125,7 @@ var pong = {
 	initVal: function() {
 		this.score = 0,			//unused, for now
 		this.delay = 1000 / 60,	//delay between a frame and the following one
-		this.running = false,	//game is running
+		this.running = 0,		//game is running (0: no, 1: yes, 2: is about to or gameOver is active)
 		this.move = 0;			//move the ball (-1, 0, 1)
 		this.button = document.getElementById('pong-start-button');
 	},
@@ -144,18 +144,18 @@ var pong = {
 		this.player = new PongPlayer(this.canvas);
 		this.ball = new PongBall(this.canvas);
 		document.onkeydown = function(e) {
-			if(pong.running) {
+			if(pong.running == 1) {
 				if(e.keyCode == 37) //left
 					pong.move = -1;
 				else if(e.keyCode == 39) //right
 					pong.move = 1;
-			} else {
+			} else if(pong.running == 0){
 				if(e.keyCode == 13)
 					pong.start();
 			}
 		};
 		document.onkeyup = function(e) {
-			if(pong.running)
+			if(pong.running == 1)
 				pong.move = 0; //stop moving the player on key release
 		}
 		body.insertBefore(this.canvas, body.childNodes[0]);
@@ -193,6 +193,7 @@ var pong = {
 	},
 
 	countdown: function(i = 3) {
+		pong.running = 2;
 		pong.score = 0;
 		//countdown
 		pong.clear();
@@ -204,7 +205,7 @@ var pong = {
 		else {
 			//start the game
 			setTimeout(function() {
-				pong.running = true;
+				pong.running = 1;
 				startPong();
 			}, 1000);
 		}
@@ -220,7 +221,7 @@ var pong = {
 
 	gameOver: function() {
 		//change player's color on game over
-		this.running = false;
+		this.running = 2;
 		this.clear();
 		this.player.print(Theme.get('invalid'));
 		this.printCenter('GAME OVER', Theme.get('invalid'));
@@ -244,7 +245,7 @@ var pong = {
 
 function startPong() {
 	pong.refresh();
-	if(pong.running)
+	if(pong.running == 1)
 		setTimeout(startPong, pong.delay);
 }
 
