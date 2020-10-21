@@ -61,7 +61,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 			if(side != undefined) if((side == 3 && this.x + this.dx - this.ray <= 0) || (side == 1 && canvas.width <= this.x + this.dx + this.ray))
 				ret = true;
 			this.dx *= -1;
-			beep(pong.freq.ballBounce, pong.beeptime);
+			if(!ret) beep(pong.freq.ballBounce, pong.beeptime);
 		}
 		if(0 < this.y + this.dy - this.ray && this.y + this.dy + this.ray < canvas.height)
 			this.y += this.dy;
@@ -69,7 +69,11 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 			if(side != undefined) if((side == 0 && this.y + this.dy - this.ray <= 0) || (side == 2 && canvas.height <= this.y + this.dy + this.ray))
 				ret = true;
 			this.dy *= -1;
-			beep(pong.freq.ballBounce, pong.beeptime);
+			if(!ret) beep(pong.freq.ballBounce, pong.beeptime);
+		}
+		if(ret)	{
+			beep(pong.freq.ballBounce - 150, pong.beeptime);
+			beep(pong.freq.ballBounce - 150, pong.beeptime);
 		}
 		return ret;
 	};
