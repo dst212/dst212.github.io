@@ -27,6 +27,7 @@ var Theme = {
 				if(count >= darkThemes.length) count = 2;
 				if(localStorage.theme == 'white') document.documentElement.classList.add(darkThemes[count]);
 				else if(localStorage.theme=='black') document.documentElement.classList.add(lightThemes[count]);
+				Theme.computedStyle = undefined; //make it always undefined so that the function getComputedStyle() will be triggered each time the method getComputedStyle() of Theme will be called
 				localStorage.resumeMusic = disco.currentTime;
 				setTimeout(discoMode, wait, mode, wait, count);
 			}
@@ -34,7 +35,7 @@ var Theme = {
 		return function() {
 			removeClasses();
 			if(localStorage.themeColor == 'disco') {
-				var sleep = getComputedStyle(document.documentElement).getPropertyValue('--transition').slice(0, this.length-1);
+				var sleep = Theme.getComputedStyle().getPropertyValue('--transition').slice(0, this.length-1);
 				if(localStorage.playDisco != 1 && localStorage.playDisco != 0) localStorage.playDisco = 1; //will be used for settings in future
 				if(localStorage.playDisco == 1) {
 					disco.currentTime = (localStorage.resumeMusic == null || localStorage.resumeMusic == undefined) ? 0 : localStorage.resumeMusic * 1;
@@ -49,12 +50,19 @@ var Theme = {
 				if(localStorage.themeColor == 'quiet') discoMode('quiet', 5000);
 				else if(localStorage.theme == 'white') document.documentElement.classList.add('dark-' + localStorage.themeColor + '-theme');
 				else document.documentElement.classList.add('light-' + localStorage.themeColor + '-theme');
+				Theme.computedStyle = getComputedStyle(document.documentElement);
 			}
 		}
 	})(),
+	computedStyle: undefined,
+	getComputedStyle: function() {
+		if(!Theme.computedStyle)
+			Theme.computedStyle = getComputedStyle(document.documentElement);
+		return Theme.computedStyle;
+	},
 	background: {
 		get: () => {
-			return getComputedStyle(document.documentElement).getPropertyValue('--body-fg');
+			return Theme.getComputedStyle().getPropertyValue('--body-fg');
 		},
 		set: (id) => {
 			if(localStorage.theme != id && (id == 'white' || id == 'black')) {
@@ -71,7 +79,7 @@ var Theme = {
 	},
 	color: {
 		get: () => {
-			return getComputedStyle(document.documentElement).getPropertyValue('--accent');
+			return Theme.getComputedStyle().getPropertyValue('--accent');
 		},
 		set: (id) => {
 			if(localStorage.themeColor != id) {
@@ -81,7 +89,7 @@ var Theme = {
 		},
 	},
 	get: (prop) => {
-		return getComputedStyle(document.documentElement).getPropertyValue('--' + prop);
+		return Theme.getComputedStyle().getPropertyValue('--' + prop);
 	},
 };
 
