@@ -45,6 +45,14 @@
 			<input type="button" name="" value="Start" onclick="objText.start();">
 			<input type="button" name="" value="Stop" onclick="objText.stop();">
 		</div>
+		<div>
+			<p>Ball</p>
+			<canvas id="canvasBall"></canvas><br>
+
+			<input type="button" name="" value="Start" onclick="objBall[0].active = true; multiplePrint(objBall);">
+			<input type="button" name="" value="Add" onclick="objBall.push(new CanvasObj(['Ball']));">
+			<input type="button" name="" value="Stop" onclick="objBall[0].stop();">
+		</div>
   </div>
 </body>
 
