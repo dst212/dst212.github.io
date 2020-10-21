@@ -9,8 +9,13 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 			this.y = canvas.height / 2;
 		else
 			this.y = y;
-		this.dx = speedx ? speedx : (Math.random() < 0.5) ? Math.random() * 3 + 12 : -(Math.random() * 3 + 12); //delta x
-		this.dy = speedy ? speedy : -(Math.random() * 3 + 12); //delta y
+		this.baseSpeed = 9;
+		this.maxSpeedDelta = 13;
+		this.dx = speedx ? speedx : (Math.random() < 0.5) ? Math.random() * 1 + this.baseSpeed : -(Math.random() * 1 + this.baseSpeed); //delta x (x's speed)
+		this.dy = speedy ? speedy : -(Math.random() * 1 + this.baseSpeed); //delta y (y's speed)
+		//speed is Math.sqrt(Math.pow(pong.ball.dy, 2) + Math.pow(pong.ball.dx, 2)) if anyone wanted to know
+		this.maxDx = (this.dx < 0 ? -this.dx : this.dx) + this.maxSpeedDelta;
+		this.maxDy = (this.dy < 0 ? -this.dy : this.dy) + this.maxSpeedDelta;
 		this.ray = ray;
 	};
 
@@ -26,19 +31,19 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 	this.collide = function(rect) {
 		var collision = false;
 		if(
-			rect.minY() < this.y + this.dy + this.ray &&
-			this.y + this.dy - this.ray < rect.maxY()
-		) { //normal collision
-			if(
+			(
+				rect.minY() < this.y + this.dy + this.ray &&
+				this.y + this.dy - this.ray < rect.maxY()
+			) && (
 				rect.minX() < this.x + this.dx + this.ray &&
 				this.x + this.dx - this.ray < rect.maxX()
-			) {
-				if(this.y + this.dy < rect.minY()) //the ball bounces on the rect's horizontal sides
-					this.dy *= -1; //bounce
-				beep(pong.freq.ballBounce + 150, pong.beeptime);
-				collision = true;
-				this.cornerCollision(rect);
-			}
+			)
+		) {
+			if(this.y + this.ray < rect.minY()) //the ball bounces on the rect's horizontal sides
+				this.dy *= -1; //bounce
+			beep(pong.freq.ballBounce + 150, pong.beeptime);
+			collision = true;
+			this.cornerCollision(rect);
 		}
 		return collision;
 	};
@@ -89,7 +94,7 @@ function PongPlayer(canvas, y = undefined, color = undefined, accent = undefined
 		this.minY = () => { return this.y - (this.height / 2);};
 		this.maxX = () => { return this.x + (this.width / 2);};
 		this.maxY = () => { return this.y + (this.height / 2);};
-		this.speed = 11;
+		this.speed = 9;
 	};
 
 	this.move = function(by) {
@@ -159,8 +164,6 @@ var pong = {
 	slide: function(delta) {
 		//move the player
 		pong.player.move(delta * pong.player.speed);
-		if(delta != pong.move)
-			setTimeout(pong.slide, pong.delay, delta);
 	},
 
 	clear: function() {
@@ -179,8 +182,16 @@ var pong = {
 		this.clear();
 		if(this.move)
 			this.slide(this.move);
-		this.player.print();
-		this.ball.collide(this.player);
+		if(this.ball.collide(this.player)) {
+			if((this.ball.dx < 0 ? -this.ball.dx : this.ball.dx) < this.ball.maxDx) {
+				this.ball.dx += this.ball.dx < 0 ? -0.75 : 0.75;
+				this.player.speed += 0.5;
+			}
+			if((this.ball.dy < 0 ? -this.ball.dy : this.ball.dy) < this.ball.maxDy) this.ball.dy += this.ball.dy < 0 ? -0.75 : 0.75;
+			this.player.print(Theme.get('accent'));
+		} else {
+			this.player.print();
+		}
 		if(this.ball.move(2)) //bounced on the bottom side
 			this.gameOver();
 		this.ball.print();
