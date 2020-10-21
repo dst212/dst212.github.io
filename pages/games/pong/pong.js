@@ -227,7 +227,7 @@ var pong = {
 				pong.button.removeAttribute('disabled');
 				pong.button.setAttribute('value', 'Restart');
 			}
-		}, 3000);
+		}, 1500);
 	},
 
 	reset: function() {
