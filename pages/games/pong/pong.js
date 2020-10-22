@@ -124,7 +124,7 @@ function PongPlayer(canvas, y = undefined, color = undefined, accent = undefined
 	this.init();
 }
 
-const Pong = {
+var Pong = {
 	initVal: function() {
 		this.score = 0,			//unused, for now
 		this.delay = 1000 / 60,	//delay between a frame and the following one
