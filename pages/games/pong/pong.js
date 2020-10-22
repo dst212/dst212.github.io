@@ -6,6 +6,8 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+'use strict';
+
 function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, speedy = undefined, ray = 20, color = undefined) {
 	this.init = function() {
 		let maxRandomDelta = 3;
@@ -33,7 +35,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 	};
 
 	this.collide = function(rect) {
-		var collision = false;
+		let collision = false;
 		if(
 			(
 				rect.minY() < this.y + this.dy + this.ray &&
@@ -53,11 +55,11 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 	};
 
 	this.move = function(side = undefined) {
-		var ret = false;
+		let ret = false;
 		if(0 < this.x + this.dx - this.ray && this.x + this.dx + this.ray < canvas.width)
 			this.x += this.dx;
 		else {
-			if(side != undefined) if((side == 3 && this.x + this.dx - this.ray <= 0) || (side == 1 && canvas.width <= this.x + this.dx + this.ray))
+			if(side !== undefined) if((side === 3 && this.x + this.dx - this.ray <= 0) || (side === 1 && canvas.width <= this.x + this.dx + this.ray))
 				ret = true;
 			this.dx *= -1;
 			if(!ret) beep(pong.freq.ballBounce, pong.beeptime);
@@ -65,7 +67,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 		if(0 < this.y + this.dy - this.ray && this.y + this.dy + this.ray < canvas.height)
 			this.y += this.dy;
 		else {
-			if(side != undefined) if((side == 0 && this.y + this.dy - this.ray <= 0) || (side == 2 && canvas.height <= this.y + this.dy + this.ray))
+			if(side !== undefined) if((side === 0 && this.y + this.dy - this.ray <= 0) || (side === 2 && canvas.height <= this.y + this.dy + this.ray))
 				ret = true;
 			this.dy *= -1;
 			if(!ret) beep(pong.freq.ballBounce, pong.beeptime);
@@ -80,7 +82,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 	this.print = function() {
 		this.ctx.beginPath();
 		this.ctx.arc(this.x, this.y, this.ray, 0, 2 * Math.PI);
-		this.ctx.fillStyle = color ? color : Theme.get('accent');
+		this.ctx.fillStyle = color || Theme.get('accent');
 		this.ctx.fill();
 	};
 
@@ -93,11 +95,11 @@ function PongPlayer(canvas, y = undefined, color = undefined, accent = undefined
 		this.width = 150;
 		this.height = 30;
 		this.x = canvas.width / 2;
-		this.y = y ? y : canvas.height - (this.height * 2);
-		this.minX = () => { return this.x - (this.width / 2);};
-		this.minY = () => { return this.y - (this.height / 2);};
-		this.maxX = () => { return this.x + (this.width / 2);};
-		this.maxY = () => { return this.y + (this.height / 2);};
+		this.y = y || canvas.height - (this.height * 2);
+		this.minX = () => this.x - (this.width / 2);
+		this.minY = () => this.y - (this.height / 2);
+		this.maxX = () => this.x + (this.width / 2);
+		this.maxY = () => this.y + (this.height / 2);
 		this.speed = 9;
 	};
 
@@ -109,18 +111,18 @@ function PongPlayer(canvas, y = undefined, color = undefined, accent = undefined
 	this.print = function(newAccent = undefined) {
 		this.ctx.beginPath();
 		this.ctx.rect(this.x - (this.width / 2), this.y - (this.height / 2), this.width, this.height);
-		this.ctx.fillStyle = color ? color : Theme.background.get();
+		this.ctx.fillStyle = color || Theme.background.get();
 		this.ctx.fill();
 		this.ctx.beginPath();
 		this.ctx.rect(this.x - (this.width / 6), this.y - (this.height / 4), this.width / 3, this.height / 2);
-		this.ctx.fillStyle = newAccent ? newAccent : accent ? accent : Theme.get('accent-dark');
+		this.ctx.fillStyle = newAccent || accent || Theme.get('accent-dark');
 		this.ctx.fill();
 	};
 
 	this.init();
 }
 
-var pong = {
+const pong = {
 	freq: {
 		ballBounce: 350,
 	},
@@ -139,11 +141,7 @@ var pong = {
 		this.canvas = document.createElement('CANVAS'),
 		this.canvas.width = 1000;
 		this.canvas.height = 750;
-		this.canvas.style.maxHeight = '75vh';
-		this.canvas.style.maxWidth = '100%';
-		this.canvas.style.display = 'block';
-		this.canvas.style.margin = 'auto';
-		this.canvas.style.border = 'var(--general-border) solid var(--accent)';
+		this.canvas.style = 'max-height: 75vh; max-width: 100%; display: block; margin: auto; border: var(--general-border) solid var(--accent)';
 		this.ctx = this.canvas.getContext('2d');
 		this.player = new PongPlayer(this.canvas);
 		this.ball = new PongBall(this.canvas);
@@ -166,8 +164,8 @@ var pong = {
 				return false;
 		};
 		document.onkeyup = function(e) {
-			if(pong.running == 1)
-				pong.move = 0; //stop moving the player on key release
+			if(that.state === 1)
+				that.move = 0; //stop moving the player on key release
 		};
 		body.insertBefore(this.canvas, body.childNodes[0]);
 		this.printText('Press ENTER to play', undefined, 20);
@@ -182,7 +180,7 @@ var pong = {
 
 	slide: function(delta) {
 		//move the player
-		pong.player.move(delta * pong.player.speed);
+		this.player.move(delta * this.player.speed);
 	},
 
 	clear: function() {
@@ -195,11 +193,11 @@ var pong = {
 		if(this.move)
 			this.slide(this.move);
 		if(this.ball.collide(this.player)) {
-			if((this.ball.dx < 0 ? -this.ball.dx : this.ball.dx) < this.ball.maxDx) {
+			if(Math.abs(this.ball.dx) < this.ball.maxDx) {
 				this.ball.dx += this.ball.dx < 0 ? -0.75 : 0.75;
 				this.player.speed += 0.5;
 			}
-			if((this.ball.dy < 0 ? -this.ball.dy : this.ball.dy) < this.ball.maxDy) this.ball.dy += this.ball.dy < 0 ? -0.75 : 0.75;
+			if(Math.abs(this.ball.dy) < this.ball.maxDy) this.ball.dy += this.ball.dy < 0 ? -0.75 : 0.75;
 			this.player.print(Theme.get('accent'));
 		} else {
 			this.player.print();
@@ -241,9 +239,9 @@ var pong = {
 	},
 
 	gameOver: function() {
-		//change player's color on game over
 		this.state = -1;
 		this.clear();
+		//change player's color on game over
 		this.player.print(Theme.get('invalid'));
 		this.printText('GAME OVER', Theme.get('invalid'));
 		setTimeout(function() {
@@ -281,7 +279,7 @@ var pong = {
 }
 
 function createPongDiv() {
-	var div = document.createElement('DIV');
+	let div = document.createElement('DIV');
 	div.setAttribute('id', 'pong-game');
 	div.style.textAlign = 'center';
 	div.innerHTML = '<br><input id="pong-start-button" type="button" onclick="pong.start();" value="Start">';
