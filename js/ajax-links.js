@@ -28,7 +28,7 @@ const pageFetch = (function() {
 		flags || (flags = {});
 		flags.skipOnload !== undefined || (flags.skipOnload = false);
 		flags.forceFetch !== undefined || (flags.forceFetch = false);
-		console.log(cacheBusting = flags.forceFetch ? (new Date()).getTime() : now, flags, now);
+		cacheBusting = flags.forceFetch ? (new Date()).getTime() : now;
 		file = '/pages/' + name + ((name[name.length - 1] === '/') ?  'index.html' :  '.html');
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
