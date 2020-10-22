@@ -8,22 +8,18 @@
 
 function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, speedy = undefined, ray = 20, color = undefined) {
 	this.init = function() {
+		let maxRandomDelta = 3;
+		let randomDelta = Math.random() * maxRandomDelta;
 		this.ctx = canvas.getContext('2d');
-		if(x == undefined)
-			this.x = canvas.width / 2;
-		else
-			this.x = x;
-		if(y == undefined)
-			this.y = canvas.height / 2;
-		else
-			this.y = y;
+		this.x = x || canvas.width / 2;
+		this.y = y || canvas.height / 2;
 		this.baseSpeed = 9;
-		this.maxSpeedDelta = 13;
-		this.dx = speedx ? speedx : (Math.random() < 0.5) ? Math.random() * 1 + this.baseSpeed : -(Math.random() * 1 + this.baseSpeed); //delta x (x's speed)
-		this.dy = speedy ? speedy : -(Math.random() * 1 + this.baseSpeed); //delta y (y's speed)
+		this.maxSpeedDelta = 14;
+		this.dx = speedx || (randomDelta + this.baseSpeed) * ((Math.random() < 0.5) ? -1 : 1); //delta x (x's speed)
+		this.dy = speedy || -(maxRandomDelta - randomDelta + this.baseSpeed); //delta y (y's speed)
 		//speed is Math.sqrt(Math.pow(pong.ball.dy, 2) + Math.pow(pong.ball.dx, 2)) if anyone wanted to know
-		this.maxDx = (this.dx < 0 ? -this.dx : this.dx) + this.maxSpeedDelta;
-		this.maxDy = (this.dy < 0 ? -this.dy : this.dy) + this.maxSpeedDelta;
+		this.maxDx = Math.abs(this.dx) + this.maxSpeedDelta;
+		this.maxDy = Math.abs(this.dy) + this.maxSpeedDelta;
 		this.ray = ray;
 	};
 
