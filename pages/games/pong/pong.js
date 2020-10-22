@@ -12,6 +12,8 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 	this.init = function() {
 		let maxRandomDelta = 3;
 		let randomDelta = Math.random() * maxRandomDelta;
+		this.freq = 350;
+		this.beeptime = 50;
 		this.ctx = canvas.getContext('2d');
 		this.x = x || canvas.width / 2;
 		this.y = y || canvas.height / 2;
@@ -19,7 +21,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 		this.maxSpeedDelta = 14;
 		this.dx = speedx || (randomDelta + this.baseSpeed) * ((Math.random() < 0.5) ? -1 : 1); //delta x (x's speed)
 		this.dy = speedy || -(maxRandomDelta - randomDelta + this.baseSpeed); //delta y (y's speed)
-		//speed is Math.sqrt(Math.pow(pong.ball.dy, 2) + Math.pow(pong.ball.dx, 2)) if anyone wanted to know
+		//speed is Math.sqrt(Math.pow(Pong.ball.dy, 2) + Math.pow(Pong.ball.dx, 2)) if anyone wanted to know
 		this.maxDx = Math.abs(this.dx) + this.maxSpeedDelta;
 		this.maxDy = Math.abs(this.dy) + this.maxSpeedDelta;
 		this.ray = ray;
@@ -47,7 +49,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 		) {
 			if(this.y + this.ray < rect.minY()) //the ball bounces on the rect's horizontal sides
 				this.dy *= -1; //bounce
-			beep(pong.freq.ballBounce + 150, pong.beeptime);
+			beep(this.freq + 150, this.beeptime);
 			collision = true;
 			this.cornerCollision(rect);
 		}
@@ -62,7 +64,7 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 			if(side !== undefined) if((side === 3 && this.x + this.dx - this.ray <= 0) || (side === 1 && canvas.width <= this.x + this.dx + this.ray))
 				ret = true;
 			this.dx *= -1;
-			if(!ret) beep(pong.freq.ballBounce, pong.beeptime);
+			if(!ret) beep(this.freq, this.beeptime);
 		}
 		if(0 < this.y + this.dy - this.ray && this.y + this.dy + this.ray < canvas.height)
 			this.y += this.dy;
@@ -70,11 +72,11 @@ function PongBall(canvas, x = undefined, y = undefined, speedx = undefined, spee
 			if(side !== undefined) if((side === 0 && this.y + this.dy - this.ray <= 0) || (side === 2 && canvas.height <= this.y + this.dy + this.ray))
 				ret = true;
 			this.dy *= -1;
-			if(!ret) beep(pong.freq.ballBounce, pong.beeptime);
+			if(!ret) beep(this.freq, this.beeptime);
 		}
 		if(ret)	{
-			beep(pong.freq.ballBounce - 150, pong.beeptime);
-			beep(pong.freq.ballBounce - 150, pong.beeptime);
+			beep(this.freq - 150, this.beeptime);
+			beep(this.freq - 150, this.beeptime);
 		}
 		return ret;
 	};
@@ -122,11 +124,7 @@ function PongPlayer(canvas, y = undefined, color = undefined, accent = undefined
 	this.init();
 }
 
-const pong = {
-	freq: {
-		ballBounce: 350,
-	},
-	beeptime: 50,
+const Pong = {
 	initVal: function() {
 		this.score = 0,			//unused, for now
 		this.delay = 1000 / 60,	//delay between a frame and the following one
@@ -137,6 +135,18 @@ const pong = {
 
 	init: function(body = document.body) {
 		let that = this;
+
+		var pageUnload = (function() {
+			//restore onkeydown and onkeyup functions when page is changed
+			//see https://dst212.github.io/js/ajax-links.js
+			let onkeydown = document.onkeydown;
+			let onkeyup = document.onkeyup;
+			return function() {
+				document.onkeydown = onkeydown;
+				document.onkeyup = onkeyup;
+			};
+		})();
+
 		this.initVal();
 		this.canvas = document.createElement('CANVAS'),
 		this.canvas.width = 1000;
@@ -145,6 +155,7 @@ const pong = {
 		this.ctx = this.canvas.getContext('2d');
 		this.player = new PongPlayer(this.canvas);
 		this.ball = new PongBall(this.canvas);
+
 		document.onkeydown = function(e) {
 			if(that.state === 0){
 				if(e.keyCode === 13)
@@ -163,12 +174,23 @@ const pong = {
 			if(e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40)
 				return false;
 		};
+
 		document.onkeyup = function(e) {
 			if(that.state === 1)
 				that.move = 0; //stop moving the player on key release
 		};
+
 		body.insertBefore(this.canvas, body.childNodes[0]);
 		this.printText('Press ENTER to play', undefined, 20);
+	},
+
+	div: function() {
+		let div = document.createElement('DIV');
+		div.setAttribute('id', 'pong-game');
+		div.style.textAlign = 'center';
+		div.innerHTML = '<br><input id="pong-start-button" type="button" onclick="Pong.start();" value="Start">';
+		document.body.getElementsByTagName('MAIN')[0].append(div);
+		return div;
 	},
 
 	printText: function(what, color = undefined, fontSize = undefined, x = undefined, y = undefined, fontFamily = 'monospace') {
@@ -278,15 +300,6 @@ const pong = {
 	},
 }
 
-function createPongDiv() {
-	let div = document.createElement('DIV');
-	div.setAttribute('id', 'pong-game');
-	div.style.textAlign = 'center';
-	div.innerHTML = '<br><input id="pong-start-button" type="button" onclick="pong.start();" value="Start">';
-	document.body.getElementsByTagName('MAIN')[0].append(div);
-	return div;
-}
-
-pong.init(createPongDiv());
+Pong.init(Pong.div());
 
 //END
