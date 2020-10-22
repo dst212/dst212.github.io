@@ -64,7 +64,7 @@ function CanvasObj(type, width = 40, height = 40, startx = undefined, starty = u
 				this.height = this.width = this.ray * 2;
 			}
 			this.print = () => {
-				this.ctx.arc(this.x + this.ray , this.y + this.ray, this.width, 0, 2 * Math.PI);
+				this.ctx.arc(this.x + this.ray , this.y + this.ray, this.ray, 0, 2 * Math.PI);
 				this.ctx.strokeStyle = this.color;
 				this.ctx.fillStyle = this.background;
 			}
