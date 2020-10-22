@@ -7,12 +7,13 @@
  * Visit https://github.com/dst212/dst212.github.io to get more details.
  */
 
+'use strict';
+
 var ntf = (function() {
-	var id = 0;
+	let id = 0;
 	return function(title, content, buttons = [{innerHTML: 'OK', onclick: 'ntfClose(' + (++id) + ')'}], fg = 'var(--body-fg)', bg = 'var(--body-bg)') {
-		var x = document.createElement('DIV');
-		var ntfArea = document.getElementById('notifications');
-		var i, buttonsHTML = '';
+		let x = document.createElement('DIV'), ntfArea = document.getElementById('notifications');
+		let i, buttonsHTML = '';
 		x.setAttribute('id', 'ntf-' + id);
 		x.style.color = fg;
 		x.style.background = bg;
@@ -39,7 +40,7 @@ var ntf = (function() {
 })();
 
 function ntfClose(id) {
-	var x = document.getElementById('ntf-' + id);
+	let x = document.getElementById('ntf-' + id);
 	if(x) {
 		x.style.maxWidth = '0';
 		x.style.maxHeight = '0';
@@ -49,7 +50,7 @@ function ntfClose(id) {
 }
 
 function initNotifications() {
-	var x = document.getElementById('notifications');
+	let x = document.getElementById('notifications');
 	if(!x) {
 		x = document.createElement('DIV');
 		x.setAttribute('id', 'notifications');

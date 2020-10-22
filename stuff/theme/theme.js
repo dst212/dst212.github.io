@@ -8,25 +8,27 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+'use strict';
+
 var Theme = {
 	update: (function () {
-		var darkThemes =	['dark-black-theme',	'dark-white-theme',	'dark-red-theme',	'dark-yellow-theme',	'dark-lime-theme',	'dark-cyan-theme',	'dark-blue-theme',	'dark-magenta-theme'];
-		var lightThemes =	['light-black-theme',	'light-white-theme','light-red-theme',	'light-yellow-theme',	'light-lime-theme',	'light-cyan-theme',	'light-blue-theme',	'light-magenta-theme'];
+		const darkThemes =	['dark-black-theme',	'dark-white-theme',	'dark-red-theme',	'dark-yellow-theme',	'dark-lime-theme',	'dark-cyan-theme',	'dark-blue-theme',	'dark-magenta-theme'];
+		const lightThemes =	['light-black-theme',	'light-white-theme','light-red-theme',	'light-yellow-theme',	'light-lime-theme',	'light-cyan-theme',	'light-blue-theme',	'light-magenta-theme'];
 		// var disco = document.getElementById('disco-song');
 		var disco = new Audio('https://dst.altervista.org/files/audios/disco.mp3');
 		disco.loop = true;
 		function removeClasses() {
-			var i;
+			let i;
 			for(i = 0; i < lightThemes.length; i++) {
 				document.documentElement.classList.remove(lightThemes[i], darkThemes[i]);
 			}
 		}
 		function discoMode(mode, wait, count = 2) {
-			if(localStorage.themeColor == mode) {
+			if(localStorage.themeColor === mode) {
 				document.documentElement.classList.remove(darkThemes[count], lightThemes[count++]);
 				if(count >= darkThemes.length) count = 2;
-				if(localStorage.theme == 'white') document.documentElement.classList.add(darkThemes[count]);
-				else if(localStorage.theme=='black') document.documentElement.classList.add(lightThemes[count]);
+				if(localStorage.theme === 'white') document.documentElement.classList.add(darkThemes[count]);
+				else if(localStorage.theme === 'black') document.documentElement.classList.add(lightThemes[count]);
 				Theme.computedStyle = undefined; //make it always undefined so that the function getComputedStyle() will be triggered each time the method getComputedStyle() of Theme will be called
 				localStorage.resumeMusic = disco.currentTime;
 				setTimeout(discoMode, wait, mode, wait, count);
@@ -34,36 +36,28 @@ var Theme = {
 		}
 		return function() {
 			removeClasses();
-			if(localStorage.themeColor == 'disco') {
-				var sleep = Theme.getComputedStyle().getPropertyValue('--transition').slice(0, this.length-1);
+			if(localStorage.themeColor === 'disco') {
+				let sleep = Theme.getComputedStyle().getPropertyValue('--transition').slice(0, this.length-1);
 				if(localStorage.playDisco != 1 && localStorage.playDisco != 0) localStorage.playDisco = 1; //will be used for settings in future
-				if(localStorage.playDisco == 1) {
+				if(localStorage.playDisco === 1) {
 					disco.currentTime = (localStorage.resumeMusic == null || localStorage.resumeMusic == undefined) ? 0 : localStorage.resumeMusic * 1;
 					disco.play();
 				}
-				console.log('Starting disco mode.');
-				console.log('Delay: ' + sleep + 's');
-				console.log('Resume: ' + disco.currentTime + 's');
-				discoMode('disco', (sleep == '') ? 350 : sleep * 1000);
+				// console.log('Starting disco mode: ' + sleep + 's delay, ' + disco.currentTime + 's resume');
+				discoMode('disco', (sleep === '') ? 350 : sleep * 1000);
 			} else {
 				if(!disco.paused) disco.pause();
-				if(localStorage.themeColor == 'quiet') discoMode('quiet', 5000);
-				else if(localStorage.theme == 'white') document.documentElement.classList.add('dark-' + localStorage.themeColor + '-theme');
+				if(localStorage.themeColor === 'quiet') discoMode('quiet', 5000);
+				else if(localStorage.theme === 'white') document.documentElement.classList.add('dark-' + localStorage.themeColor + '-theme');
 				else document.documentElement.classList.add('light-' + localStorage.themeColor + '-theme');
 				Theme.computedStyle = getComputedStyle(document.documentElement);
 			}
 		}
 	})(),
 	computedStyle: undefined,
-	getComputedStyle: function() {
-		if(!Theme.computedStyle)
-			Theme.computedStyle = getComputedStyle(document.documentElement);
-		return Theme.computedStyle;
-	},
+	getComputedStyle: () => (Theme.computedStyle) || (Theme.computedStyle = getComputedStyle(document.documentElement)),
 	background: {
-		get: () => {
-			return Theme.getComputedStyle().getPropertyValue('--body-fg');
-		},
+		get: () => Theme.getComputedStyle().getPropertyValue('--body-fg'),
 		set: (id) => {
 			if(localStorage.theme != id && (id == 'white' || id == 'black')) {
 				localStorage.theme = id;
@@ -78,24 +72,20 @@ var Theme = {
 		},
 	},
 	color: {
-		get: () => {
-			return Theme.getComputedStyle().getPropertyValue('--accent');
-		},
+		get: () => Theme.getComputedStyle().getPropertyValue('--accent'),
 		set: (id) => {
-			if(localStorage.themeColor != id) {
+			if(localStorage.themeColor !== id) {
 				localStorage.themeColor = id;
 				Theme.update();
 			}
 		},
 	},
-	get: (prop) => {
-		return Theme.getComputedStyle().getPropertyValue('--' + prop);
-	},
+	get: (prop) => Theme.getComputedStyle().getPropertyValue('--' + prop),
 };
 
 //default theme
-if(localStorage.theme == 'white') document.documentElement.classList.toggle('white-mode');
-else if(localStorage.theme != 'black') localStorage.theme = 'black';
+if(localStorage.theme === 'white') document.documentElement.classList.toggle('white-mode');
+else if(localStorage.theme !== 'black') localStorage.theme = 'black';
 if(!localStorage.themeColor) Theme.color.set('lime');
 else Theme.update();
 

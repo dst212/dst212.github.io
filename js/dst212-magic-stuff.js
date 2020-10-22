@@ -6,8 +6,10 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+'use strict';
+
 function fetchSection(file, className) {
-	var collection = document.getElementsByClassName(className), i;
+	let collection = document.getElementsByClassName(className), i;
 	if(collection.length > 0) {
 		for(i = 0; i < collection.length; i++)
 			collection[i].innerHTML = '<div class="loading-anim"><span></span><span></span><span></span></div>';
@@ -17,7 +19,7 @@ function fetchSection(file, className) {
 	}
 }
 
-pageOnload = addFunction(pageOnload, () => {
+pageOnload = addFunction(pageOnload, function() {
 	fetchSection('logo.html', 'fetch-dst212-logo');
 	fetchSection('copyright.html', 'fetch-copyright-notice');
 	fetchSection('cc.html', 'fetch-cc-content');
@@ -26,7 +28,7 @@ pageOnload = addFunction(pageOnload, () => {
 	initTooltips();
 });
 
-window.onload = addFunction(window.onload, () => {
+window.onload = addFunction(window.onload, function() {
 	initMagnifier();
 });
 
