@@ -30,16 +30,32 @@ function uncoverPage(id = 'cover-page-id') {
 		document.body.removeChild(div);
 }
 
+const Beep = {
+	ctx: new (window.AudioContext || window.webkitAudioContext)(),
+	osc: null,
+	start: function(freq = 1000) {
+		this.osc = this.ctx.createOscillator();
+		this.osc.frequency.value = freq;
+		this.osc.start(this.ctx.currentTime);
+		this.osc.connect(this.ctx.destination);
+	},
+	stop: function() {
+		this.osc.stop(this.ctx.currentTime);
+		this.osc.disconnect(this.ctx.destination);
+		this.osc = null;
+	},
+};
+
 var beep = (function() {
-	var actx = new (window.AudioContext || window.webkitAudioContext)();
-	return function(freq, ms = 500) {
-		var osc = actx.createOscillator();
-		osc.type = 'sine';
+	let ctx = Beep.ctx;
+	return function(freq = 1000, ms = 500, type = 'sine') {
+		let osc = ctx.createOscillator();
+		osc.type = type;
 		osc.frequency.value = freq;
-		osc.start(actx.currentTime);
-		osc.stop(actx.currentTime + (ms/1000));
-		osc.connect(actx.destination);
-		osc = null;
-	}
+		osc.start(ctx.currentTime);
+		osc.stop(ctx.currentTime + (ms/1000));
+		osc.connect(ctx.destination);
+	};
 })();
+
 //END
