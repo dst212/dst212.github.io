@@ -21,19 +21,25 @@ function pageError(params = {url: '', status: '0'}, where = document.body.getEle
 
 const pageFetch = (function() {
 	let scriptsToRemove = [];
-	return function(name, flags = {skipOnload: false, forceDownload: true}, where = document.body.getElementsByTagName('MAIN')[0]) {
+	const now = (new Date()).getTime();
+	return function(name, flags = {skipOnload: false, forceFetch: false}, where = document.body.getElementsByTagName('MAIN')[0]) {
 		var file, xhttp;
-		file = '/pages/' + name + ((name[name.length - 1] == '/') ?  'index.html' :  '.html');
+		let cacheBusting;
+		flags || (flags = {});
+		flags.skipOnload !== undefined || (flags.skipOnload = false);
+		flags.forceFetch !== undefined || (flags.forceFetch = false);
+		console.log(cacheBusting = flags.forceFetch ? (new Date()).getTime() : now, flags, now);
+		file = '/pages/' + name + ((name[name.length - 1] === '/') ?  'index.html' :  '.html');
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			let newpage, parser, scripts, script, i;
-			if(this.readyState == 4) {
+			if(this.readyState === 4) {
 				console.log('Fetch of ' + file + ' results: ' + this.status + ' (' + this.statusText + ')');
 				//unfocus the clicked element
 				document.activeElement.blur();
 				//go back on the top of the page
 				window.scrollTo(0, 0);
-				if(this.status == 200) {
+				if(this.status === 200) {
 					parser = new DOMParser();
 					newpage = parser.parseFromString(this.responseText, 'text/html');
 					document.title = newpage.title;
@@ -43,18 +49,19 @@ const pageFetch = (function() {
 						pageUnload && pageUnload();
 						pageUnload = undefined;
 						pageOnload();
-						//add all the javascript scripts from the source page
+						//remove old scripts
 						while(script = scriptsToRemove.pop()) {
-							console.log('Removing script ' + script.getAttribute('src'));
+							console.log('Removing script ' + (script.getAttribute('src') || 'from HTML file.'));
 							script.remove();
 						}
+						//add all the javascript scripts from the source page
 						scripts = newpage.getElementsByTagName('SCRIPT');
 						for(i = 0; i < scripts.length; i++) {
 							//just adding the script from the collection won't work, a new script element has to be added
-							console.log('Adding script ' + scripts[i].getAttribute('src'));
+							console.log('Adding script ' + (scripts[i].getAttribute('src') || 'from HTML file.'));
 							script = document.createElement('SCRIPT');
 							script.setAttribute('type', scripts[i].getAttribute('type'));
-							script.setAttribute('src', scripts[i].getAttribute('src') + (flags.forceDownload ? '?' + ('' + Math.random()).replace(/\./gi, '') : ''));
+							scripts[i].getAttribute('src') && script.setAttribute('src', scripts[i].getAttribute('src') + '?v=' + cacheBusting);
 							document.body.appendChild(script);
 							script.innerHTML = scripts[i].innerHTML;
 							scriptsToRemove.push(script);
@@ -68,8 +75,7 @@ const pageFetch = (function() {
 				}
 			}
 		}
-		//Math.random() makes the link different each time, so the file will be downloaded even if cached
-		xhttp.open('GET', file + (flags.forceDownload ? '?' + ('' + Math.random()).replace(/\./gi, '') : ''), true);
+		xhttp.open('GET', file + '?v=' + cacheBusting, true);
 		xhttp.send();
 	};
 })();
@@ -84,7 +90,7 @@ window.onload = addFunction(window.onload, function(){
 	onloadPage.page = page_url.searchParams.get('page');
 	if(onloadPage.status) {
 		onloadPage.url = page_url.searchParams.get('url');
-		if(onloadPage.status == 404) onloadPage.statusText = 'Not found';
+		if(onloadPage.status === 404) onloadPage.statusText = 'Not found';
 		pageError(onloadPage);
 	} else {
 		if(!onloadPage.page) {
