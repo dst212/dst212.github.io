@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Stuff</title>
+		<script type="text/javascript">
+			function searchFor(what, where) {
+				let i;
+				for(i = 0; i < where.length; i++) {
+					if(where[i].innerHTML.toLowerCase().search(what.toLowerCase()) === -1) {
+						where[i].style.overflow = 'hidden';
+						where[i].style.maxHeight = '0';
+					} else {
+						where[i].style.overflow = '';
+						where[i].style.maxHeight = '100vh';
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<p>
+			Here is the index of all the stuff on the site. Choose carefully the destination, strange things might happen.
+			<br>If something goes wrong, tell it to the owner of the website (contacts are displayed <a href="javascript:void(pageFetch('contacts'));" title="Contacts">here</a>).
+		</p>
+		<div style="text-align: center;">
+			<div id="demo-searchbar" class="searchbar">
+				<input type="text" placeholder="Search..." onkeyup="searchFor(this.value, document.getElementById('stuff-list').getElementsByTagName('LI'));">
+				<i class="material-icons">search</i>
+			</div>
+		</div>
+		<div id="stuff-list" class="three">
+			<div class="left">
+				<h2>Examples</h2>
+				<ul>
+					<li><a href="javascript:void(pageFetch('demo'));" title="Demo page" dummy="demonstration example"><i class="material-icons md-same">code</i>Demo page</a></li>
+					<li><a href="javascript:void(pageFetch('loading'));" title="A page which shows a loading icon" dummy="loading demonstration example"><i class="material-icons md-same">refresh</i>&quot;Loading&quot; page</a></li>
+					<li><a href="javascript:void(pageFetch('xrcises/canvas/'));" title="Canvas exercises" dummy=""><i class="material-icons md-same">palette</i>Canvas</a></li>
+				</ul>
+			</div>
+			<div class="center">
+				<h2>Games</h2>
+				<ul>
+					<li><a href="javascript:void(pageFetch('games/pong/'));" title="Pong-like game" dummy="canvas event keyboard"><i class="material-icons md-same">sports_esports</i>Pong</a></li>
+					<li><a href="javascript:void(pageFetch('xrcises/hanged/'));" title="Hanged game" dummy="disa exercises"><i class="material-icons md-same">sports_esports</i>The Hanged</a></li>
+				</ul>
+			</div>
+			<div class="right">
+				<h2>Other</h2>
+				<p style="text-align: center;">Nothing for now.</p>
+			</div>
+		</div>
+	</body>
+</html>
