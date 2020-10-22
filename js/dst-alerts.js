@@ -1,17 +1,16 @@
 // made by dst212
 // https://github.com/dst212/dst212.github.io/
 
-function acceptCookie() {
-	localStorage.cookie4 = 214;
-}
-function discoModeIncoming() {
-	ntf(
-		'WARNING',
-		'By enabling the Disco Mode, one declares to take full resposability for the consequences that may derive from it.',
-		[{innerHTML: 'Enable Anyway', onclick: 'Theme.color.set(\'disco\');', properties: 'class="normalButton"'}, {innerHTML: 'More details', onclick: 'pageFetch(\'settings/theme\');', properties: 'class="normalButton"'}, {innerHTML: 'Cancel', properties: 'class="normalButton"'}],
-		'black', 'red'
-	);
-}
+'use strict';
+
+var acceptCookie = () => localStorage.cookie4 = 214;
+
+var discoModeIncoming = () => ntf(
+	'WARNING',
+	'By enabling the Disco Mode, one declares to take full resposability for the consequences that may derive from it.',
+	[{innerHTML: 'Enable Anyway', onclick: 'Theme.color.set(\'disco\');', properties: 'class="normalButton"'}, {innerHTML: 'More details', onclick: 'pageFetch(\'settings/theme\');', properties: 'class="normalButton"'}, {innerHTML: 'Cancel', properties: 'class="normalButton"'}],
+	'black', 'red'
+);
 
 window.onload = addFunction(window.onload, function() {
 	initNotifications();

@@ -6,6 +6,8 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+'use strict';
+
 /*var mousePos = (function() {
 	let pos = {x: 0, y: 0};
 	document.onmousemove = function(e) {
@@ -18,9 +20,8 @@
 var win = (function() {
 	let winCount = 0;
 	return function(title, content, buttons = [], onclose = '', disablePage = false, width = undefined, left = undefined, top = undefined) {
-		var newWin = document.createElement('DIV'), id = 'window-' + (winCount++), closeWinStr = 'document.getElementById(\'' + id + '\').remove();' + onclose + ';';
-		var buttonsHTML = '';
-		let i;
+		let newWin = document.createElement('DIV'), id = 'window-' + (winCount++), closeWinStr = 'document.getElementById(\'' + id + '\').remove();' + onclose + ';';
+		let i, buttonsHTML = '';
 		if(disablePage) {
 			coverPage();
 			closeWinStr += 'uncoverPage();';
@@ -42,8 +43,8 @@ var win = (function() {
 		}
 		newWin.innerHTML += buttonsHTML + '<button class="close material-icons md-same" onclick="' + (buttons.length ? buttons[--i].onclick : closeWinStr) +'">close</button>';
 		document.body.appendChild(newWin);
-		newWin.style.top = top ? top : 'calc((100vh - ' + newWin.offsetHeight + 'px) / 2)';
-		newWin.style.left = left ? left : 'calc((100vw - ' + newWin.offsetWidth + 'px) / 2)';
+		newWin.style.top = top || 'calc((100vh - ' + newWin.offsetHeight + 'px) / 2)';
+		newWin.style.left = left || 'calc((100vw - ' + newWin.offsetWidth + 'px) / 2)';
 		newWin.style.zIndex = 1;
 		return newWin;
 	};

@@ -6,28 +6,24 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+'use strict';
+
 function addFunction(f, t) {	//concatenate functions
 	return t ? (f ? () => {f(); t();} : t) : (f ? f : () => {});
 }
 
 function coverPage(color = 'transparent', id = 'cover-page-id') {
-	var div = document.createElement('DIV');
-	div.style.position = 'fixed'; //note: <body> must have absolute or relative position
-	div.style.top = '0';
-	div.style.left = '0';
-	div.style.display = 'block';
-	div.style.height = '100vh';
-	div.style.width = '100vw';
+	let div = document.createElement('DIV');
+	div.style = 'position: fixed; top: 0; left: 0; display: block; height: 100vh; width: 100vw; z-index: 1';
 	div.style.backgroundColor = color;
-	div.style.zIndex = 1; //everything above won't be hidden below
+	//everything z-indexed above 1 will be accessible
 	div.setAttribute('id', id);
 	document.body.appendChild(div);
 	return div;
 }
 function uncoverPage(id = 'cover-page-id') {
-	var div = document.getElementById(id);
-	if(div)
-		document.body.removeChild(div);
+	let div = document.getElementById(id);
+	div && document.body.removeChild(div);
 }
 
 const Beep = {

@@ -9,9 +9,11 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+'use strict';
+
 function initTooltips() {
-	var tt=document.getElementsByClassName('tooltip');
-	var i, j, newtitle, tooltip;
+	let tt = document.getElementsByClassName('tooltip');
+	let i, j, newtitle, tooltip;
 	for(i = 0, j = 0; i < tt.length; i++) {
 		if(!tt[i].done) {
 			tt[i].href = 'javascript:void(0);';
@@ -26,7 +28,7 @@ function initTooltips() {
 			j++;
 		}
 	}
-	if(j) console.log('Initialized ' + j + ' new tooltip' + (j != 1 ? 's.' : '.'));
+	if(j) console.log('Initialized ' + j + ' new tooltip' + (j !== 1 ? 's.' : '.'));
 }
 
 //END

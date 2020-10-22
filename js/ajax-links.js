@@ -6,6 +6,8 @@
  * Visit https://github.com/dst212/dst212.github.io/ to get more details.
  */
 
+'use strict';
+
 var pageOnload = () => {};
 
 function pageError(params = {url: '', status: '0'}, where = document.body.getElementsByTagName('MAIN')[0]) {
@@ -21,7 +23,7 @@ function pageFetch(name, skipOnload = false, where = document.body.getElementsBy
 	file = '/pages/' + name + ((name[name.length - 1] == '/') ?  'index.html' :  '.html');
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
-		var newpage, parser, scripts, script, i;
+		let newpage, parser, scripts, script, i;
 		if(this.readyState == 4) {
 			console.log('Fetch of ' + file + ' results: ' + this.status + ' (' + this.statusText + ')');
 			//unfocus the clicked element
@@ -60,10 +62,12 @@ function pageFetch(name, skipOnload = false, where = document.body.getElementsBy
 	xhttp.send();
 }
 
-window.onpopstate = (e) => location.reload();
+window.onpopstate = function(e) {
+	location.reload();
+}
 
 window.onload = addFunction(window.onload, function(){
-	var onloadPage = {}, page_url = new URL(document.URL);
+	let onloadPage = {}, page_url = new URL(document.URL);
 	onloadPage.status = page_url.searchParams.get('error');
 	onloadPage.page = page_url.searchParams.get('page');
 	if(onloadPage.status) {
