@@ -9,6 +9,7 @@
 'use strict';
 
 var pageOnload = () => {};
+var pageUnload = () => {};
 
 function pageError(params = {url: '', status: '0'}, where = document.body.getElementsByTagName('MAIN')[0]) {
 	document.title = '' + params.status + ' - ' + (params.statusText ? params.statusText : 'Error');
@@ -18,49 +19,60 @@ function pageError(params = {url: '', status: '0'}, where = document.body.getEle
 		window.history.replaceState({page: 0}, document.title, params.url);
 }
 
-function pageFetch(name, skipOnload = false, where = document.body.getElementsByTagName('MAIN')[0]) {
-	var file, xhttp;
-	file = '/pages/' + name + ((name[name.length - 1] == '/') ?  'index.html' :  '.html');
-	xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		let newpage, parser, scripts, script, i;
-		if(this.readyState == 4) {
-			console.log('Fetch of ' + file + ' results: ' + this.status + ' (' + this.statusText + ')');
-			//unfocus the clicked element
-			document.activeElement.blur();
-			//go back on the top of the page
-			window.scrollTo(0, 0);
-			if(this.status == 200) {
-				parser = new DOMParser();
-				newpage = parser.parseFromString(this.responseText, 'text/html');
-				document.title = newpage.title;
-				document.getElementById('title').innerHTML = newpage.title;
-				where.innerHTML = newpage.body.innerHTML;
-				if(!skipOnload) {
-					pageOnload();
-					//add all the javascript scripts from the source page
-					scripts = newpage.getElementsByTagName('SCRIPT');
-					for(i = 0; i < scripts.length; i++) {
-						//just adding the script from the collection won't work, a new script element has to be added
-						script = document.createElement('SCRIPT');
-						script.setAttribute('type', scripts[i].getAttribute('type'));
-						script.setAttribute('src', scripts[i].getAttribute('src'));
-						document.body.appendChild(script);
-						script.innerHTML = scripts[i].innerHTML;
-						script = undefined;
+const pageFetch = (function() {
+	let scriptsToRemove = [];
+	return function(name, flags = {skipOnload: false, forceDownload: true}, where = document.body.getElementsByTagName('MAIN')[0]) {
+		var file, xhttp;
+		file = '/pages/' + name + ((name[name.length - 1] == '/') ?  'index.html' :  '.html');
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			let newpage, parser, scripts, script, i;
+			if(this.readyState == 4) {
+				console.log('Fetch of ' + file + ' results: ' + this.status + ' (' + this.statusText + ')');
+				//unfocus the clicked element
+				document.activeElement.blur();
+				//go back on the top of the page
+				window.scrollTo(0, 0);
+				if(this.status == 200) {
+					parser = new DOMParser();
+					newpage = parser.parseFromString(this.responseText, 'text/html');
+					document.title = newpage.title;
+					document.getElementById('title').innerHTML = newpage.title;
+					where.innerHTML = newpage.body.innerHTML;
+					if(!flags.skipOnload) {
+						pageUnload && pageUnload();
+						pageUnload = undefined;
+						pageOnload();
+						//add all the javascript scripts from the source page
+						while(script = scriptsToRemove.pop()) {
+							console.log('Removing script ' + script.getAttribute('src'));
+							script.remove();
+						}
+						scripts = newpage.getElementsByTagName('SCRIPT');
+						for(i = 0; i < scripts.length; i++) {
+							//just adding the script from the collection won't work, a new script element has to be added
+							console.log('Adding script ' + scripts[i].getAttribute('src'));
+							script = document.createElement('SCRIPT');
+							script.setAttribute('type', scripts[i].getAttribute('type'));
+							script.setAttribute('src', scripts[i].getAttribute('src') + (flags.forceDownload ? '?' + ('' + Math.random()).replace(/\./gi, '') : ''));
+							document.body.appendChild(script);
+							script.innerHTML = scripts[i].innerHTML;
+							scriptsToRemove.push(script);
+							script = undefined;
+						}
 					}
+					//update the browser's search-bar
+					window.history.pushState({page: 0}, document.title, '?page=' + name);
+				} else {
+					pageError({status: this.status, statusText: this.statusText, url: document.URL}, where);
 				}
-				//update the browser's search-bar
-				window.history.pushState({page: 0}, document.title, '?page=' + name);
-			} else {
-				pageError({status: this.status, statusText: this.statusText, url: document.URL}, where);
 			}
 		}
-	}
-	//Math.random() makes the link different each time, so the file will be downloaded even if cached
-	xhttp.open('GET', file + '?' + ('' + Math.random()).replace(/\./gi, ''), true);
-	xhttp.send();
-}
+		//Math.random() makes the link different each time, so the file will be downloaded even if cached
+		xhttp.open('GET', file + (flags.forceDownload ? '?' + ('' + Math.random()).replace(/\./gi, '') : ''), true);
+		xhttp.send();
+	};
+})();
 
 window.onpopstate = function(e) {
 	location.reload();
