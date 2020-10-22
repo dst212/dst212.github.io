@@ -128,12 +128,13 @@ var pong = {
 	initVal: function() {
 		this.score = 0,			//unused, for now
 		this.delay = 1000 / 60,	//delay between a frame and the following one
-		this.running = 0,		//game is running (0: no, 1: yes, 2: is about to or gameOver is active)
+		this.state = 0,			//game is running (0: no, 1: yes, 2: paused, -1: countdown or game over screen)
 		this.move = 0;			//move the ball (-1, 0, 1)
 		this.button = document.getElementById('pong-start-button');
 	},
 
 	init: function(body = document.body) {
+		let that = this;
 		this.initVal();
 		this.canvas = document.createElement('CANVAS'),
 		this.canvas.width = 1000;
@@ -147,16 +148,21 @@ var pong = {
 		this.player = new PongPlayer(this.canvas);
 		this.ball = new PongBall(this.canvas);
 		document.onkeydown = function(e) {
-			if(pong.running == 1) {
-				if(e.keyCode == 37) //left
-					pong.move = -1;
-				else if(e.keyCode == 39) //right
-					pong.move = 1;
-			} else if(pong.running == 0){
-				if(e.keyCode == 13)
-					pong.start();
+			if(that.state === 0){
+				if(e.keyCode === 13)
+					that.start();
+			} else if(that.state === 1) {
+				if(e.keyCode === 37 || e.code === 'KeyA') //left
+					that.move = -1;
+				else if(e.keyCode === 39 || e.code === 'KeyD') //right
+					that.move = 1;
+				else if(e.keyCode === 13 || e.code === 'KeyP')
+					that.pause();
+			} else if(that.state === 2) {
+				if(e.keyCode === 13 || e.code === 'KeyP')
+					that.resume();
 			}
-			if(e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40)
+			if(e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40)
 				return false;
 		};
 		document.onkeyup = function(e) {
@@ -164,7 +170,14 @@ var pong = {
 				pong.move = 0; //stop moving the player on key release
 		};
 		body.insertBefore(this.canvas, body.childNodes[0]);
-		this.printCenter('Press ENTER to play', undefined, 20);
+		this.printText('Press ENTER to play', undefined, 20);
+	},
+
+	printText: function(what, color = undefined, fontSize = undefined, x = undefined, y = undefined, fontFamily = 'monospace') {
+		fontSize || (fontSize = parseInt(getComputedStyle(document.body).getPropertyValue('font-size')) * 10 / 3);
+		this.ctx.font = fontSize + 'px ' + fontFamily;
+		this.ctx.fillStyle = color || Theme.get('accent');
+		this.ctx.fillText(what, x - (this.ctx.measureText(what).width / 2) || (this.canvas.width - this.ctx.measureText(what).width) / 2, y + (fontSize / 2) || (this.canvas.height + fontSize) / 2);
 	},
 
 	slide: function(delta) {
@@ -174,13 +187,6 @@ var pong = {
 
 	clear: function() {
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	},
-
-	printCenter: function(what, color = undefined, fontSize = undefined, fontFamily = 'monospace') {
-		if(fontSize == undefined) fontSize = parseInt(getComputedStyle(document.body).getPropertyValue('font-size')) * 10 / 3;
-		pong.ctx.font = fontSize + 'px ' + fontFamily;
-		pong.ctx.fillStyle = color ? color : Theme.get('accent');
-		pong.ctx.fillText(what, (pong.canvas.width - pong.ctx.measureText(what).width) / 2, (pong.canvas.height + fontSize) / 2);
 	},
 
 	refresh: function() {
@@ -203,48 +209,68 @@ var pong = {
 		this.ball.print();
 	},
 
-	countdown: function(i = 3) {
-		pong.running = 2;
-		pong.score = 0;
-		//countdown
-		pong.clear();
-		pong.player.print();
+	cycle: function() {
+		this.refresh();
+		if(this.state === 1)
+			setTimeout(this.cycle.bind(this), this.delay);
+	},
+
+	countdown: function(i = 3, x = undefined, y = undefined) {
+		this.state = -1;
+		this.clear();
+		this.player.print();
 		if(i <= 0) i = 'GO';
-		pong.printCenter(i.toString());
-		if(i != 'GO')
-			setTimeout(pong.countdown, 1000, i - 1);
-		else {
-			//start the game
+		this.printText(i.toString(), undefined, undefined, x, y);
+		if(i != 'GO') //continue counting
+			setTimeout(this.countdown.bind(this), 1000, i - 1, x, y);
+		else { //start the game
 			setTimeout(function() {
-				pong.running = 1;
-				startPong();
-			}, 1000);
+				this.state = 1;
+				this.cycle();
+			}.bind(this), 1000);
 		}
 	},
 
 	start: function() {
-		if(pong.button) { //disable button
-			pong.button.setAttribute('disabled', 'true');
-			pong.button.blur();
+		this.score = 0;
+		if(this.button) { //disable button
+			this.button.setAttribute('disabled', 'true');
+			this.button.blur();
 		}
-		pong.countdown();
+		this.countdown();
 	},
 
 	gameOver: function() {
 		//change player's color on game over
-		this.running = 2;
+		this.state = -1;
 		this.clear();
 		this.player.print(Theme.get('invalid'));
-		this.printCenter('GAME OVER', Theme.get('invalid'));
+		this.printText('GAME OVER', Theme.get('invalid'));
 		setTimeout(function() {
-			pong.clear();
-			pong.printCenter('Press ENTER to play again', undefined, 20);
-			pong.reset();
-			if(pong.button) {
-				pong.button.removeAttribute('disabled');
-				pong.button.setAttribute('value', 'Restart');
+			this.clear();
+			this.printText('Press ENTER to play again', undefined, 20);
+			this.reset();
+			if(this.button) {
+				this.button.removeAttribute('disabled');
+				this.button.setAttribute('value', 'Restart');
 			}
-		}, 1500);
+		}.bind(this), 1500);
+	},
+
+	pause: function() {
+		if(this.state === 1) {
+			this.state = 2;
+			setTimeout(function() {
+				this.clear();
+				this.player.print();
+				this.printText('P', undefined, undefined, this.ball.x, this.ball.y);
+			}.bind(this), this.delay);
+		}
+	},
+
+	resume: function() {
+		if(this.state === 2)
+			this.countdown(3, this.ball.x, this.ball.y);
 	},
 
 	reset: function() {
@@ -252,12 +278,6 @@ var pong = {
 		this.player.init();
 		this.ball.init();
 	},
-}
-
-function startPong() {
-	pong.refresh();
-	if(pong.running == 1)
-		setTimeout(startPong, pong.delay);
 }
 
 function createPongDiv() {
