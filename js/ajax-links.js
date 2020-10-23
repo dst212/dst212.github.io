@@ -54,15 +54,15 @@ const pageFetch = (function() {
 							console.log('Removing script ' + (script.getAttribute('src') || 'from HTML file.'));
 							script.remove();
 						}
-						//add all the javascript scripts from the source page
-						scripts = newpage.getElementsByTagName('SCRIPT');
+						//add all the javascript scripts from the source page's head
+						scripts = newpage.head.getElementsByTagName('SCRIPT');
 						for(i = 0; i < scripts.length; i++) {
 							//just adding the script from the collection won't work, a new script element has to be added
 							console.log('Adding script ' + (scripts[i].getAttribute('src') || 'from HTML file.'));
 							script = document.createElement('SCRIPT');
 							script.setAttribute('type', scripts[i].getAttribute('type'));
 							scripts[i].getAttribute('src') && script.setAttribute('src', scripts[i].getAttribute('src') + '?v=' + cacheBusting);
-							document.body.appendChild(script);
+							document.head.appendChild(script);
 							script.innerHTML = scripts[i].innerHTML;
 							scriptsToRemove.push(script);
 							script = undefined;
