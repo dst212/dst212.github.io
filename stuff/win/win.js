@@ -28,7 +28,7 @@ var win = (function() {
 		}
 		newWin.setAttribute('id', id);
 		newWin.classList.add('window-element');
-		newWin.style.maxWidth = width ? width : 'calc(var(--font-size) * 26)';
+		newWin.style.maxWidth = width || 'calc(var(--font-size) * 26)';
 		newWin.innerHTML = '<div class="titlebar"><b>' + title + '</b></div>' + content;
 		if(buttons.length) {
 			buttonsHTML += '<div class="buttons">';
@@ -43,8 +43,10 @@ var win = (function() {
 		}
 		newWin.innerHTML += buttonsHTML + '<button class="close material-icons md-same" onclick="' + (buttons.length ? buttons[--i].onclick : closeWinStr) +'">close</button>';
 		document.body.appendChild(newWin);
-		newWin.style.top = top || 'calc((100vh - ' + newWin.offsetHeight + 'px) / 2)';
-		newWin.style.left = left || 'calc((100vw - ' + newWin.offsetWidth + 'px) / 2)';
+		top || top === 0 || (top = 'calc((100vh - ' + newWin.offsetHeight + 'px) / 2)');
+		left || left === 0 || (left = 'calc((100vw - ' + newWin.offsetWidth + 'px) / 2)');
+		newWin.style.top = top;
+		newWin.style.left = left;
 		newWin.style.zIndex = 1;
 		return newWin;
 	};
