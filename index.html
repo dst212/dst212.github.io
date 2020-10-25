@@ -22,7 +22,7 @@
 		<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 
 		<script id="dst212-js" type="text/javascript" src="/js/dst212.js?0">/*some functions to do stuff*/</script>
-		<script id="ajax-links" type="text/javascript" src="/js/ajax-links.js?0">/*change document content fetching new content with ajax*/</script>
+		<script id="page-js" type="text/javascript" src="/js/page.js?0">/*change document content fetching new files with AJAX*/</script>
 		<!-- <script id="settings-js" type="text/javascript" src="/files/js/settings.js?0">/*Settings*/</script> -->
 
 		<script id="window-js" type="text/javascript" src="/stuff/win/win.js?0">/*Windows' functions*/</script>
@@ -44,9 +44,9 @@
 		<header>
 			<nav>
 				<ul>
-					<li><a href="javascript:void(pageFetch('home'));" title="Home page"><i class="material-icons md-nav">home</i></a></li>
-					<li><a href="javascript:void(pageFetch('stuff'));" title="Stuff"><i class="material-icons md-nav">code</i></a></li>
-					<li><a href="javascript:void(pageFetch('info'));" title="Info page"><i class="material-icons md-nav">info</i></a></li>
+					<li><a href="javascript:void(Page.fetch('home'));" title="Home page"><i class="material-icons md-nav">home</i></a></li>
+					<li><a href="javascript:void(Page.fetch('stuff'));" title="Stuff"><i class="material-icons md-nav">code</i></a></li>
+					<li><a href="javascript:void(Page.fetch('info'));" title="Info page"><i class="material-icons md-nav">info</i></a></li>
 				</ul>
 			</nav>
 		</header>
@@ -87,7 +87,7 @@
 					Copyright <i class="material-icons md-same">copyright</i> 2019-2020 <a href="mailto:212dst212@gmail.com" title="Emanuele De Stefani's e-mail address">Emanuele De Stefani</a>.
 					<br/>The <i>dst212</i> name and logo are unregistered trendmarks.
 				</div>
-				<br/><a href="javascript:pageFetch('info');" title="Informazioni sul sito e contatti">Info</a>
+				<br/><a href="javascript:Page.fetch('info');" title="Informazioni sul sito e contatti">Info</a>
 			</div>
 		</footer>
 	</body>
