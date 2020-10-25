@@ -136,16 +136,16 @@ var Pong = {
 	init: function(body = document.body) {
 		let that = this;
 
-		var pageUnload = (function() {
+		Page && (Page.unload = (function() {
 			//restore onkeydown and onkeyup functions when page is changed
-			//see https://dst212.github.io/js/ajax-links.js
+			//see https://dst212.github.io/js/page.js
 			let onkeydown = document.onkeydown;
 			let onkeyup = document.onkeyup;
 			return function() {
 				document.onkeydown = onkeydown;
 				document.onkeyup = onkeyup;
 			};
-		})();
+		})());
 
 		this.initVal();
 		this.canvas = document.createElement('CANVAS'),
