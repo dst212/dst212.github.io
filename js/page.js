@@ -9,6 +9,7 @@
 'use strict';
 
 const Page = {
+	onloadAlways() {}, //should not be edited from fetched scripts, use onload() instead
 	onload() {},
 	unload() {},
 	error(params = {url: '', status: '0'}, where = document.body.getElementsByTagName('MAIN')[0]) {
@@ -21,7 +22,7 @@ const Page = {
 	fetch: (function() {
 		let scriptsToRemove = [];
 		const now = (new Date()).getTime();
-		
+
 		return function(name, flags = {skipOnload: false, forceFetch: false}, where = document.body.getElementsByTagName('MAIN')[0]) {
 			let file, xhttp, cacheBusting, that = this;
 			flags || (flags = {});
@@ -48,7 +49,6 @@ const Page = {
 						if(!flags.skipOnload) {
 							that.unload && that.unload();
 							that.unload = undefined;
-							that.onload();
 							//remove old scripts
 							while(script = scriptsToRemove.pop()) {
 								console.log('Removing script ' + (script.getAttribute('src') || 'from HTML file.'));
@@ -67,6 +67,9 @@ const Page = {
 								scriptsToRemove.push(script);
 								script = undefined;
 							}
+							that.onloadAlways();
+							that.onload && that.onload();
+							that.onload = undefined;
 						}
 						//update the browser's search-bar
 						window.history.pushState({page: 0}, document.title, '?page=' + name);
