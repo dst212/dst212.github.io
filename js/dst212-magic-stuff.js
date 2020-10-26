@@ -19,7 +19,7 @@ function fetchSection(file, className) {
 	}
 }
 
-pageOnload = addFunction(pageOnload, function() {
+Page.onlaod = addFunction(Page.onload, function() {
 	fetchSection('logo.html', 'fetch-dst212-logo');
 	fetchSection('copyright.html', 'fetch-copyright-notice');
 	fetchSection('cc.html', 'fetch-cc-content');
