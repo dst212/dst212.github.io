@@ -27,10 +27,10 @@ var checkWord = (function(char = '') {
 			document.getElementById('output').value = outGuess;
 			document.getElementById('errors').innerHTML = errors;
 			if(errors >= 5) {
-				win('Game over!', 'The word was ' + toGuess + '.<br><br>A new word to guess will be given.', [{innerHTML: 'OK', onclick: ''}], '', true);
+				win('Game over!', 'The word was ' + toGuess + '.<br><br>A new word to guess will be given.', [{innerHTML: 'OK'}], () => {}, true);
 				initHanged();
 			} else if(outGuess == toGuess) {
-				win('You won!', 'You found the word: ' + toGuess + '!<br><br>A new word to guess will be given.', [{innerHTML: 'OK', onclick: ''}], '', true);
+				win('You won!', 'You found the word: ' + toGuess + '!<br><br>A new word to guess will be given.', [{innerHTML: 'OK'}], () => {}, true);
 				initHanged();
 			}
 		}
