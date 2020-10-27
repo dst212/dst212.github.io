@@ -21,13 +21,16 @@
 	text-align: justify;
 	z-index: -1;
 }
-
 .window-element > .titlebar {
 	display: block;
 	padding: 0.1em 1.5em /*space left for the X button*/ 0.1em 0;
 	margin-bottom: var(--spacing);
 	height: 1.2em;
 	text-overflow: ellipsis;
+}
+.window-element > .content {
+	max-height: 50vh;
+	overflow-y: auto;
 }
 .window-element > .close {
 	display: block;

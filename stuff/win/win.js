@@ -29,7 +29,7 @@ var win = (function() {
 		newWin.setAttribute('id', id);
 		newWin.classList.add('window-element');
 		newWin.style.maxWidth = width || 'calc(var(--font-size) * 26)';
-		newWin.innerHTML = '<div class="titlebar"><b>' + title + '</b></div>' + content;
+		newWin.innerHTML = '<div class="titlebar"><b>' + title + '</b></div><div class="content">' + content + '</div>';
 		if(buttons.length) {
 			buttonsHTML += '<div class="buttons">';
 			for(i = 0; i < buttons.length; i++) {
