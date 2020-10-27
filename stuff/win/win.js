@@ -19,35 +19,49 @@
 
 var win = (function() {
 	let winCount = 0;
-	return function(title, content, buttons = [], onclose = '', disablePage = false, width = undefined, left = undefined, top = undefined) {
-		let newWin = document.createElement('DIV'), id = 'window-' + (winCount++), closeWinStr = 'document.getElementById(\'' + id + '\').remove();' + onclose + ';';
-		let i, buttonsHTML = '';
-		if(disablePage) {
-			coverPage();
-			closeWinStr += 'uncoverPage();';
-		}
-		newWin.setAttribute('id', id);
+	return function(title, content, buttons = [], onclose = undefined, disablePage = false, width = undefined, left = undefined, top = undefined) {
+		let i, buttonsDiv, button, closeWinFun, newWin = document.createElement('DIV'), id = 'window-' + (winCount++);
+		closeWinFun = function() {
+			newWin.remove();
+			disablePage && uncoverPage();
+			onclose && onclose();
+		};
+		disablePage && coverPage();
+		newWin.id = id;
 		newWin.classList.add('window-element');
 		newWin.style.maxWidth = width || 'calc(var(--font-size) * 26)';
 		newWin.innerHTML = '<div class="titlebar"><b>' + title + '</b></div><div class="content">' + content + '</div>';
+
 		if(buttons.length) {
-			buttonsHTML += '<div class="buttons">';
+			buttonsDiv = document.createElement('DIV');
+			buttonsDiv.classList.add('buttons');
 			for(i = 0; i < buttons.length; i++) {
-				if(!buttons[i].onclick) buttons[i].onclick = closeWinStr;
-				else buttons[i].onclick += ';' + closeWinStr;
-				buttonsHTML += '<button ';
-				if(buttons[i].properties) buttonsHTML += buttons[i].properties + ' ';
-				buttonsHTML += 'onclick="' + buttons[i].onclick + '">' + buttons[i].innerHTML + '</button>';
+				if(!buttons[i].onclick)
+					buttons[i].onclick = closeWinFun;
+				else
+					buttons[i].onclick = addFunction(buttons[i].onclick, closeWinFun);
+				button = document.createElement('BUTTON');
+				button.innerHTML = buttons[i].innerHTML;
+				button.addEventListener('click', buttons[i].onclick);
+				buttonsDiv.appendChild(button);
 			}
-			buttonsHTML += '</div>';
+			newWin.appendChild(buttonsDiv);
 		}
-		newWin.innerHTML += buttonsHTML + '<button class="close material-icons md-same" onclick="' + (buttons.length ? buttons[--i].onclick : closeWinStr) +'">close</button>';
+
+		button = document.createElement('BUTTON');
+		button.classList.add('close', 'material-icons', 'md-same');
+		button.addEventListener('click', buttons.length ? buttons[--i].onclick : closeWinFun);
+		button.innerHTML = 'close';
+
+		newWin.appendChild(button);
 		document.body.appendChild(newWin);
+
 		top || top === 0 || (top = 'calc((100vh - ' + newWin.offsetHeight + 'px) / 2)');
 		left || left === 0 || (left = 'calc((100vw - ' + newWin.offsetWidth + 'px) / 2)');
 		newWin.style.top = top;
 		newWin.style.left = left;
 		newWin.style.zIndex = 1;
+
 		return newWin;
 	};
 })();
