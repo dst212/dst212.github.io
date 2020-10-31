@@ -103,6 +103,13 @@ function PongPlayer(canvas, y = undefined, color = undefined, accent = undefined
 		this.maxX = () => this.x + (this.width / 2);
 		this.maxY = () => this.y + (this.height / 2);
 		this.speed = 9;
+		this.disaIndex = 0;
+		this.disa = ['KeyD', 'KeyI', 'KeyS', 'KeyA'];
+		this.image = document.createElement('IMG');
+		this.image.src = '/res/images/stickman.svg';
+		this.image.height = 92;
+		this.image.width = 30;
+		this.left = true;
 	};
 
 	this.move = function(by) {
@@ -111,14 +118,28 @@ function PongPlayer(canvas, y = undefined, color = undefined, accent = undefined
 	};
 
 	this.print = function(newAccent = undefined) {
-		this.ctx.beginPath();
-		this.ctx.rect(this.x - (this.width / 2), this.y - (this.height / 2), this.width, this.height);
-		this.ctx.fillStyle = color || Theme.background.get();
-		this.ctx.fill();
-		this.ctx.beginPath();
-		this.ctx.rect(this.x - (this.width / 6), this.y - (this.height / 4), this.width / 3, this.height / 2);
-		this.ctx.fillStyle = newAccent || accent || Theme.get('accent-dark');
-		this.ctx.fill();
+		if(this.disaIndex < this.disa.length) {
+			this.ctx.beginPath();
+			this.ctx.rect(this.x - (this.width / 2), this.y - (this.height / 2), this.width, this.height);
+			this.ctx.fillStyle = color || Theme.background.get();
+			this.ctx.fill();
+			this.ctx.beginPath();
+			this.ctx.rect(this.x - (this.width / 6), this.y - (this.height / 4), this.width / 3, this.height / 2);
+			this.ctx.fillStyle = newAccent || accent || Theme.get('accent-dark');
+			this.ctx.fill();
+		} else {
+			this.ctx.save();
+			if(this.left) {
+				this.ctx.translate(0, canvas.height);
+				this.ctx.rotate(-0.5 * Math.PI);
+				this.ctx.drawImage(this.image, (canvas.height - this.y) - (this.image.width / 2), this.x - (this.image.height / 2));
+			} else {
+				this.ctx.translate(canvas.width, 0);
+				this.ctx.rotate(0.5 * Math.PI);
+				this.ctx.drawImage(this.image, this.y - (this.image.width / 2), (canvas.width - this.x) - (this.image.height / 2));
+			}
+			this.ctx.restore();
+		}
 	};
 
 	this.init();
@@ -133,7 +154,7 @@ var Pong = {
 		this.button = document.getElementById('pong-start-button');
 	},
 
-	init: function(body = document.body) {
+	init(body = document.body) {
 		let that = this;
 
 		Page && (Page.unload = (function() {
@@ -160,11 +181,15 @@ var Pong = {
 			if(that.state === 0){
 				if(e.keyCode === 13)
 					that.start();
-			} else if(that.state === 1) {
+				else if(that.player.disaIndex < that.player.disa.length && e.code === that.player.disa[that.player.disaIndex])
+					that.player.disaIndex++;
+				else if(that.player.disaIndex < that.player.disa.length)
+					that.player.disaIndex = 0;
+			} else if(that.state === 1) { //running
 				if(e.keyCode === 37 || e.code === 'KeyA') //left
-					that.move = -1;
+					that.move = -1, that.player.left = true;
 				else if(e.keyCode === 39 || e.code === 'KeyD') //right
-					that.move = 1;
+					that.move = 1, that.player.left = false;
 				else if(e.keyCode === 13 || e.code === 'KeyP')
 					that.pause();
 			} else if(that.state === 2) {
@@ -184,7 +209,7 @@ var Pong = {
 		this.printText('Press ENTER to play', undefined, 20);
 	},
 
-	div: function() {
+	div() {
 		let div = document.createElement('DIV');
 		div.setAttribute('id', 'pong-game');
 		div.style.textAlign = 'center';
@@ -193,23 +218,23 @@ var Pong = {
 		return div;
 	},
 
-	printText: function(what, color = undefined, fontSize = undefined, x = undefined, y = undefined, fontFamily = 'monospace') {
+	printText(what, color = undefined, fontSize = undefined, x = undefined, y = undefined, fontFamily = 'monospace') {
 		fontSize || (fontSize = parseInt(getComputedStyle(document.body).getPropertyValue('font-size')) * 10 / 3);
 		this.ctx.font = fontSize + 'px ' + fontFamily;
 		this.ctx.fillStyle = color || Theme.get('accent');
 		this.ctx.fillText(what, x - (this.ctx.measureText(what).width / 2) || (this.canvas.width - this.ctx.measureText(what).width) / 2, y + (fontSize / 2) || (this.canvas.height + fontSize) / 2);
 	},
 
-	slide: function(delta) {
+	slide(delta) {
 		//move the player
 		this.player.move(delta * this.player.speed);
 	},
 
-	clear: function() {
+	clear() {
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	},
 
-	refresh: function() {
+	refresh() {
 		//update canvas elements
 		this.clear();
 		if(this.move)
@@ -229,13 +254,13 @@ var Pong = {
 		this.ball.print();
 	},
 
-	cycle: function() {
+	cycle() {
 		this.refresh();
 		if(this.state === 1)
 			setTimeout(this.cycle.bind(this), this.delay);
 	},
 
-	countdown: function(i = 3, x = undefined, y = undefined) {
+	countdown(i = 3, x = undefined, y = undefined) {
 		this.state = -1;
 		this.clear();
 		this.player.print();
@@ -251,7 +276,7 @@ var Pong = {
 		}
 	},
 
-	start: function() {
+	start() {
 		this.score = 0;
 		if(this.button) { //disable button
 			this.button.setAttribute('disabled', 'true');
@@ -260,7 +285,7 @@ var Pong = {
 		this.countdown();
 	},
 
-	gameOver: function() {
+	gameOver() {
 		this.state = -1;
 		this.clear();
 		//change player's color on game over
@@ -277,7 +302,7 @@ var Pong = {
 		}.bind(this), 1500);
 	},
 
-	pause: function() {
+	pause() {
 		if(this.state === 1) {
 			this.state = 2;
 			setTimeout(function() {
@@ -288,12 +313,12 @@ var Pong = {
 		}
 	},
 
-	resume: function() {
+	resume() {
 		if(this.state === 2)
 			this.countdown(3, this.ball.x, this.ball.y);
 	},
 
-	reset: function() {
+	reset() {
 		this.initVal();
 		this.player.init();
 		this.ball.init();

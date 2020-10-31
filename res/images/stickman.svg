@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!--
+ Made with love by dst212
+ https://t.me/dst212
+ -->
+<svg height="92.5" width="30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink">
+	<circle cx="15" cy="15" r="12.5" style="stroke: gray; stroke-width: 5; fill: transparent;"/>
+	<line x1="15" y1="27.5" x2="15" y2="60" style="stroke: gray; stroke-width: 5; stroke-linecap: round;" />
+	<line x1="15" y1="30" x2="27.5" y2="50" style="stroke: gray; stroke-width: 5; stroke-linecap: round;" />
+	<line x1="15" y1="30" x2="2.5" y2="50" style="stroke: gray; stroke-width: 5; stroke-linecap: round;" />
+	<line x1="15" y1="60" x2="25" y2="90" style="stroke: gray; stroke-width: 5; stroke-linecap: round;" />
+	<line x1="15" y1="60" x2="5" y2="90" style="stroke: gray; stroke-width: 5; stroke-linecap: round;" />
+</svg>
