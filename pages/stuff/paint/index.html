@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Paint</title>
+		<script type="text/javascript" src="/pages/stuff/paint/paint.js"></script>
+	</head>
+	<body>
+		<link rel="stylesheet" type="text/css" href="/pages/stuff/paint/paint.css?94">
+		<div id="paint-toolbar" class="left">
+			<input type="checkbox" class="overflow-button material-icons" title="Menu" checked>
+			<div class="overflow">
+				<i class="material-icons more" title="Menu">expand_more</i>
+				<button class="material-icons" onclick="Paint.new();" title="New">fiber_new</button>
+				<a class="material-icons" onclick="this.href = Paint.link();" download="canvas.png" title="Save">save</a>
+				<label class="material-icons" for="paint-file-loader" title="Load">folder</label>
+				<input type="file" id="paint-file-loader" accept="image/*">
+				<button class="material-icons" onclick="Paint.toggle(Paint.dialog.colors);" title="Color">palette</button>
+				<button class="material-icons" onclick="Paint.toggle(Paint.dialog.stroke);" title="Stroke">edit</button>
+				<button class="material-icons" onclick="Paint.toggle(Paint.dialog.square);" title="Rectangle">stop</button>
+				<button class="material-icons" onclick="Paint.toggle(Paint.dialog.circle);" title="Circle">fiber_manual_record</button>
+				<button class="material-icons" onclick="Paint.toggle(Paint.dialog.text);" title="Text">text_format</button>
+				<button class="material-icons" onclick="Paint.toggle(Paint.dialog.image);" title="Image">image</button>
+				<button class="material-icons" onclick="Paint.showLink();" title="New">link</button>
+				<button class="material-icons" onclick="Paint.help();" title="Help">help</button>
+			</div>
+		</div>
+		<div id="paint-color-chooser" class="paint-dialog">
+			<div>
+				<label>R:</label>
+				<input type="range" min="0" max="255" value="0" oninput="Paint.updateColorFromSliders();" class="red">
+			</div>
+			<div>
+				<label>G:</label>
+				<input type="range" min="0" max="255" value="0" oninput="Paint.updateColorFromSliders();" class="green">
+			</div>
+			<div>
+				<label>B:</label>
+				<input type="range" min="0" max="255" value="0" oninput="Paint.updateColorFromSliders();" class="blue">
+			</div>
+			<div hidden>
+				<label>A:</label>
+				<input type="range" min="0" max="100" value="100" oninput="Paint.updateColorFromSliders();" class="alpha">
+			</div>
+			<input type="text" value="#000000" onkeyup="Paint.updateColorFromInput();">
+			<div class="colors"></div>
+			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.colors);">close</button>
+		</div>
+		<div id="paint-stroke-dialog" class="paint-dialog">
+			<label>Stroke width:</label><br>
+			<input type="range" min="1" max="100" oninput="Paint.updateStroke(this);" style="width: 12em;">
+			<br><br><input type="number" min="1" max="100" placeholder="Size" style="display: block; margin: auto; width: 3.3ch; text-align: center;" disabled>
+			<div id="paint-stroke-preview"></div>
+			<button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.resetStroke();">Reset to default</button>
+			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.stroke);">close</button>
+		</div>
+		<div id="paint-image-dialog" class="paint-dialog">
+			<label>Source file:</label><br>
+			<input type="text" id="paint-img-input-src" placeholder="Source" style="width: 100%" onchange="Paint.setImage(this.value);">
+			<br>
+			<label>X: </label>
+			<input type="number" id="paint-img-input-x" value="0" size="4" placeholder="x">
+			<label>Y: </label>
+			<input type="number" id="paint-img-input-y" value="0" size="4" placeholder="y">
+			<br>
+			<label>Size:</label><br>
+			<input type="number" id="paint-img-input-width" value="0" size="6" placeholder="Width">
+			<span>x</span>
+			<input type="number" id="paint-img-input-height" value="0" size="6"  placeholder="Height">
+			<img id="paint-img" src="">
+			<button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addImage()">Add</button>
+			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.image);">close</button>
+		</div>
+		<div id="paint-square-dialog" class="paint-dialog">
+			<label>Top-left corner coordinates:</label><br>
+			<label>X: </label>
+			<input type="number" id="paint-square-input-x" value="0" size="4" placeholder="x">
+			<label>Y: </label>
+			<input type="number" id="paint-square-input-y" value="0" size="4" placeholder="y">
+			<br>
+			<label>Size:</label><br>
+			<input type="number" id="paint-square-input-width" value="100" size="6" placeholder="Width">
+			<span>x</span>
+			<input type="number" id="paint-square-input-height" value="100" size="6"  placeholder="Height">
+			<br>
+			<br><button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addRect()">Add</button>
+			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.square);">close</button>
+		</div>
+		<div id="paint-circle-dialog" class="paint-dialog">
+			<label>Circle center's coordinates:</label><br>
+			<label>X: </label>
+			<input type="number" id="paint-circle-input-x" value="25" size="4" placeholder="x">
+			<label>Y: </label>
+			<input type="number" id="paint-circle-input-y" value="25" size="4" placeholder="y">
+			<br>
+			<label>Ray:</label><br>
+			<input type="number" id="paint-circle-input-ray" value="50" style="width: 100%;" placeholder="Ray">
+			<br>
+			<br><button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addCircle()">Add</button>
+			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.circle);">close</button>
+		</div>
+		<div id="paint-text-dialog" class="paint-dialog">
+			<label>Bottom-left coordinates:</label><br>
+			<label>X: </label>
+			<input type="number" id="paint-text-input-x" value="50" size="4" placeholder="x">
+			<label>Y: </label>
+			<input type="number" id="paint-text-input-y" value="100" size="4" placeholder="y">
+			<br>
+			<label>Font size:</label><br>
+			<input type="number" id="paint-text-input-font-size" value="50" size="6" placeholder="Font size">
+			<br>
+			<label>Font family:</label><br>
+			<input type="text" id="paint-text-input-custom" placeholder="Font family" value="monospace">
+			<br>
+			<label>Text to display:</label><br>
+			<input type="text" id="paint-text-input-custom" placeholder="Text to display" value="Disa">
+			<br>
+			<br><button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addText()">Add</button>
+			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.text);">close</button>
+		</div>
+	</body>
+</html>
