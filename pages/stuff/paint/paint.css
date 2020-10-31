@@ -1,0 +1,255 @@
+/*Made by dst212*/
+
+:root {
+	/* horizontal bar */
+	--paint-hor-toolbar-top: calc(var(--font-size) * 4);
+	--paint-hor-toolbar-left: 10%;
+	--paint-hor-toolbar-height: calc(var(--font-size) * 2);
+	--paint-hor-toolbar-width: 80%;
+
+	/* vertical bar */
+	--paint-ver-toolbar-top: 10%;
+	--paint-ver-toolbar-left: calc(var(--font-size) * 4);
+	--paint-ver-toolbar-height: 80%;
+	--paint-ver-toolbar-width: calc(var(--font-size) * 2);
+}
+#paint-toolbar {
+	display: block;
+	position: fixed;
+	color: var(--body-bg);
+	background-color: var(--accent);
+	border-radius: var(--font-size);
+	overflow: hidden;
+	font-size: 0;
+}
+#paint-toolbar.top {
+	top: var(--paint-hor-toolbar-top);
+	left: var(--paint-hor-toolbar-left);
+	height: var(--paint-hor-toolbar-height);
+	min-width: var(--paint-hor-toolbar-height);
+	max-width: var(--paint-hor-toolbar-width);
+}
+#paint-toolbar.bottom {
+	bottom: var(--paint-hor-toolbar-top);
+	left: var(--paint-hor-toolbar-left);
+	height: var(--paint-hor-toolbar-height);
+	min-width: var(--paint-hor-toolbar-height);
+	max-width: var(--paint-hor-toolbar-width);
+}
+#paint-toolbar.right {
+	top: var(--paint-ver-toolbar-top);
+	right: var(--paint-ver-toolbar-left);
+	width: var(--paint-ver-toolbar-width);
+	min-height: var(--paint-hor-toolbar-height);
+	max-height: var(--paint-hor-toolbar-width);
+}
+#paint-toolbar.left {
+	top: var(--paint-ver-toolbar-top);
+	left: var(--paint-ver-toolbar-left);
+	width: var(--paint-ver-toolbar-width);
+	min-height: var(--paint-hor-toolbar-height);
+	max-height: var(--paint-hor-toolbar-width);
+}
+#paint-toolbar .material-icons {
+	font-size: calc(var(--font-size) * 1.6);
+	padding: calc(var(--font-size) * 0.2);
+	margin: 0;
+	color: var(--body-bg);
+	background-color: transparent;
+	border-width: 0;
+	cursor: pointer;
+	text-decoration: none;
+}
+#paint-toolbar input[type="file"] {
+	opacity: 0;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	height: 0;
+	width: 0;
+	border-width: 0;
+	z-index: -1;
+}
+#paint-toolbar .overflow-button {
+	position: absolute;
+	cursor: pointer;
+	opacity: 0;
+	margin: 0;
+	padding: 0;
+	width: calc(var(--font-size) * 2);
+	height: calc(var(--font-size) * 2);
+	z-index: 1;
+}
+#paint-toolbar .overflow {
+	max-width: 0;
+	max-height: 0;
+}
+#paint-toolbar .overflow-button:checked ~ .overflow {
+	max-width: 100vw;
+	max-height: 100vh;
+}
+/*stupid solution: actually I don't know how to do the below animation in a different way*/
+@keyframes expand-icon-border-radius {
+	0%		{ border-radius: initial; }
+	50%		{ border-radius: 100%; }
+	100%	{ border-radius: initial; }
+}
+@keyframes expand-icon-border-radius-again {
+	0%		{ border-radius: initial; }
+	50%		{ border-radius: 100%; }
+	100%	{ border-radius: initial; }
+}
+#paint-toolbar .overflow > .more {
+	animation-duration: var(--transition);
+	animation-name: expand-icon-border-radius;
+}
+#paint-toolbar .overflow-button:checked ~ .overflow > .more {
+	transform: rotate(180deg);
+	animation-duration: var(--transition);
+	animation-name: expand-icon-border-radius-again; /*it must change every time so that it's performed*/
+}
+/*end of stupid solution*/
+#paint-toolbar .material-icons:hover,
+#paint-toolbar .overflow-button:hover ~ .overflow > .more {
+	color: var(--accent);
+	background-color: var(--body-bg);
+	border-radius: initial;
+}
+
+/*COLOR CHOOSER*/
+
+.paint-dialog {
+	display: block;
+	position: fixed;
+	right: -100%;
+	padding: 1em;
+	top: var(--paint-hor-toolbar-top);
+	background-color: var(--accent);
+	color: var(--body-bg);
+	border-radius: var(--border-radius);
+	box-shadow: var(--box-shadow);
+}
+
+.paint-dialog > .close {
+	display: block;
+	position: absolute;
+	top: calc(var(--general-border) * -1 + 1px);
+	right: calc(var(--general-border) * -1 + 1px);
+	padding: 0.2em;
+	color: inherit;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0 var(--border-radius);
+	box-sizing: border-box;
+}
+.paint-dialog > .close:hover {
+	background-color: var(--body-bg);
+	color: var(--accent);
+}
+
+.paint-dialog input {
+	color: inherit;
+	border-color: currentColor;
+}
+.paint-dialog *::selection {
+	background-color: var(--body-bg);
+	color: var(--accent);
+}
+
+.paint-dialog input[type=range]::-webkit-slider-thumb,
+.paint-dialog input[type=range]::-moz-range-thumb {
+	background-color: var(--accent);
+	border: var(--general-border) solid currentColor;
+	border-radius: 50%;
+	opacity: 1;
+	cursor: grabbing;
+}
+
+#paint-color-chooser > div > label {
+	width: 2ch;
+	overflow: hidden;
+}
+#paint-color-chooser input[type="range"] {
+	height: 1em;
+	width: 12em;
+	margin: 0.5em 0 0;
+	border: 0.05em solid white;
+	box-sizing: border-box;
+}
+#paint-color-chooser input[type="range"].red {
+	background-image: linear-gradient(to right, black, red);
+}
+#paint-color-chooser input[type="range"].green {
+	background-image: linear-gradient(to right, black, lime);
+}
+#paint-color-chooser input[type="range"].blue {
+	background-image: linear-gradient(to right, black, blue);
+}
+#paint-color-chooser input[type="range"].alpha {
+	background-color: white;
+	background-image: linear-gradient(to right, transparent, black);
+}
+
+#paint-color-chooser input[type="range"]:focus {
+	box-shadow: none;
+}
+#paint-color-chooser input[type="range"]::-webkit-slider-thumb,
+#paint-color-chooser input[type="range"]::-moz-range-thumb {
+	width: 0.2em;
+	height: 1.1em;
+	background-color: white;
+	border-width: 0;
+	border-radius: 0;
+	cursor: col-resize;
+}
+
+#paint-color-chooser input[type="text"] {
+	display: block;
+	margin: 1em auto;
+	width: 9.9ch;
+	background-color: black;
+	color: white;
+	border: 0.05em solid currentColor;
+	text-align: center;
+	transition: 0s;
+}
+
+#paint-color-chooser > .colors {
+	display: block;
+	margin: auto;
+	width: 12em;
+	text-align: center;
+}
+#paint-color-chooser > .colors > input[type="button"] {
+	display: inline-block;
+	width: 1.2em;
+	height: 1.2em;
+	margin: 0.15em;
+	padding: 0;
+	border: 0.05em solid white;
+	border-radius: 0;
+}
+
+#paint-img {
+	display: block;
+	margin: 1em auto;
+	max-width: 12em;
+	max-height: 45vh;
+}
+
+#paint-stroke-preview {
+	color: currentColor;
+	background-color: currentColor;
+	border-radius: 50%;
+	transition-duration: 0.1s;
+	margin: 1em auto;
+}
+
+#paint-image-dialog input,
+#paint-square-dialog input,
+#paint-circle-dialog input,
+#paint-text-dialog input {
+	margin-bottom: 0.5em;
+}
+
+/*END*/
