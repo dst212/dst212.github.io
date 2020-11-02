@@ -88,6 +88,7 @@ var Paint = {
 	},
 	initInput() {
 		let that = this;
+		this.dialogs = document.getElementsByClassName('paint-dialog');
 		this.dialog = {
 			colors: document.getElementById('paint-color-chooser'),
 			image: document.getElementById('paint-image-dialog'),
@@ -314,7 +315,7 @@ var Paint = {
 				that.input.image[4].value = that.img.height || 100;
 			}
 
-			this.img.src && this.open(this.dialog.image);
+			this.img.src && this.openOnly(this.dialog.image);
 			!src && this.img.onload();
 		}
 	},
@@ -364,13 +365,22 @@ var Paint = {
 		if(what.style.getPropertyValue(where) === '1em')
 			this.close(what, where);
 		else
-			this.open(what, where);
+			this.openOnly(what, where);
 	},
 	open(what, where = 'right') {
 		what.style.setProperty(where, '1em');
 	},
 	close(what, where = 'right') {
 		what.style.setProperty(where, '');
+	},
+	openOnly(what, where = 'right') {
+		let i;
+		for(i = 0; i < this.dialogs.length; i++) {
+			if(this.dialogs[i] === what)
+				what.style.setProperty(where, '1em');
+			else
+				this.dialogs[i].style.setProperty(where, '');
+		}
 	},
 
 	help() {
