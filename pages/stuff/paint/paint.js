@@ -220,8 +220,8 @@ var Paint = {
 
 	setxy(e) {
 		let target = e.target.getBoundingClientRect();
-		this.x = (e.clientX - target.left) / e.target.clientWidth * e.target.width;
-		this.y = (e.clientY - target.top) / e.target.clientHeight * e.target.height;
+		this.x = e.offsetX / e.target.clientWidth * e.target.width;
+		this.y = e.offsetY / e.target.clientHeight * e.target.height;
 	},
 
 	updateCoords() {
