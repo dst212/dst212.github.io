@@ -27,31 +27,34 @@ function uncoverPage(id = 'cover-page-id') {
 }
 
 const Beep = {
-	ctx: new (window.AudioContext || window.webkitAudioContext)(),
+	ctx: null,
 	osc: null,
-	start: function(freq = 1000) {
+	initContext() {
+		this.ctx || (this.ctx = new (window.AudioContext || window.webkitAudioContext)());
+	},
+	start(freq = 1000) {
+		this.initContext();
 		this.osc = this.ctx.createOscillator();
 		this.osc.frequency.value = freq;
 		this.osc.start(this.ctx.currentTime);
 		this.osc.connect(this.ctx.destination);
 	},
-	stop: function() {
+	stop() {
 		this.osc.stop(this.ctx.currentTime);
 		this.osc.disconnect(this.ctx.destination);
 		this.osc = null;
 	},
 };
 
-var beep = (function() {
-	let ctx = Beep.ctx;
-	return function(freq = 1000, ms = 500, type = 'sine') {
-		let osc = ctx.createOscillator();
-		osc.type = type;
-		osc.frequency.value = freq;
-		osc.start(ctx.currentTime);
-		osc.stop(ctx.currentTime + (ms/1000));
-		osc.connect(ctx.destination);
-	};
-})();
+function beep(freq = 1000, ms = 500, type = 'sine') {
+	let osc;
+	Beep.initContext();
+	osc = Beep.ctx.createOscillator();
+	osc.type = type;
+	osc.frequency.value = freq;
+	osc.start(Beep.ctx.currentTime);
+	osc.stop(Beep.ctx.currentTime + (ms/1000));
+	osc.connect(Beep.ctx.destination);
+};
 
 //END
