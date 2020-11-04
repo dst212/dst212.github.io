@@ -156,8 +156,8 @@
 	color: var(--accent);
 }
 
-.paint-dialog input[type=range]::-webkit-slider-thumb,
-.paint-dialog input[type=range]::-moz-range-thumb {
+.paint-dialog input[type="range"]::-webkit-slider-thumb,
+.paint-dialog input[type="range"]::-moz-range-thumb {
 	background-color: var(--accent);
 	border: var(--general-border) solid currentColor;
 	border-radius: 50%;
@@ -250,6 +250,10 @@
 #paint-circle-dialog input,
 #paint-text-dialog input {
 	margin-bottom: 0.5em;
+}
+
+.paint-dialog input[type="number"] {
+	width: 4.5ch;
 }
 
 /*END*/
