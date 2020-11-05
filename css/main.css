@@ -120,8 +120,6 @@ body * {
 	scrollbar-color: var(--accent) rgba(127,127,127,0.2);
 	scrollbar-width: thin;
 }
-*::selection,
-*::-moz-selection,
 *::after,
 *::before {
 	-webkit-transition: inherit;
@@ -144,7 +142,10 @@ body * {
 	background: var(--accent) linear-gradient(rgba(127,127,127,0.2),rgba(127,127,127,0.2));
 }
 
-*::selection,
+*::selection {
+	background-color: var(--accent);
+	color: var(--body-bg);
+}
 *::-moz-selection {
 	background-color: var(--accent);
 	color: var(--body-bg);
@@ -388,7 +389,18 @@ input[type=range] {
 	height: 0.1em;
 	background-color: var(--accent-faded);
 }
-input[type=range]::-webkit-slider-thumb,
+input[type=range]::-webkit-slider-thumb {
+	margin: 0;
+	height: 0.5em;
+	width: 0.5em;
+	background-color: var(--body-bg);
+	border: var(--general-border) solid var(--accent-faded);
+	border-radius: 50%;
+	opacity: 1;
+	-webkit-appearance: none;
+	appearance: none;
+	cursor: grabbing;
+}
 input[type=range]::-moz-range-thumb {
 	margin: 0;
 	height: 0.5em;
@@ -399,6 +411,7 @@ input[type=range]::-moz-range-thumb {
 	opacity: 1;
 	-webkit-appearance: none;
 	appearance: none;
+	cursor: grabbing;
 }
 input[type=range]:hover,
 input[type=range]:focus {
