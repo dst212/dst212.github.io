@@ -330,8 +330,7 @@ var Paint = {
 
 	addText(x = undefined, y = undefined, fontSize = undefined, fontFamily = undefined, customText = undefined) {
 		this.ctx.beginPath();
-		this.ctx.fillStyle = this.color2;
-		this.ctx.strokeStyle = this.color;
+		this.ctx.fillStyle = this.color;
 		this.ctx.font = (fontSize || this.input.text[2].value) + 'px ' + (fontFamily || this.input.text[3].value);
 		this.ctx.fillText(customText || this.input.text[4].value, x || this.input.text[0].value, y || this.input.text[1].value);
 		this.ctx.fill();
