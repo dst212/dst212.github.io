@@ -274,8 +274,8 @@ var Paint = {
 
 	addRect(x = undefined, y = undefined, width = undefined, height = undefined) {
 		this.ctx.beginPath();
-		this.ctx.fillStyle = this.color2;
-		this.ctx.strokeStyle = this.color;
+		this.ctx.fillStyle = this.color;
+		this.ctx.strokeStyle = 'transparent'/*this.color2*/;
 		this.ctx.rect(x || this.input.square[0].value, y || this.input.square[1].value, width || this.input.square[2].value, height || this.input.square[3].value);
 		this.ctx.fill();
 		this.ctx.stroke();
@@ -285,8 +285,8 @@ var Paint = {
 
 	addCircle(x = undefined, y = undefined, ray = undefined) {
 		this.ctx.beginPath();
-		this.ctx.fillStyle = this.color2;
-		this.ctx.strokeStyle = this.color;
+		this.ctx.fillStyle = this.color;
+		this.ctx.strokeStyle = 'transparent'/*this.color2*/;
 		this.ctx.arc(x || this.input.circle[0].value, y || this.input.circle[1].value, ray || this.input.circle[2].value, 0, 2 * Math.PI);
 		this.ctx.fill();
 		this.ctx.stroke();
