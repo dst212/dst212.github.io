@@ -82,6 +82,7 @@ var Paint = {
 				that.updateInputContent();
 				that.updateSliders();
 				that.updateBackgrounds();
+				that.updateColorButton();
 			};
 			this.defaultColors && this.defaultColors.appendChild(newButton);
 		}
@@ -105,6 +106,9 @@ var Paint = {
 			circle: that.dialog.circle.getElementsByTagName('INPUT'),
 			text: that.dialog.text.getElementsByTagName('INPUT'),
 		};
+		this.buttons = {
+			color: document.getElementById('paint-color-button'),
+		}
 	},
 	initFileLoader() {
 		let that = this;
@@ -249,15 +253,29 @@ var Paint = {
 		this.input.slider[2].value = parseInt(colors[2]);
 		colors[3] && (this.input.slider[3].value = parseInt(Math.round(colors[3] * 100)));
 	},
+	updateColorButton() {
+		if(this.buttons.color) {
+			if(
+				this.input.slider[0].value == 0 &&
+				this.input.slider[1].value == 0 &&
+				this.input.slider[2].value == 0
+			)
+				this.buttons.color.style.color = '';
+			else
+				this.buttons.color.style.color = this.color;
+		}
+	},
 	updateColorFromInput() {
 		this.color = hexToRgba(this.input.slider[4].value);
 		this.updateSliders();
 		this.updateBackgrounds();
+		this.updateColorButton();
 	},
 	updateColorFromSliders() {
 		this.color = 'rgba(' + this.input.slider[0].value + ', ' + this.input.slider[1].value + ', ' + this.input.slider[2].value + ', ' + (this.input.slider[3].value * 1 / 100) +')';
 		this.updateInputContent();
 		this.updateBackgrounds();
+		this.updateColorButton();
 	},
 
 	updateStroke() {
