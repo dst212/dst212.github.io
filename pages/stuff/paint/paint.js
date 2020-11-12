@@ -26,8 +26,8 @@ function hexToDec(hex) {
 	}
 	return dec;
 }
-let twoDigits = v => v.length === 2 ? v : v.length === 1 ? '0' + v : '00';
-let rgbaArray = (rgba) => rgba.slice((rgba.toLowerCase().search('rgba') !== -1 ? 'rgba(' : 'rgb(').length, rgba.length - 1).split(',');
+var twoDigits = v => v.length === 2 ? v : v.length === 1 ? '0' + v : '00';
+var rgbaArray = (rgba) => rgba.slice((rgba.toLowerCase().search('rgba') !== -1 ? 'rgba(' : 'rgb(').length, rgba.length - 1).split(',');
 function rgbaToHex(rgba) { //rgba(0, 0, 0, 1) turns #FF000000
 	let i, hex = rgbaArray(rgba); //omit 'rgba('
 	for(i = 0; i < hex.length; i++) {
