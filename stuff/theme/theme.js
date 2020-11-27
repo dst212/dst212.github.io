@@ -40,7 +40,7 @@ var Theme = {
 				let sleep = Theme.getComputedStyle().getPropertyValue('--transition').slice(0, this.length-1);
 				if(localStorage.playDisco != 1 && localStorage.playDisco != 0) localStorage.playDisco = 1; //will be used for settings in future
 				if(localStorage.playDisco === 1) {
-					disco.currentTime = (localStorage.resumeMusic == null || localStorage.resumeMusic == undefined) ? 0 : localStorage.resumeMusic * 1;
+					disco.currentTime = !localStorage.resumeMusic ? 0 : localStorage.resumeMusic * 1;
 					disco.play();
 				}
 				// console.log('Starting disco mode: ' + sleep + 's delay, ' + disco.currentTime + 's resume');
@@ -58,14 +58,14 @@ var Theme = {
 	getComputedStyle: () => (Theme.computedStyle) || (Theme.computedStyle = getComputedStyle(document.documentElement)),
 	background: {
 		get: () => Theme.getComputedStyle().getPropertyValue('--body-fg'),
-		set: (id) => {
-			if(localStorage.theme != id && (id == 'white' || id == 'black')) {
+		set(id) {
+			if(localStorage.theme != id && (id === 'white' || id === 'black')) {
 				localStorage.theme = id;
 				Theme.update();
 			}
 		},
-		toggle: () => {
-			if(localStorage.theme == 'white') localStorage.theme = 'black';
+		toggle() {
+			if(localStorage.theme === 'white') localStorage.theme = 'black';
 			else localStorage.theme = 'white';
 			document.documentElement.classList.toggle('white-mode');
 			Theme.update();
@@ -73,7 +73,7 @@ var Theme = {
 	},
 	color: {
 		get: () => Theme.getComputedStyle().getPropertyValue('--accent'),
-		set: (id) => {
+		set(id) {
 			if(localStorage.themeColor !== id) {
 				localStorage.themeColor = id;
 				Theme.update();
