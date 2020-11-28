@@ -1,0 +1,44 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+@keyframes overflow {
+	0% { overflow: hidden; }
+	99% { overflow: hidden; }
+	100% { overflow: visible; }
+}
+
+@keyframes shrink-and-hide {
+	0% { max-height: 1000vh; }
+	99% { max-height: 0; }
+	100% { max-height: 0; display: none; }
+}
+@keyframes show-and-grow {
+	0% { display: initial; }
+	1% { max-height: 0; }
+	100% { max-height: 1000vh; }
+}
+
+@keyframes shake {
+	0%		{ transform: rotate(0deg); }
+	33%		{ transform: rotate(15deg); }
+	67%		{ transform: rotate(-15deg); }
+	100%	{ transform: rotate(0deg); }
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+/*END*/
