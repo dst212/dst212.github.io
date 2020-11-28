@@ -95,14 +95,14 @@ var Tron = {
 	init(body = document.body) {
 		let that = this;
 
-		Page && (Page.unload = (function() {
+		Page.unload = (function() {
 			//restore onkeydown and onkeyup functions when page is changed
 			//see https://dst212.github.io/js/page.js
 			let onkeydown = document.onkeydown;
 			return function() {
 				document.onkeydown = onkeydown;
 			};
-		})());
+		})();
 
 		this.title = document.getElementById('title') || document.getElementsByTagName('H1')[0];
 		this.gameOverAudio = new Audio('/res/audios/explosion.mp3');
@@ -170,25 +170,15 @@ var Tron = {
 		body.insertBefore(this.canvas, body.childNodes[0]);
 	},
 
-
 	div() {
-		let div = document.createElement('DIV');
-		div.setAttribute('id', 'pong-game');
+		let div = document.createElement('DIV'), main = document.body.getElementsByTagName('MAIN')[0];
+		div.setAttribute('id', 'tron-game');
 		div.style.textAlign = 'center';
 		div.innerHTML = '<br><input id="tron-start-button" type="button" onclick="Tron.start();" value="Start">';
-		document.body.getElementsByTagName('MAIN')[0].append(div);
+		main.insertBefore(div, main.childNodes[0]);
 		return div;
 	},
 
-	printText(what, color = undefined, fontSize = undefined, x = undefined, y = undefined, fontFamily = 'monospace') {
-		fontSize || (fontSize = 10);
-		this.ctx.font = fontSize + 'px ' + fontFamily;
-		this.ctx.fillStyle = color || Theme.get('accent');
-		this.ctx.fillText(what, x - (this.ctx.measureText(what).width / 2) || (this.canvas.width - this.ctx.measureText(what).width) / 2, y + (fontSize / 2) || (this.canvas.height + fontSize) / 2);
-	},
-
-	refreshScore() {
-		this.title.innerHTML = '<span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + this.player1.color + '">' + this.player1.score + '</span> - Tron - <span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + this.player2.color + '">' + this.player2.score + '</span>';
 	},
 
 	clear() {
