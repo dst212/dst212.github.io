@@ -6,5 +6,75 @@
 		<script type="text/javascript" src="/pages/games/tron/tron.js"></script>
 	</head>
 	<body>
+		<style>
+			#tron-settings .player-settings input[type="button"] {
+				margin: 0;
+				padding: 0;
+				height: 2em;
+				width: 2em;
+				border-color: transparent;
+				border-radius: 50%;
+				opacity: 0.5;
+			}
+			#tron-settings .player-settings input[type="button"]:hover {
+				border-radius: 0.5em;
+				opacity: 1;
+			}
+			form.new-form fieldset > * {
+				margin: 0.25em;
+				display: block;
+				text-align: center;
+			}
+			form.new-form fieldset > * * {
+				display: initial;
+			}
+		</style>
+		<div style="text-align: center; margin: 1em;">
+			Move Player 1 using <code>WASD</code>, move Player 2 using <code>↑←↓→</code>.
+			<br><code>ENTER</code> or <code>SPACE</code> to start/pause/resume.
+		</div>
+		<form id="tron-settings" class="new-form">
+			<div class="two">
+				<div class="left half">
+					<fieldset id="player1-settings" class="player-settings">
+						<legend>Player 1</legend>
+						<label>Color:</label>
+						<div>
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: red;">
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: orange;">
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: yellow;">
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: lime;">
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: cyan;">
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: blue;">
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: purple;">
+							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: magenta;">
+						</div>
+					</fieldset>
+				</div>
+				<div class="right half">
+					<fieldset id="player2-settings" class="player-settings">
+						<legend>Player 2</legend>
+						<label>Color:</label>
+						<div>
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: red;">
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: orange;">
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: yellow;">
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: lime;">
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: cyan;">
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: blue;">
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: purple;">
+							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: magenta;">
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<fieldset>
+				<legend>General Settings</legend>
+				<div>
+					<input type="button" value="Reset all" onclick="Tron.resetSettings();">
+					<input type="button" value="Reset Scores" onclick="Tron.resetScores();">
+				</div>
+			</fieldset>
+		</form>
 	</body>
 </html>

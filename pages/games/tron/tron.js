@@ -104,6 +104,7 @@ var Tron = {
 			};
 		})();
 
+		this.settingsForm = document.getElementById('tron-settings');
 		this.title = document.getElementById('title') || document.getElementsByTagName('H1')[0];
 		this.gameOverAudio = new Audio('/res/audios/explosion.mp3');
 		this.canvas && this.canvas.remove();
@@ -122,28 +123,28 @@ var Tron = {
 					break;
 			} else if(that.state === 1) switch(e.code) {
 				case 'KeyW':
-					that.player1.setDir(0);
+					that.player[0].setDir(0);
 					break;
 				case 'KeyA':
-					that.player1.setDir(3);
+					that.player[0].setDir(3);
 					break;
 				case 'KeyS':
-					that.player1.setDir(2);
+					that.player[0].setDir(2);
 					break;
 				case 'KeyD':
-					that.player1.setDir(1);
+					that.player[0].setDir(1);
 					break;
 				case 'ArrowUp':
-					that.player2.setDir(0);
+					that.player[1].setDir(0);
 					break;
 				case 'ArrowLeft':
-					that.player2.setDir(3);
+					that.player[1].setDir(3);
 					break;
 				case 'ArrowDown':
-					that.player2.setDir(2);
+					that.player[1].setDir(2);
 					break;
 				case 'ArrowRight':
-					that.player2.setDir(1);
+					that.player[1].setDir(1);
 					break;
 				case 'Enter': case 'Space':
 					that.state = 2;
@@ -162,10 +163,14 @@ var Tron = {
 				return false;
 		};
 
-		this.player1 = new TronPlayer(this.canvas, this.canvas.width / 4, this.canvas.height / 2, 'rgb(255, 0, 255)');
-		this.player2 = new TronPlayer(this.canvas, this.canvas.width / 4 * 3, this.canvas.height / 2, 'rgb(0, 255, 255)');
+		this.loadSettings();
+
+		this.player = [];
+		this.player.push(new TronPlayer(this.canvas, this.canvas.width / 4, this.canvas.height / 2, this.settings.color[0]));
+		this.player.push(new TronPlayer(this.canvas, this.canvas.width / 4 * 3, this.canvas.height / 2, this.settings.color[1]));
+
 		this.initVal();
-		this.refreshScore();
+		this.refreshTitle();
 
 		body.insertBefore(this.canvas, body.childNodes[0]);
 	},
@@ -179,6 +184,46 @@ var Tron = {
 		return div;
 	},
 
+	defaultSettings() {
+		return {
+			color: ['magenta', 'cyan'],
+			score: [0, 0],
+		};
+	},
+
+	loadSettings() {
+		this.settings = JSON.parse(localStorage.getItem('tron-settings')) || this.defaultSettings();
+	},
+
+	saveSettings() {
+		localStorage.setItem('tron-settings', JSON.stringify(this.settings));
+	},
+
+	setColor(from, i) {
+		this.settings.color[i] = this.player[i].color = getComputedStyle(from).backgroundColor;
+		this.refreshTitle();
+		this.saveSettings();
+	},
+
+	resetSettings() {
+		localStorage.setItem('tron-settings', JSON.stringify(this.settings = this.defaultSettings()));
+		this.refreshTitle();
+	},
+
+	resetScores() {
+		for(let i = 0; i < this.settings.score.length; i++)
+			this.settings.score[i] = 0;
+		this.saveSettings();
+		this.refreshTitle();
+	},
+
+	addScore(i, inc) {
+		this.settings.score[i]++;
+		this.saveSettings();
+	},
+
+	refreshTitle() {
+		this.title.innerHTML = '<span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + this.player[0].color + '">' + this.settings.score[0] + '</span> - Tron - <span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + this.player[1].color + '">' + this.settings.score[1] + '</span>';
 	},
 
 	clear() {
@@ -187,12 +232,8 @@ var Tron = {
 
 	countdown(i = 3, x = undefined, y = undefined) {
 		this.state = -1;
-		this.clear();
-		this.player1.print();
-		this.player2.print();
 		beep(i ? 650 : 1300, i ? 100 : 500);
 		if(i <= 0) i = 'GO!';
-		// this.printText(i.toString(), undefined, undefined, x, y);
 		this.title.innerHTML = i;
 		if(i !== 'GO!') //continue counting
 			setTimeout(this.countdown.bind(this), 1000, i - 1, x, y);
@@ -200,35 +241,35 @@ var Tron = {
 			setTimeout(function() {
 				this.state = 1;
 				this.clear();
-				this.refreshScore();
+				this.refreshTitle();
 				this.refresh();
 			}.bind(this), 1000);
 		}
 	},
 
 	refresh() {
-		this.player1.move();
-		this.player2.move();
+		this.player[0].move();
+		this.player[1].move();
 
-		if(this.player1.x === this.player2.x && this.player1.y === this.player2.y) {
-			this.player1.died = this.player2.died = true;
-			this.player1.print('', 'red');
-			this.player2.print('', 'red');
+		if(this.player[0].x === this.player[1].x && this.player[0].y === this.player[1].y) { //head collision
+			this.player[0].died = this.player[1].died = true;
+			this.player[0].print('', 'red');
+			this.player[1].print('', 'red');
 		} else {
-			if(this.player1.collide()) {
-				this.player1.died = true;
-				this.player1.print('red', 'transparent');
+			if(this.player[0].collide()) {
+				this.player[0].died = true;
+				this.player[0].print('red', 'transparent');
 			} else
-				this.player1.print();
+				this.player[0].print();
 
-			if(this.player2.collide()) {
-				this.player2.died = true;
-				this.player2.print('red', 'transparent');
+			if(this.player[1].collide()) {
+				this.player[1].died = true;
+				this.player[1].print('red', 'transparent');
 			} else
-				this.player2.print();
+				this.player[1].print();
 		}
 
-		if(!this.player1.died && !this.player2.died) {
+		if(!this.player[0].died && !this.player[1].died) {
 			if(this.state === 1)
 				setTimeout(this.refresh.bind(this), this.delay);
 		} else {
@@ -241,7 +282,12 @@ var Tron = {
 			this.button.setAttribute('disabled', 'true');
 			this.button.blur();
 		}
+		document.activeElement.blur();
+		this.settingsForm.style.display = 'none';
 		this.reset();
+		this.clear();
+		this.player[0].print();
+		this.player[1].print();
 		this.countdown();
 	},
 
@@ -249,13 +295,14 @@ var Tron = {
 		this.state = 0;
 		this.gameOverAudio.play();
 		//check who's the winner
-		if(this.player1.died && !this.player2.died)
-			this.player2.score++;
-		if(this.player2.died && !this.player1.died)
-			this.player1.score++;
+		if(this.player[0].died && !this.player[1].died)
+			this.addScore(1, 1);
+		if(this.player[1].died && !this.player[0].died)
+			this.addScore(0, 1);
 
-		this.refreshScore();
+		this.refreshTitle();
 
+		this.settingsForm.style.display = '';
 		if(this.button) {
 			this.button.removeAttribute('disabled');
 			this.button.setAttribute('value', 'Restart');
@@ -264,8 +311,8 @@ var Tron = {
 
 	reset() {
 		this.initVal();
-		this.player1.init();
-		this.player2.init();
+		this.player[0].init();
+		this.player[1].init();
 	},
 }
 
