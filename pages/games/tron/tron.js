@@ -66,7 +66,7 @@ var TronPlayer = function(canvas, x, y, color) {
 
 	this.collide = function() {
 		return this.x < 0 || this.y < 0 || this.x >= this.canvas.width || this.y >= this.canvas.height || this.ctx.getImageData(this.x, this.y, 1, 1).data[3] > 0;
-	}
+	};
 
 	this.print = function(color, head) {
 		this.ctx.beginPath();
@@ -220,23 +220,23 @@ var Tron = {
 		this.player1.move();
 		this.player2.move();
 
-		if(this.player1.collide())
-			this.player1.died = true;
-
-		if(this.player2.collide())
-			this.player2.died = true;
-
-		if(this.player1.x === this.player2.x && this.player1.y === this.player2.y)
+		if(this.player1.x === this.player2.x && this.player1.y === this.player2.y) {
 			this.player1.died = this.player2.died = true;
+			this.player1.print('', 'red');
+			this.player2.print('', 'red');
+		} else {
+			if(this.player1.collide()) {
+				this.player1.died = true;
+				this.player1.print('red', 'transparent');
+			} else
+				this.player1.print();
 
-		if(this.player1.died)
-			this.player1.print('red', 'transparent');
-		else
-			this.player1.print();
-		if(this.player2.died)
-			this.player2.print('red', 'transparent');
-		else
-			this.player2.print();
+			if(this.player2.collide()) {
+				this.player2.died = true;
+				this.player2.print('red', 'transparent');
+			} else
+				this.player2.print();
+		}
 
 		if(!this.player1.died && !this.player2.died) {
 			if(this.state === 1)
