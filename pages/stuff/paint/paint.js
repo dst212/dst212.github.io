@@ -223,7 +223,6 @@ var Paint = {
 	},
 
 	setxy(e) {
-		let target = e.target.getBoundingClientRect();
 		this.x = e.offsetX / e.target.clientWidth * e.target.width;
 		this.y = e.offsetY / e.target.clientHeight * e.target.height;
 	},
