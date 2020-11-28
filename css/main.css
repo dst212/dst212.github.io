@@ -7,6 +7,7 @@
  **********************************************************************/
 
 @import url('rules.css?0');
+@import url('keyframes.css?0');
 @import url('loading.css?0');
 @import url('searchbar.css?0');
 @import url('../stuff/theme/theme.css?0');
@@ -466,13 +467,6 @@ input[type=button]:hover {
 	-ms-user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
-}
-
-@keyframes shake {
-	0%		{ transform: rotate(0deg); }
-	33%		{ transform: rotate(15deg); }
-	67%		{ transform: rotate(-15deg); }
-	100%	{ transform: rotate(0deg); }
 }
 button:disabled:hover,
 input[type=submit]:disabled:hover,
