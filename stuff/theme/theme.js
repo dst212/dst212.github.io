@@ -14,8 +14,7 @@ var Theme = {
 	update: (function () {
 		const darkThemes =	['dark-black-theme',	'dark-white-theme',	'dark-red-theme',	'dark-yellow-theme',	'dark-lime-theme',	'dark-cyan-theme',	'dark-blue-theme',	'dark-magenta-theme'];
 		const lightThemes =	['light-black-theme',	'light-white-theme','light-red-theme',	'light-yellow-theme',	'light-lime-theme',	'light-cyan-theme',	'light-blue-theme',	'light-magenta-theme'];
-		// var disco = document.getElementById('disco-song');
-		var disco = new Audio('https://dst.altervista.org/files/audios/disco.mp3');
+		var disco = new Audio(localStorage.discoModeMusic || 'https://dst.altervista.org/files/audios/disco.mp3');
 		disco.loop = true;
 		function removeClasses() {
 			let i;
