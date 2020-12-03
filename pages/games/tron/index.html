@@ -29,16 +29,20 @@
 				display: initial;
 			}
 		</style>
+		<div id="tron-game" style="text-align: center;">
+			<canvas id="tron-canvas" width="160" height="90" style="image-rendering: crisp-edges; image-rendering: pixelated; max-width: 100%; width: 100vh; max-height: 0; display: block; margin: auto; border: var(--general-border) solid var(--accent);"></canvas>
+			<br><input id="tron-start-button" type="button" onclick="this.blur(); Tron.pressStart();" value="Start">
+		</div>
 		<div style="text-align: center; margin: 1em;">
 			Move Player 1 using <code>WASD</code>, move Player 2 using <code>↑←↓→</code>.
 			<br><code>ENTER</code> or <code>SPACE</code> to start/pause/resume.
+			<br>The game is still in development: on finding any bug, tell it to <a href="javascript:void(Page.fetch('info'));" title="Info and contacts">dst212</a>.
 		</div>
-		<form id="tron-settings" class="new-form">
+		<form id="tron-settings" class="new-form" onsubmit="return false">
 			<div class="two">
 				<div class="left half">
 					<fieldset id="player1-settings" class="player-settings">
 						<legend>Player 1</legend>
-						<label>Color:</label>
 						<div>
 							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: red;">
 							<input type="button" onclick="Tron.setColor(this, 0);" style="background-color: orange;">
@@ -54,7 +58,6 @@
 				<div class="right half">
 					<fieldset id="player2-settings" class="player-settings">
 						<legend>Player 2</legend>
-						<label>Color:</label>
 						<div>
 							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: red;">
 							<input type="button" onclick="Tron.setColor(this, 1);" style="background-color: orange;">
@@ -68,13 +71,36 @@
 					</fieldset>
 				</div>
 			</div>
-			<fieldset>
-				<legend>General Settings</legend>
-				<div>
-					<input type="button" value="Reset all" onclick="Tron.resetSettings();">
-					<input type="button" value="Reset Scores" onclick="Tron.resetScores();">
+			<div class="two">
+				<div class="left half">
+					<fieldset>
+						<legend>General Settings</legend>
+						<div>
+							<input type="button" value="Reset all" onclick="Tron.resetSettings();">
+							<input type="button" value="Reset Scores" onclick="Tron.resetScores();">
+						</div>
+					</fieldset>
 				</div>
-			</fieldset>
+				<div class="right half">
+					<fieldset>
+						<legend>Online multiplayer (<b style="color: var(--invalid);">BETA</b>)</legend>
+						<div id="tron-multiplayer">
+							<input id="tron-room-name" type="text" placeholder="Unnamed room" maxlength="20">
+							<input type="button" value="Create room" onclick="this.blur(); Tron.roomCreate(document.getElementById('tron-room-name').value);"> or
+							<input type="button" value="Join room" onclick="this.blur(); Tron.roomList();">
+						</div>
+						<div id="tron-multiplayer-leave" style="display: none;">
+							<input type="button" value="Leave" onclick="this.blur(); Tron.roomLeave();">
+						</div>
+					</fieldset>
+				</div>
+			</div>
 		</form>
+		<div id="tron-credits" style="text-align: center; clear: both;">
+			Credits to:
+			<br>dst212 - Online multiplayer mode, settings
+			<br><a href="http://gregfrdt.altervista.org" target="_blank" title="Gregorio Filippo Rossi Del Turco's website">Gregorio</a> - Sound style, visual optimizations, ideas and concepts
+			<br><br>Online multiplayer mode made possible thanks to the <a href="http://heroku.com" target="_blank" title="Cloud Application Platform | Heroku">Heroku</a> platform.
+		</div>
 	</body>
 </html>

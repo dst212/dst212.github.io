@@ -1,320 +1,438 @@
-//js
+// made by dst212, https://github.com/dst212/dst212.github.io/ - Tron game
 'use strict';
 
-var TronPlayer = function(canvas, x, y, color) {
-	this.canvas = canvas || document.getElementsByTagName('CANVAS')[0];
-	this.ctx = this.canvas.getContext('2d');
-	this.color = color;
-	//head's coordinates
-	this.init = function() {
-		this.x = x || Math.floor((this.canvas.width * 0.8) * Math.random());
-		this.y = y || Math.floor((this.canvas.height * 0.8) * Math.random());
-		//↑ = 0, → = 1, ↓ = 2, ← = 3
-		/* quadrants:
-			1	2
-			4	3
-		*/
-		// this.dir = this.x < this.canvas.width / 2 ? 1 : 3;
-		//the direction is
-		if(this.x < this.canvas.width / 2 && this.y < this.canvas.height / 2) {
-			//first quadrant
-			this.dir = this.x < this.y ? 1 : 2;
-		} else if(this.x >= this.canvas.width / 2 && this.y < this.canvas.height / 2) {
-			//second quadrant
-			this.dir = this.canvas.width - this.x < this.y ? 3 : 2;
-		} else if(this.x >= this.canvas.width / 2 && this.y >= this.canvas.height / 2) {
-			//third quadrant
-			this.dir = this.canvas.width - this.x < this.canvas.height - this.y ? 3 : 0;
-		} else {
-			//fourth quadrant
-			this.dir = this.x < this.canvas.height - this.y ? 1 : 0;
-		}
-		this.queueDir = this.dir;
-		this.prevx = this.x;
-		this.prevy = this.y;
-		this.died = false; //has crashed somewhere
-	};
+var Tron;
 
-	this.setDir = function(where) {
-		if(this.dir !== where && this.dir + 2 !== where && this.dir - 2 !== where && 0 <= where && where < 4) {
-			this.queueDir = where;
-			beep(350 + 25 * where, 100);
-		}
-	};
+(function() {
+	const SERVER = 'ws://dst212.herokuapp.com/tron-game';
 
-	this.move = function() {
-		this.prevx = this.x;
-		this.prevy = this.y;
-		this.dir = this.queueDir;
-		switch(this.dir) {
-			case 0:
-				this.y--;
-				break;
-			case 1:
-				this.x++;
-				break;
-			case 2:
-				this.y++;
-				break;
-			case 3:
-				this.x--;
-				break;
-			default:
-				break;
-		};
-	};
+	let player = [];
 
-	this.collide = function() {
-		return this.x < 0 || this.y < 0 || this.x >= this.canvas.width || this.y >= this.canvas.height || this.ctx.getImageData(this.x, this.y, 1, 1).data[3] > 0;
-	};
-
-	this.print = function(color, head) {
-		this.ctx.beginPath();
-		this.ctx.fillStyle = color || this.color || Theme.get('accent');
-		this.ctx.rect(this.prevx, this.prevy, 1, 1);
-		this.ctx.fill();
-		this.ctx.closePath();
-
-		this.ctx.beginPath();
-		this.ctx.fillStyle = head || (Theme && Theme.get('body-fg')) || 'white';
-		this.ctx.rect(this.x, this.y, 1, 1);
-		this.ctx.fill();
-		this.ctx.closePath();
-	};
-
-	this.score = 0;
-	this.init();
-}
-
-var Tron = {
-	initVal() {
-		this.delay = 50;
-		this.state = 0; //game is running (0: no, 1: yes, 2: paused, -1: countdown or game over screen)
-		this.button = document.getElementById('tron-start-button');
-	},
-	init(body = document.body) {
-		let that = this;
-
-		Page.unload = (function() {
-			//restore onkeydown and onkeyup functions when page is changed
-			//see https://dst212.github.io/js/page.js
-			let onkeydown = document.onkeydown;
-			return function() {
-				document.onkeydown = onkeydown;
-			};
-		})();
-
-		this.settingsForm = document.getElementById('tron-settings');
-		this.title = document.getElementById('title') || document.getElementsByTagName('H1')[0];
-		this.gameOverAudio = new Audio('/res/audios/explosion.mp3');
-		this.canvas && this.canvas.remove();
-		this.canvas = document.createElement('CANVAS');
-		this.canvas.width = 160;
-		this.canvas.height = 90;
-		this.canvas.style = 'image-rendering: crisp-edges; image-rendering: pixelated; max-width: 100%; display: block; margin: auto; border: var(--general-border) solid var(--accent); width: 100vh;';
-		this.ctx = this.canvas.getContext('2d');
-
-		document.onkeydown = function(e) {
-			if(that.state === 0) switch (e.code) {
-				case 'Enter': case 'Space':
-					that.start();
-					break;
-				default:
-					break;
-			} else if(that.state === 1) switch(e.code) {
-				case 'KeyW':
-					that.player[0].setDir(0);
-					break;
-				case 'KeyA':
-					that.player[0].setDir(3);
-					break;
-				case 'KeyS':
-					that.player[0].setDir(2);
-					break;
-				case 'KeyD':
-					that.player[0].setDir(1);
-					break;
-				case 'ArrowUp':
-					that.player[1].setDir(0);
-					break;
-				case 'ArrowLeft':
-					that.player[1].setDir(3);
-					break;
-				case 'ArrowDown':
-					that.player[1].setDir(2);
-					break;
-				case 'ArrowRight':
-					that.player[1].setDir(1);
-					break;
-				case 'Enter': case 'Space':
-					that.state = 2;
-					break;
-				default:
-					break;
-			} else if(that.state === 2) switch(e.code) {
-				case 'Enter': case 'Space':
-					that.state = 1;
-					that.refresh();
-					break;
-				default:
-					break;
-			}
-			if(document.activeElement.nodeName !== 'INPUT' && (37 <= e.keyCode && e.keyCode <= 40 || e.keyCode === 32))
-				return false;
-		};
-
-		this.loadSettings();
-
-		this.player = [];
-		this.player.push(new TronPlayer(this.canvas, this.canvas.width / 4, this.canvas.height / 2, this.settings.color[0]));
-		this.player.push(new TronPlayer(this.canvas, this.canvas.width / 4 * 3, this.canvas.height / 2, this.settings.color[1]));
-
-		this.initVal();
-		this.refreshTitle();
-
-		body.insertBefore(this.canvas, body.childNodes[0]);
-	},
-
-	div() {
-		let div = document.createElement('DIV'), main = document.body.getElementsByTagName('MAIN')[0];
-		div.setAttribute('id', 'tron-game');
-		div.style.textAlign = 'center';
-		div.innerHTML = '<br><input id="tron-start-button" type="button" onclick="Tron.start();" value="Start">';
-		main.insertBefore(div, main.childNodes[0]);
-		return div;
-	},
-
-	defaultSettings() {
-		return {
+	//settings
+	let data;
+	let settings = {
+		default() {return {
 			color: ['magenta', 'cyan'],
 			score: [0, 0],
+			sounds: true,
+		}},
+		getScore(i) { return data.score[i]; },
+		getColor(i) { return data.color[i]; },
+		addScore(i, inc) {
+			data.score[i]++;
+			this.save();
+		},
+		setColor(from, i) {
+			data.color[i] = player[i].color = getComputedStyle(from).backgroundColor;
+			elem.refreshTitle();
+			this.save();
+		},
+		load() {
+			data = JSON.parse(localStorage.getItem('tron-settings')) || this.default();
+		},
+		save() {
+			localStorage.setItem('tron-settings', JSON.stringify(data));
+		},
+		reset() {
+			localStorage.setItem('tron-settings', JSON.stringify(data = this.default()));
+			elem.refreshTitle();
+		},
+		resetScores() {
+			for(let i = 0; i < data.score.length; i++)
+				data.score[i] = 0;
+			this.save();
+			elem.refreshTitle();
+		},
+	};
+
+	//elements
+	let elem = { //elements
+		button: null,
+		title: null,
+		settingsForm: null,
+		init() {
+			this.button = document.getElementById('tron-start-button');
+			this.settingsForm = document.getElementById('tron-settings');
+			this.title = document.getElementById('title') || document.getElementsByTagName('H1')[0];
+		},
+		refreshTitle() {
+			this.title.innerHTML = '<span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + data.color[0] + '">' + settings.getScore(0) + '</span> - Tron - <span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + data.color[1] + '">' + settings.getScore(1) + '</span>';
+		},
+	}
+	let canvas, ctx;
+
+	let TronPlayer = function(x, y, color) {
+		this.color = color;
+		//head's coordinates
+		this.init = function() {
+			this.x = x || Math.floor((canvas.width * 0.8) * Math.random());
+			this.y = y || Math.floor((canvas.height * 0.8) * Math.random());
+			/*	directions: ↑ = 0, → = 1, ↓ = 2, ← = 3
+				quadrants (clockwise):
+				1	2
+				4	3
+			*/
+			//the direction is
+			if(this.x < canvas.width / 2 && this.y < canvas.height / 2) {
+				//first quadrant
+				this.dir = this.x < this.y ? 1 : 2;
+			} else if(this.x >= canvas.width / 2 && this.y < canvas.height / 2) {
+				//second quadrant
+				this.dir = canvas.width - this.x < this.y ? 3 : 2;
+			} else if(this.x >= canvas.width / 2 && this.y >= canvas.height / 2) {
+				//third quadrant
+				this.dir = canvas.width - this.x < canvas.height - this.y ? 3 : 0;
+			} else {
+				//fourth quadrant
+				this.dir = this.x < canvas.height - this.y ? 1 : 0;
+			}
+			this.queueDir = this.dir;
+			this.prevx = this.x;
+			this.prevy = this.y;
+			this.died = false; //has crashed somewhere
 		};
-	},
 
-	loadSettings() {
-		this.settings = JSON.parse(localStorage.getItem('tron-settings')) || this.defaultSettings();
-	},
+		this.setDir = function(where) {
+			if(this.dir !== where && this.dir + 2 !== where && this.dir - 2 !== where && 0 <= where && where < 4) {
+				this.queueDir = where;
+				if(data.sounds) beep(350 + 25 * where, 100);
+			}
+		};
 
-	saveSettings() {
-		localStorage.setItem('tron-settings', JSON.stringify(this.settings));
-	},
+		this.move = function() {
+			this.prevx = this.x;
+			this.prevy = this.y;
+			this.dir = this.queueDir;
+			switch(this.dir) {
+				case 0: this.y--; break;
+				case 1: this.x++; break;
+				case 2: this.y++; break;
+				case 3: this.x--; break;
+				default:
+					break;
+			};
+		};
 
-	setColor(from, i) {
-		this.settings.color[i] = this.player[i].color = getComputedStyle(from).backgroundColor;
-		this.refreshTitle();
-		this.saveSettings();
-	},
+		this.collide = function() {
+			return this.x < 0 || this.y < 0 || this.x >= canvas.width || this.y >= canvas.height || ctx.getImageData(this.x, this.y, 1, 1).data[3] > 0;
+		};
 
-	resetSettings() {
-		localStorage.setItem('tron-settings', JSON.stringify(this.settings = this.defaultSettings()));
-		this.refreshTitle();
-	},
+		this.print = function(color, head) {
+			ctx.beginPath();
+			ctx.fillStyle = color || this.color || (typeof Theme !== 'undefined' && Theme.get('accent'));
+			ctx.rect(this.prevx, this.prevy, 1, 1);
+			ctx.fill();
+			ctx.closePath();
 
-	resetScores() {
-		for(let i = 0; i < this.settings.score.length; i++)
-			this.settings.score[i] = 0;
-		this.saveSettings();
-		this.refreshTitle();
-	},
+			ctx.beginPath();
+			ctx.fillStyle = head || (typeof Theme !== 'undefined' && Theme.get('body-fg')) || 'white';
+			ctx.rect(this.x, this.y, 1, 1);
+			ctx.fill();
+			ctx.closePath();
+		};
 
-	addScore(i, inc) {
-		this.settings.score[i]++;
-		this.saveSettings();
-	},
+		this.init();
+	};
 
-	refreshTitle() {
-		this.title.innerHTML = '<span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + this.player[0].color + '">' + this.settings.score[0] + '</span> - Tron - <span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + this.player[1].color + '">' + this.settings.score[1] + '</span>';
-	},
+	//socket
+	let socket, isHost = false;
 
-	clear() {
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	},
+	let initSocket = function() {
+		if(!socket) {
+			document.getElementById('tron-multiplayer').style.display = 'none';
+			document.getElementById('tron-multiplayer-leave').style.display = 'block';
+			socket = io(SERVER);
+			socket.on('connect', function() {
+				// win('Tron', 'Succesfully connected to the server.');
+				console.log('Connected to the server (' + SERVER + ').')
+			});
+			socket.on('disconnect', function() {
+				// win('Tron', 'Disconnected from the server.');
+				console.log('Disconnected from the server.');
+			});
+			socket.on('message', console.log);
+			socket.on('connected', function(data) {
+				console.log(data);
+			});
+			socket.on('roomList', data => Tron.roomShowList(data));
+			socket.on('moveOpponent', data => player[1].setDir(data * 1));
+			socket.on('roomReady', data => socket.emit('setOpponent', data));
+			socket.on('startGame', () => priv.start());
+			socket.on('next', data => {
+				if(priv.state === 1) {
+					if(data.length > 0) {
+						player[0].setDir(data[1] === 3 ? 1 : data[1] === 1 ? 3 : data[1]);
+						player[1].setDir(data[0] === 3 ? 1 : data[0] === 1 ? 3 : data[0]);
+					}
+					priv.refresh();
+				}
+			});
+			isHost = true;
+		}
+	};
+	let endSocket = function() {
+		if(socket) {
+			document.getElementById('tron-multiplayer').style.display = 'block';
+			document.getElementById('tron-multiplayer-leave').style.display = 'none';
+			socket.disconnect();
+			socket = undefined;
+			elem.refreshTitle();
+			elem.button.removeAttribute('disabled');
+		}
+		isHost = false;
+	};
 
-	countdown(i = 3, x = undefined, y = undefined) {
-		this.state = -1;
-		beep(i ? 650 : 1300, i ? 100 : 500);
-		if(i <= 0) i = 'GO!';
-		this.title.innerHTML = i;
-		if(i !== 'GO!') //continue counting
-			setTimeout(this.countdown.bind(this), 1000, i - 1, x, y);
-		else { //start the game
-			setTimeout(function() {
-				this.state = 1;
+	//private object
+	let priv = {
+		reset() {
+			player[0].init();
+			player[1].init();
+		},
+
+		clear() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		},
+
+		waitForOpponent() {
+			elem.title.innerHTML = 'Waiting for opponent...';
+		},
+
+		refresh() {
+			if(isHost)
+				socket.emit('next', player[0].queueDir !== player[0].dir || player[1].queueDir !== player[1].dir ? [player[0].queueDir, player[1].queueDir] : []);
+			player[0].move();
+			player[1].move();
+
+			if(player[0].x === player[1].x && player[0].y === player[1].y) { //head collision
+				player[0].died = player[1].died = true;
+				player[0].print('', 'red');
+				player[1].print('', 'red');
+			} else {
+				if(player[0].collide()) {
+					player[0].died = true;
+					player[0].print('red', 'transparent');
+				} else
+					player[0].print();
+
+				if(player[1].collide()) {
+					player[1].died = true;
+					player[1].print('red', 'transparent');
+				} else
+					player[1].print();
+			}
+
+			if(!player[0].died && !player[1].died) {
+				if(this.state === 1 && (!socket || (socket && isHost)))
+					setTimeout(this.refresh.bind(this), this.delay);
+			} else {
+				if(isHost)
+					socket.emit('next', player[0].queueDir !== player[0].dir || player[1].queueDir !== player[1].dir ? [player[0].queueDir, player[1].queueDir] : []);
+				this.gameOver();
+			}
+		},
+
+		countdown(i = 3) {
+			this.state = -1;
+			if(data.sounds) beep(i ? 650 : 1300, i ? 100 : 500);
+			if(i <= 0) i = 'GO!';
+			elem.title.innerHTML = i;
+			if(i !== 'GO!') //continue counting
+				setTimeout(this.countdown.bind(this), 1000, i - 1);
+			else { //start the game
+				setTimeout(function() {
+					this.state = 1;
+					this.clear();
+					elem.refreshTitle();
+					if(!socket || (socket && isHost))
+						this.refresh();
+				}.bind(this), 1000);
+			}
+		},
+
+		start() {
+			if(this.state === 0) {
+				if(socket)
+					socket.emit('notReadyToStart');
+				this.reset();
 				this.clear();
-				this.refreshTitle();
-				this.refresh();
-			}.bind(this), 1000);
-		}
-	},
+				player[0].print();
+				player[1].print();
+				this.countdown();
+			}
+		},
 
-	refresh() {
-		this.player[0].move();
-		this.player[1].move();
+		gameOver() {
+			this.state = 0;
+			if(data.sounds) Tron.gameOverAudio.play();
+			//check who's the winner
+			if(player[0].died && !player[1].died)
+				settings.addScore(1, 1);
+			if(player[1].died && !player[0].died)
+				settings.addScore(0, 1);
 
-		if(this.player[0].x === this.player[1].x && this.player[0].y === this.player[1].y) { //head collision
-			this.player[0].died = this.player[1].died = true;
-			this.player[0].print('', 'red');
-			this.player[1].print('', 'red');
-		} else {
-			if(this.player[0].collide()) {
-				this.player[0].died = true;
-				this.player[0].print('red', 'transparent');
-			} else
-				this.player[0].print();
+			elem.refreshTitle();
 
-			if(this.player[1].collide()) {
-				this.player[1].died = true;
-				this.player[1].print('red', 'transparent');
-			} else
-				this.player[1].print();
-		}
+			elem.settingsForm.style.display = '';
+			if(elem.button) {
+				elem.button.removeAttribute('disabled');
+				elem.button.setAttribute('value', 'Restart');
+			}
+		},
 
-		if(!this.player[0].died && !this.player[1].died) {
-			if(this.state === 1)
-				setTimeout(this.refresh.bind(this), this.delay);
-		} else {
-			this.gameOver();
-		}
-	},
+		delay: 50,
+		state: 0, //game is running (0: no, 1: yes, 2: paused, -1: countdown or game over screen)
+	};
 
-	start() {
-		if(this.button) { //disable button
-			this.button.setAttribute('disabled', 'true');
-			this.button.blur();
-		}
-		document.activeElement.blur();
-		this.settingsForm.style.display = 'none';
-		this.reset();
-		this.clear();
-		this.player[0].print();
-		this.player[1].print();
-		this.countdown();
-	},
+	//game object
+	Tron = {
+		init() {
+			let that = this;
 
-	gameOver() {
-		this.state = 0;
-		this.gameOverAudio.play();
-		//check who's the winner
-		if(this.player[0].died && !this.player[1].died)
-			this.addScore(1, 1);
-		if(this.player[1].died && !this.player[0].died)
-			this.addScore(0, 1);
+			if(typeof Page !== 'undefined') Page.unload = (function() {
+				//restore onkeydown and onkeyup functions when page is changed
+				//see https://dst212.github.io/js/page.js
+				let onkeydown = document.onkeydown;
+				return function() {
+					document.onkeydown = onkeydown;
+					Tron = undefined;
+				};
+			})();
 
-		this.refreshTitle();
+			settings.load();
 
-		this.settingsForm.style.display = '';
-		if(this.button) {
-			this.button.removeAttribute('disabled');
-			this.button.setAttribute('value', 'Restart');
-		}
-	},
+			//DOM-related stuff
+			elem.init();
+			canvas = document.getElementById('tron-canvas')
+			ctx = canvas.getContext('2d');
+			this.gameOverAudio = new Audio('/res/audios/explosion.mp3');
 
-	reset() {
-		this.initVal();
-		this.player[0].init();
-		this.player[1].init();
-	},
-}
+			document.onkeydown = function(e) {
+				if(priv.state === 0) switch (e.code) {
+					case 'Enter': case 'Space':
+						if(document.activeElement.nodeName !== 'INPUT')
+							that.pressStart();
+						break;
+					default:
+						break;
+				} else if(priv.state === 1) switch(e.code) {
+					case 'KeyW':
+						if(socket && !isHost) socket.emit('move', 0);
+						else player[0].setDir(0);
+						break;
+					case 'KeyA':
+						if(socket && !isHost) socket.emit('move', 1);
+						else player[0].setDir(3);
+						break;
+					case 'KeyS':
+						if(socket && !isHost) socket.emit('move', 2);
+						else player[0].setDir(2);
+						break;
+					case 'KeyD':
+						if(socket && !isHost) socket.emit('move', 3);
+						else player[0].setDir(1);
+						break;
+					case 'ArrowUp':
+						if(socket && !isHost) socket.emit('move', 0);
+						else player[socket ? 0 : 1].setDir(0);
+						break;
+					case 'ArrowLeft':
+						if(socket && !isHost) socket.emit('move', 1);
+						else player[socket ? 0 : 1].setDir(3);
+						break;
+					case 'ArrowDown':
+						if(socket && !isHost) socket.emit('move', 2);
+						else player[socket ? 0 : 1].setDir(2);
+						break;
+					case 'ArrowRight':
+						if(socket && !isHost) socket.emit('move', 3);
+						else player[socket ? 0 : 1].setDir(1);
+						break;
+					case 'Enter': case 'Space':
+						if(!socket)
+							priv.state = 2;
+						break;
+					default:
+						break;
+				} else if(priv.state === 2) switch(e.code) {
+					case 'Enter': case 'Space':
+						priv.state = 1;
+						priv.refresh();
+						break;
+					default:
+						break;
+				}
+				if(document.activeElement.nodeName !== 'INPUT' && (37 <= e.keyCode && e.keyCode <= 40 || e.keyCode === 32))
+					return false;
+			};
 
-Tron.init(Tron.div());
+			player = [];
+			player.push(new TronPlayer(canvas.width / 4, canvas.height / 2, settings.getColor(0)));
+			player.push(new TronPlayer(canvas.width / 4 * 3, canvas.height / 2, settings.getColor(1)));
+
+			elem.refreshTitle();
+		},
+
+		//settings
+		resetSettings() { settings.reset(); },
+		resetScores() { settings.resetScores(); },
+		setColor(from, i) { settings.setColor(from, i); },
+		//rooms
+		roomShowList(room) {
+			let list = '', opponents = [];
+			for(let key in room)
+				if(room[key].player.length < 2)
+					opponents.push({innerHTML: room[key].name, onclick: function() {Tron.roomJoin(key);}});
+			if(opponents.length > 0)
+				list = 'List of available opponents:';
+			else {
+				list = 'Nobody is waiting for a opponent.<br>Try to create a room and wait for someone to join.';
+				endSocket();
+			}
+			win('Tron', list, opponents, () => {}, true);
+		},
+
+		roomList() {
+			if(!socket)
+				initSocket();
+			socket.emit('roomList');
+		},
+
+		roomCreate(name) {
+			if(!socket)
+				initSocket();
+			socket.emit('roomCreate', name);
+		},
+
+		roomJoin(roomId) {
+			if(socket) {
+				socket.emit('roomJoin', roomId);
+				isHost = false;
+			}
+		},
+
+		roomLeave() {
+			if(socket) {
+				socket.emit('roomLeave');
+				endSocket();
+			}
+		},
+
+		pressStart() {
+			//disable button
+			elem.button.setAttribute('disabled', 'true');
+			document.activeElement.blur();
+			if(priv.state === 0) {
+				canvas.style.maxHeight = '100vh';
+				elem.settingsForm.style.display = 'none';
+				if(socket) {
+					socket.emit('readyToStart');
+					priv.waitForOpponent();
+				} else
+					priv.start();
+			}
+		},
+	}
+})();
+
+Tron.init();
 //END
