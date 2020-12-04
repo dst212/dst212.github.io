@@ -33,6 +33,8 @@ var Tron;
 		},
 		reset() {
 			localStorage.setItem('tron-settings', JSON.stringify(data = this.default()));
+			for(let i = 0; i < data.color.length; i++)
+				player[i].color = data.color[i];
 			elem.refreshTitle();
 		},
 		resetScores() {
