@@ -1,4 +1,4 @@
-// made by dst212, https://github.com/dst212/dst212.github.io/ - Tron game
+//made by dst212, https://github.com/dst212/dst212.github.io/ - Tron game
 'use strict';
 
 var Tron;
@@ -11,14 +11,12 @@ var Tron;
 	//settings
 	let data;
 	let settings = {
-		default() {return {
+		default: () => ({
 			color: ['magenta', 'cyan'],
 			score: [0, 0],
 			sounds: true,
-		}},
-		getScore(i) { return data.score[i]; },
-		getColor(i) { return data.color[i]; },
-		addScore(i, inc) {
+		}),
+		score(i, inc) {
 			data.score[i]++;
 			this.save();
 		},
@@ -46,7 +44,7 @@ var Tron;
 	};
 
 	//elements
-	let elem = { //elements
+	let elem = {
 		button: null,
 		title: null,
 		settingsForm: null,
@@ -56,7 +54,7 @@ var Tron;
 			this.title = document.getElementById('title') || document.getElementsByTagName('H1')[0];
 		},
 		refreshTitle() {
-			this.title.innerHTML = '<span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + data.color[0] + '">' + settings.getScore(0) + '</span> - Tron - <span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + data.color[1] + '">' + settings.getScore(1) + '</span>';
+			this.title.innerHTML = '<span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + data.color[0] + '">' + data.score[0] + '</span> - Tron - <span style="text-shadow: 0.05em 0.05em rgba(0,0,0,0.2); color: ' + data.color[1] + '">' + data.score[1] + '</span>';
 		},
 	}
 	let canvas, ctx;
@@ -266,9 +264,9 @@ var Tron;
 			if(data.sounds) Tron.gameOverAudio.play();
 			//check who's the winner
 			if(player[0].died && !player[1].died)
-				settings.addScore(1, 1);
+				settings.score(1, 1);
 			if(player[1].died && !player[0].died)
-				settings.addScore(0, 1);
+				settings.score(0, 1);
 
 			elem.refreshTitle();
 
@@ -366,8 +364,8 @@ var Tron;
 			};
 
 			player = [];
-			player.push(new TronPlayer(canvas.width / 4, canvas.height / 2, settings.getColor(0)));
-			player.push(new TronPlayer(canvas.width / 4 * 3, canvas.height / 2, settings.getColor(1)));
+			player.push(new TronPlayer(canvas.width / 4, canvas.height / 2, data.color[0]));
+			player.push(new TronPlayer(canvas.width / 4 * 3, canvas.height / 2, data.color[1]));
 
 			elem.refreshTitle();
 		},
