@@ -135,25 +135,22 @@ var Tron;
 	};
 
 	//socket
-	let socket, isHost = false;
+	let socket, socketWin = null, isHost = false;
 
 	let initSocket = function() {
 		if(!socket) {
 			document.getElementById('tron-multiplayer').style.display = 'none';
 			document.getElementById('tron-multiplayer-leave').style.display = 'block';
+			socketWin = win('Tron', 'Connecting...', [{innerHTML: 'Cancel'}], endSocket);
 			socket = io(SERVER);
 			socket.on('connect', function() {
-				// win('Tron', 'Succesfully connected to the server.');
-				console.log('Connected to the server (' + SERVER + ').')
+				console.log('Connected to the server (' + SERVER + ').');
+				socketWin && socketWin.remove();
 			});
 			socket.on('disconnect', function() {
-				// win('Tron', 'Disconnected from the server.');
 				console.log('Disconnected from the server.');
 			});
 			socket.on('message', console.log);
-			socket.on('connected', function(data) {
-				console.log(data);
-			});
 			socket.on('roomList', data => Tron.roomShowList(data));
 			socket.on('moveOpponent', data => player[1].setDir(data * 1));
 			socket.on('roomReady', data => socket.emit('setOpponent', data));
@@ -172,6 +169,7 @@ var Tron;
 	};
 	let endSocket = function() {
 		if(socket) {
+			socketWin && socketWin.remove();
 			document.getElementById('tron-multiplayer').style.display = 'block';
 			document.getElementById('tron-multiplayer-leave').style.display = 'none';
 			socket.disconnect();
