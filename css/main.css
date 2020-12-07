@@ -741,11 +741,6 @@ nav ul > li:hover > a,
 	fill: currentColor;
 }
 
-.nav-element:focus,
-nav ul > li > a:focus {
-	border-radius: var(--border-radius);
-}
-
 a:hover .settings-icon.material-icons,
 a:focus .settings-icon.material-icons {
 	transform: rotate(180deg);
