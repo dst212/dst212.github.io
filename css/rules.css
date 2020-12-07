@@ -16,11 +16,11 @@
 
 	--title-font-size:		1.65em;
 
-	--icon-size:			1.00em;
-	--icon-size-18:			1.21em;
-	--icon-size-24:			1.61em;
-	--icon-size-nav:		1.61em;
-	--spacing:				calc(0.50 * var(--font-size));
+	--icon-size:			calc(var(--font-size) * 1.00);
+	--icon-size-18:			calc(var(--font-size) * 1.21);
+	--icon-size-24:			calc(var(--font-size) * 1.61);
+	--icon-size-nav:		var(--icon-size-24);
+	--spacing:				calc(var(--font-size) * 0.50);
 
 	--general-max-height:	70vh;
 
