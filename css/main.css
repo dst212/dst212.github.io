@@ -29,7 +29,7 @@ main::before {
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
-.material-icons { vertical-align:text-bottom; }
+.material-icons { vertical-align: text-bottom; }
 .material-icons.md-12 { font-size: 12px; }
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
@@ -39,18 +39,6 @@ main::before {
 .material-icons.md-icon-24 { font-size: var(--icon-size-24); }
 .material-icons.md-same { font-size: 1em; }
 .material-icons.md-nav { font-size: var(--icon-size-nav); }
-
-.theme-switcher-icon:hover * {
-	transform: rotate(180deg);
-	-o-transform: rotate(180deg);
-	-ms-transform: rotate(180deg);
-	-moz-transform: rotate(180deg);
-	-webkit-transform: rotate(180deg);
-/*}
-.theme-switcher-icon:focus {*/
-	background-color: rgba(0,0,0,0);
-	color: currentColor;
-}
 
 /* Most important thing, thank you CC! <3 */
 #cc {
@@ -728,9 +716,10 @@ nav ul > li > a {
 	display: inline-block;
 	border-style: none;
 	margin: 0;
-	padding: 0.33em 0.7em;
+	padding: calc(var(--font-size) * 0.33) calc(var(--font-size) * 0.7);
 	background-color: inherit;
 	color: inherit;
+	font-size: var(--md-icon-nav);
 	text-decoration: none;
 	border-radius: 50%;
 	cursor: pointer;
@@ -746,7 +735,7 @@ nav ul > li:hover > a,
 	color: var(--header-bg);
 	background-color: var(--header-fg);
 	box-shadow: var(--bottom-shadow);
-	border-radius: var(--border-radius);
+	border-radius: calc(var(--font-size) * 0.5);
 }
 .nav-element:hover svg {
 	fill: currentColor;
@@ -956,16 +945,15 @@ footer *::selection {
 
 .dropdown-icons a {
 	display: inline-block;
-	padding: 0.33em;
+	padding: 0.2em;
 	margin: 0;
 	height: var(--ddi-width);
 	width: var(--ddi-width);
 	background-color: rgba(0,0,0,0);/*make shadows visible*/
 	border-radius: 50%;
-	font-size: var(--font-size); /*else it would inherit 0*/
-}
-.dropdown-icons a > * {
-	background-color: rgba(0,0,0,0);/*to fix strange animations caused by .material-icons default values*/
+	font-size: var(--icon-size-24); /*else it would inherit 0*/
+	text-shadow: 0.05em 0.05em rgba(0,0,0,0.2);
+	text-decoration: none;
 }
 .dropdown-icons a:hover {
 	color: var(--header-bg);
@@ -974,7 +962,18 @@ footer *::selection {
 }
 .dropdown-icons a:focus { box-shadow: none; }
 .dropdown-icons a:focus:hover { box-shadow: var(--bottom-shadow); }
-
+.dropdown-icons a.no-shadow,
+.dropdown-icons a.no-shadow:hover {
+	text-shadow: none;
+	box-shadow: none;
+}
+.dropdown-icons a.rotate:hover {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
 .dropdown-icons.down .show,
 .dropdown-icons.up {
 	box-shadow: var(--box-shadow);
@@ -1023,13 +1022,6 @@ footer *::selection {
 	border-radius: var(--ddi-border-radius) var(--ddi-border-radius) 0 0;
 }
 
-.dropdown-icons a > * {
-	text-shadow: 0.05em 0.05em rgba(0,0,0,0.2);
-}
-
-.dropdown-icons a > *.no-shadow {
-	text-shadow: none;
-}
 /*.dropdown-icons:hover .show {
 	max-height: 0;
 }*/
