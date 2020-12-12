@@ -162,27 +162,27 @@ var Tron;
 				priv.refresh();
 			} else {
 				Tron.roomLeave();
-				win('Tron', 'Server\'s or client\'s data was incorrect. Disconnected from the server.');
+				win('Tron', 'Server\'s or client\'s data was incorrect. Disconnected from the server.', [{innerHTML: 'Ok'}], () => {}, true);
 			}
 		}
 	});
 
-	let initSocket = function() {
+	function initSocket() {
+		document.getElementById('tron-multiplayer').style.display = 'none';
+		document.getElementById('tron-multiplayer-leave').style.display = 'block';
 		if(socket.disconnected) {
-			document.getElementById('tron-multiplayer').style.display = 'none';
-			document.getElementById('tron-multiplayer-leave').style.display = 'block';
-			socketWin = win('Tron', 'Connecting...', [{innerHTML: 'Cancel'}], endSocket);
+			socketWin = win('Tron', 'Connecting...', [{innerHTML: 'Cancel'}], endSocket, true);
 			socket.connect();
 		}
 	};
-	let endSocket = function() {
+	function endSocket() {
+		socketWin && socketWin.remove();
+		document.getElementById('tron-multiplayer').style.display = 'block';
+		document.getElementById('tron-multiplayer-leave').style.display = 'none';
+		elem.refreshTitle();
+		elem.button.removeAttribute('disabled');
 		if(socket?.connected) {
-			socketWin && socketWin.remove();
-			document.getElementById('tron-multiplayer').style.display = 'block';
-			document.getElementById('tron-multiplayer-leave').style.display = 'none';
 			socket.disconnect();
-			elem.refreshTitle();
-			elem.button.removeAttribute('disabled');
 		}
 	};
 
@@ -235,17 +235,15 @@ var Tron;
 			if(data.sounds) beep(i ? 650 : 1300, i ? 100 : 500);
 			if(i <= 0) i = 'GO!';
 			elem.title.innerHTML = i;
-			if(i !== 'GO!') //continue counting
-				setTimeout(this.countdown.bind(this), 1000, i - 1);
-			else { //start the game
+			if(i !== 'GO!') { //continue counting
+				if(socket.disconnected)
+					setTimeout(this.countdown.bind(this), 1000, i - 1);
+			} else { //start the game
 				setTimeout(function() {
 					this.state = 1;
-					this.clear();
 					elem.refreshTitle();
 					if(socket.disconnected)
 						this.refresh();
-					else
-						socket.emit('actualStart');
 				}.bind(this), 1000);
 			}
 		},
@@ -258,7 +256,8 @@ var Tron;
 				this.clear();
 				player[0].print();
 				player[1].print();
-				this.countdown();
+				if(socket.disconnected)
+					this.countdown();
 			}
 		},
 
