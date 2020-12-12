@@ -135,49 +135,55 @@ var Tron;
 	};
 
 	//socket
-	let socket, socketWin = null, isHost = false;
+	let socket = io(SERVER, {autoConnect: false}), socketWin = null;
+
+	socket.on('connect', function() {
+		console.log('Connected to the server (' + SERVER + ').');
+		socketWin && socketWin.remove();
+	});
+	socket.on('disconnect', function() {
+		console.log('Disconnected from the server.');
+	});
+	socket.on('message', console.log);
+	socket.on('roomList', data => Tron.roomShowList(data));
+	socket.on('roomReady', data => socket.emit('setOpponent', data));
+	socket.on('countdown', i => priv.countdown(i));
+	socket.on('startGame', () => priv.start());
+	socket.on('refresh', (p1, p2) => {
+		if(priv.state === 1) {
+			if(
+				p1.x === player[0].x && p1.y === player[0].y &&
+				p2.x === player[1].x && p2.y === player[1].y
+			) {
+				player[0].queueDir = p1.dir;
+				player[0].died = p1.died;
+				player[1].queueDir = p2.dir;
+				player[1].died = p2.died;
+				priv.refresh();
+			} else {
+				Tron.roomLeave();
+				win('Tron', 'Server\'s or client\'s data was incorrect. Disconnected from the server.');
+			}
+		}
+	});
 
 	let initSocket = function() {
-		if(!socket) {
+		if(socket.disconnected) {
 			document.getElementById('tron-multiplayer').style.display = 'none';
 			document.getElementById('tron-multiplayer-leave').style.display = 'block';
 			socketWin = win('Tron', 'Connecting...', [{innerHTML: 'Cancel'}], endSocket);
-			socket = io(SERVER);
-			socket.on('connect', function() {
-				console.log('Connected to the server (' + SERVER + ').');
-				socketWin && socketWin.remove();
-			});
-			socket.on('disconnect', function() {
-				console.log('Disconnected from the server.');
-			});
-			socket.on('message', console.log);
-			socket.on('roomList', data => Tron.roomShowList(data));
-			socket.on('moveOpponent', data => player[1].setDir(data * 1));
-			socket.on('roomReady', data => socket.emit('setOpponent', data));
-			socket.on('startGame', () => priv.start());
-			socket.on('next', data => {
-				if(priv.state === 1) {
-					if(data.length > 0) {
-						player[0].setDir(data[1] === 3 ? 1 : data[1] === 1 ? 3 : data[1]);
-						player[1].setDir(data[0] === 3 ? 1 : data[0] === 1 ? 3 : data[0]);
-					}
-					priv.refresh();
-				}
-			});
-			isHost = true;
+			socket.connect();
 		}
 	};
 	let endSocket = function() {
-		if(socket) {
+		if(socket?.connected) {
 			socketWin && socketWin.remove();
 			document.getElementById('tron-multiplayer').style.display = 'block';
 			document.getElementById('tron-multiplayer-leave').style.display = 'none';
 			socket.disconnect();
-			socket = undefined;
 			elem.refreshTitle();
 			elem.button.removeAttribute('disabled');
 		}
-		isHost = false;
 	};
 
 	//private object
@@ -196,8 +202,6 @@ var Tron;
 		},
 
 		refresh() {
-			if(isHost)
-				socket.emit('next', player[0].queueDir !== player[0].dir || player[1].queueDir !== player[1].dir ? [player[0].queueDir, player[1].queueDir] : []);
 			player[0].move();
 			player[1].move();
 
@@ -220,13 +224,10 @@ var Tron;
 			}
 
 			if(!player[0].died && !player[1].died) {
-				if(this.state === 1 && (!socket || (socket && isHost)))
+				if(this.state === 1 && socket.disconnected)
 					setTimeout(this.refresh.bind(this), this.delay);
-			} else {
-				if(isHost)
-					socket.emit('next', player[0].queueDir !== player[0].dir || player[1].queueDir !== player[1].dir ? [player[0].queueDir, player[1].queueDir] : []);
+			} else
 				this.gameOver();
-			}
 		},
 
 		countdown(i = 3) {
@@ -241,15 +242,17 @@ var Tron;
 					this.state = 1;
 					this.clear();
 					elem.refreshTitle();
-					if(!socket || (socket && isHost))
+					if(socket.disconnected)
 						this.refresh();
+					else
+						socket.emit('actualStart');
 				}.bind(this), 1000);
 			}
 		},
 
 		start() {
 			if(this.state === 0) {
-				if(socket)
+				if(socket.connected)
 					socket.emit('notReadyToStart');
 				this.reset();
 				this.clear();
@@ -307,59 +310,57 @@ var Tron;
 			document.onkeydown = function(e) {
 				if(priv.state === 0) switch (e.code) {
 					case 'Enter': case 'Space':
-						if(document.activeElement.nodeName !== 'INPUT')
+						if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'TEXTAREA')
 							that.pressStart();
-						break;
-					default:
 						break;
 				} else if(priv.state === 1) switch(e.code) {
 					case 'KeyW':
-						if(socket && !isHost) socket.emit('move', 0);
+						if(socket.connected) socket.emit('move', 0);
 						else player[0].setDir(0);
 						break;
 					case 'KeyA':
-						if(socket && !isHost) socket.emit('move', 1);
+						if(socket.connected) socket.emit('move', 3);
 						else player[0].setDir(3);
 						break;
 					case 'KeyS':
-						if(socket && !isHost) socket.emit('move', 2);
+						if(socket.connected) socket.emit('move', 2);
 						else player[0].setDir(2);
 						break;
 					case 'KeyD':
-						if(socket && !isHost) socket.emit('move', 3);
+						if(socket.connected) socket.emit('move', 1);
 						else player[0].setDir(1);
 						break;
 					case 'ArrowUp':
-						if(socket && !isHost) socket.emit('move', 0);
-						else player[socket ? 0 : 1].setDir(0);
+						if(socket.connected) socket.emit('move', 0);
+						else player[socket.connected ? 0 : 1].setDir(0);
 						break;
 					case 'ArrowLeft':
-						if(socket && !isHost) socket.emit('move', 1);
-						else player[socket ? 0 : 1].setDir(3);
+						if(socket.connected) socket.emit('move', 3);
+						else player[socket.connected ? 0 : 1].setDir(3);
 						break;
 					case 'ArrowDown':
-						if(socket && !isHost) socket.emit('move', 2);
-						else player[socket ? 0 : 1].setDir(2);
+						if(socket.connected) socket.emit('move', 2);
+						else player[socket.connected ? 0 : 1].setDir(2);
 						break;
 					case 'ArrowRight':
-						if(socket && !isHost) socket.emit('move', 3);
-						else player[socket ? 0 : 1].setDir(1);
+						if(socket.connected) socket.emit('move', 1);
+						else player[socket.connected ? 0 : 1].setDir(1);
 						break;
 					case 'Enter': case 'Space':
-						if(!socket)
+						if(socket.disconnected)
 							priv.state = 2;
-						break;
-					default:
 						break;
 				} else if(priv.state === 2) switch(e.code) {
 					case 'Enter': case 'Space':
 						priv.state = 1;
 						priv.refresh();
 						break;
-					default:
-						break;
 				}
-				if(document.activeElement.nodeName !== 'INPUT' && (37 <= e.keyCode && e.keyCode <= 40 || e.keyCode === 32))
+				if(
+					document.activeElement.nodeName !== 'INPUT' &&
+					document.activeElement.nodeName !== 'TEXTAREA' &&
+					(37 <= e.keyCode && e.keyCode <= 40 || e.keyCode === 32)
+				)
 					return false;
 			};
 
@@ -390,26 +391,24 @@ var Tron;
 		},
 
 		roomList() {
-			if(!socket)
+			if(socket.disconnected)
 				initSocket();
 			socket.emit('roomList');
 		},
 
 		roomCreate(name) {
-			if(!socket)
+			if(socket.disconnected)
 				initSocket();
-			socket.emit('roomCreate', name);
+			socket.emit('roomCreate', name, canvas.height, canvas.width, priv.delay);
 		},
 
 		roomJoin(roomId) {
-			if(socket) {
+			if(socket.connected)
 				socket.emit('roomJoin', roomId);
-				isHost = false;
-			}
 		},
 
 		roomLeave() {
-			if(socket) {
+			if(socket.connected) {
 				socket.emit('roomLeave');
 				endSocket();
 			}
@@ -422,7 +421,7 @@ var Tron;
 			if(priv.state === 0) {
 				canvas.style.maxHeight = '100vh';
 				elem.settingsForm.style.display = 'none';
-				if(socket) {
+				if(socket?.connected) {
 					socket.emit('readyToStart');
 					priv.waitForOpponent();
 				} else
