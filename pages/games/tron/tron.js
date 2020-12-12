@@ -153,7 +153,14 @@ var Tron;
 	socket.on('roomList', data => Tron.roomShowList(data));
 	socket.on('roomReady', data => socket.emit('setOpponent', data));
 	socket.on('countdown', i => priv.countdown(i));
-	socket.on('startGame', () => priv.start());
+	socket.on('startGame', (height, width, delay, p1x, p1y, p2x, p2y) => {
+		player = [];
+		canvas.height = height;
+		canvas.width = width;
+		player.push(new TronPlayer(p1x, p1y, data.color[0]));
+		player.push(new TronPlayer(p2x, p2y, data.color[1]));
+		priv.start();
+	});
 	socket.on('refresh', (p1, p2) => {
 		if(priv.state === 1) {
 			if(
