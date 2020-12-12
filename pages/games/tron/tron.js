@@ -138,7 +138,8 @@ var Tron;
 	let socket = io(SERVER, {autoConnect: false}), socketWin = null;
 
 	function socketWinClose() {
-		socketWin && socketWin.remove() && typeof uncoverPage !=== 'undefined' && uncoverPage();
+		socketWin && socketWin.remove()
+		typeof uncoverPage !== 'undefined' && uncoverPage();
 	}
 
 	socket.on('connect', function() {
