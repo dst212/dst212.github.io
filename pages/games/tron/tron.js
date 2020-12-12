@@ -137,9 +137,13 @@ var Tron;
 	//socket
 	let socket = io(SERVER, {autoConnect: false}), socketWin = null;
 
+	function socketWinClose() {
+		socketWin && socketWin.remove() && typeof uncoverPage !=== 'undefined' && uncoverPage();
+	}
+
 	socket.on('connect', function() {
 		console.log('Connected to the server (' + SERVER + ').');
-		socketWin && socketWin.remove();
+		socketWinClose();
 	});
 	socket.on('disconnect', function() {
 		console.log('Disconnected from the server.');
@@ -176,7 +180,7 @@ var Tron;
 		}
 	};
 	function endSocket() {
-		socketWin && socketWin.remove();
+		socketWinClose();
 		document.getElementById('tron-multiplayer').style.display = 'block';
 		document.getElementById('tron-multiplayer-leave').style.display = 'none';
 		elem.refreshTitle();
