@@ -7,8 +7,8 @@ var acceptCookie = () => localStorage.cookie4 = 214;
 
 var discoModeIncoming = () => ntf(
 	'WARNING',
-	'By enabling the Disco Mode, one declares to take full resposability for the consequences that may derive from it.',
-	[{innerHTML: 'Enable Anyway', onclick: 'Theme.color.set(\'disco\');', properties: 'class="normalButton"'}, {innerHTML: 'More details', onclick: 'pageFetch(\'settings/theme\');', properties: 'class="normalButton"'}, {innerHTML: 'Cancel', properties: 'class="normalButton"'}],
+	'By enabling the Disco Mode, one declares to take full resposibility for the consequences that may derive from it.',
+	[{innerHTML: 'Enable Anyway', onclick: 'Theme.color.set(\'disco\');', properties: 'class="normalButton"'}, /*{innerHTML: 'More details', onclick: 'pageFetch(\'settings/theme\');', properties: 'class="normalButton"'},*/ {innerHTML: 'Cancel', properties: 'class="normalButton"'}],
 	'black', 'red'
 );
 
