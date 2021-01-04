@@ -1,0 +1,27 @@
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.material-icons.md-12 { font-size: 12px; }
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-icon-18 { font-size: var(--icon-size-18); }
+.material-icons.md-icon-24 { font-size: var(--icon-size-24); }
+.material-icons.md-same { font-size: 1em; }
+.material-icons.md-nav, .size-nav { font-size: var(--icon-size-nav); }
+
+/* Fixed sizes for Font Awesome icons*/
+/*.fa, .fab, .fad, .fal, .far, .fas,*/
+.fixed-size {
+	text-align: center;
+	height: 1em;
+	width: 1em;
+}
+
+.material-icons, .fa, .fab, .fad, .fal, .far, .fas { vertical-align: text-bottom; }

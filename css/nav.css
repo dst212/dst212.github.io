@@ -1,0 +1,110 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+
+nav {
+	margin: 0.3rem 0;
+	padding: 0;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+.nav-element,
+nav a {
+	display: inline-block;
+	margin: 0;
+	padding: 0.3rem 0.7rem;
+	color: inherit;
+	background-color: transparent;
+	font-size: var(--md-icon-nav);
+	text-decoration: none;
+	border-style: none;
+	border-radius: 50%;
+	cursor: pointer;
+}
+.nav-element:hover,
+.dropdown:hover > a,
+nav a:hover {
+	color: var(--header-bg);
+	background-color: var(--header-fg);
+	box-shadow: var(--bottom-shadow);
+	border-radius: 0.4rem;
+}
+.nav-element:focus,
+nav a:focus {
+	border-radius: 0.4rem;
+}
+
+.nav-element svg {
+	height: var(--icon-size-nav);
+	width: var(--icon-size-nav);
+	fill: currentColor;
+}
+
+/* dropdown menus */
+
+.dropdown {
+	z-index: 1;
+	position: relative;
+}
+
+.dropdown:hover,
+.dropdown .content {
+	z-index: 20;
+}
+
+.dropdown:hover .dropdown {
+	z-index: 0;
+}
+
+.dropdown > .content {
+	display: block;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	overflow: hidden;
+	max-height: 0;
+
+	background-color: var(--header-bg);
+	border-radius: var(--border-radius);
+}
+
+.dropdown:hover > .content {
+	max-width: 9.2rem;
+	max-height: 100vh;
+	box-shadow: var(--box-shadow);
+	animation-name: overflow;
+	overflow: visible;
+}
+.dropdown > .content > .dropdown > .content {
+	display: block;
+	width: 0;
+	max-height: 0;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+.dropdown > .content > .dropdown:hover > .content {
+	width: 9.2rem;
+}
+.dropdown:hover > .content > .dropdown > .content {
+	max-height: 100vh;
+}
+.dropdown > .content > * {
+	display: block;
+}
+.dropdown > .content .dropdown > a {
+	display: block;
+}
+
+/*dropdown menu on right*/
+.dropdown > .content .dropdown > a::after {
+	display: block;
+	position: absolute;
+	top: calc(50% - 0.5em);
+	right: 0.2rem;
+	content: '>';
+}
+.dropdown > .content .dropdown > .content {
+	margin-top: -1.7rem;
+	margin-left: 100%;
+}

@@ -1,0 +1,114 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+main::before {
+	/* content:'The website is being modified in this exact moment and may undergo changes unexpectedly.'; */
+}
+
+.updating::after,
+.coming::after,
+.building::after,
+.beta::after {
+	display: block;
+	color: var(--accent);
+	font-weight: bold;
+	font-style: italic;
+	text-align: center;
+	margin: 0.5rem 0;
+}
+.updating::after {
+	content: 'This section is being updated in this exact moment and may undergo changes unexpectedly.';
+}
+.coming::after {
+	content: 'Coming...';
+}
+.building::after {
+	content: 'Uncompleted section.';
+}
+.beta::after {
+	content: 'Experimental section.';
+}
+
+iframe.youtube {
+	width: 100%;
+	height: 26.67rem;
+}
+
+nav span.optional {
+	display: none;
+}
+.contact-list span.optional::before {
+	content: ' - ';
+}
+
+/*Creative Commmons*/
+
+#cc {
+	display: block;
+	margin: 0.5rem;
+	padding: 0.5rem;
+	text-align: center;
+	border: var(--border-width) solid var(--accent);
+	border-radius: var(--border-radius);
+	box-shadow: var(--black-shadow-frame);
+}
+#cc img {
+ 	max-width: 7em;
+}
+#cc-floating {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	margin: 0.6rem;
+	background-color: var(--accent);
+	border-radius: 50%;
+	box-shadow: var(--box-shadow);
+}
+#cc-floating .item {
+	display: block;
+	margin: 0.3rem;
+	width: var(--icon-size-24);
+	height: var(--icon-size-24);
+	background-color: white;
+	background-image: url('https://creativecommons.org/images/chooser/chooser_cc.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	border-radius: 50%;
+	border: 0.1em solid white;
+}
+#cc-floating .content {
+	text-align: center;
+}
+
+/*Sponsors*/
+
+#sponsor {
+	display: block;
+	position: relative;
+	text-align: center;
+}
+#sponsor > a {
+	display: block;
+	margin: 0.5rem auto;
+	max-width: var(--small-image-width);
+	background-color: rgba(0,0,0,0.1);
+	border-radius: var(--border-radius);
+	overflow: hidden;
+}
+#sponsor > a[href]:hover {
+	background-color: rgba(0,0,0,0);
+	box-shadow: var(--shadow-frame);
+	border-radius: 0;
+}
+#sponsor > a > img {
+	width: 100%;
+	filter: grayscale(100%);
+	position: relative;
+	z-index: -1;
+}
+#sponsor > a:hover > img {
+	filter: grayscale(0%);
+}
+.contacts {
+	text-align: left;
+}

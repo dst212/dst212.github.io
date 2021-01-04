@@ -2,23 +2,23 @@
 
 :root {
 	/* horizontal bar */
-	--paint-hor-toolbar-top: calc(var(--font-size) * 4);
+	--paint-hor-toolbar-top: 4rem;
 	--paint-hor-toolbar-left: 10%;
-	--paint-hor-toolbar-height: calc(var(--font-size) * 2);
+	--paint-hor-toolbar-height: 2rem;
 	--paint-hor-toolbar-width: 80%;
 
 	/* vertical bar */
 	--paint-ver-toolbar-top: 10%;
-	--paint-ver-toolbar-left: calc(var(--font-size) * 4);
+	--paint-ver-toolbar-left: 4rem;
 	--paint-ver-toolbar-height: 80%;
-	--paint-ver-toolbar-width: calc(var(--font-size) * 2);
+	--paint-ver-toolbar-width: 2rem;
 }
 #paint-toolbar {
 	display: block;
 	position: fixed;
 	color: var(--body-bg);
 	background-color: var(--accent);
-	border-radius: var(--font-size);
+	border-radius: 1rem;
 	overflow: hidden;
 	font-size: 0;
 }
@@ -51,8 +51,8 @@
 	max-height: var(--paint-hor-toolbar-width);
 }
 #paint-toolbar .material-icons {
-	font-size: calc(var(--font-size) * 1.6);
-	padding: calc(var(--font-size) * 0.2);
+	font-size: 1.6rem;
+	padding: 0.2rem;
 	margin: 0;
 	color: var(--body-bg);
 	background-color: transparent;
@@ -76,8 +76,8 @@
 	opacity: 0;
 	margin: 0;
 	padding: 0;
-	width: calc(var(--font-size) * 2);
-	height: calc(var(--font-size) * 2);
+	width: 2rem;
+	height: 2rem;
 	z-index: 1;
 }
 #paint-toolbar .overflow {
@@ -100,12 +100,12 @@
 	100%	{ border-radius: initial; }
 }
 #paint-toolbar .overflow > .more {
-	animation-duration: var(--transition);
+	animation-duration: var(--duration);
 	animation-name: expand-icon-border-radius;
 }
 #paint-toolbar .overflow-button:checked ~ .overflow > .more {
 	transform: rotate(180deg);
-	animation-duration: var(--transition);
+	animation-duration: var(--duration);
 	animation-name: expand-icon-border-radius-again; /*it must change every time so that it's performed*/
 }
 /*end of stupid solution*/
@@ -133,8 +133,8 @@
 .paint-dialog > .close {
 	display: block;
 	position: absolute;
-	top: calc(var(--general-border) * -1 + 1px);
-	right: calc(var(--general-border) * -1 + 1px);
+	top: calc(var(--border-width) * -1 + 1px);
+	right: calc(var(--border-width) * -1 + 1px);
 	padding: 0.2em;
 	color: inherit;
 	background-color: transparent;
@@ -158,14 +158,14 @@
 
 .paint-dialog input[type="range"]::-webkit-slider-thumb {
 	background-color: var(--accent);
-	border: var(--general-border) solid currentColor;
+	border: var(--border-width) solid currentColor;
 	border-radius: 50%;
 	opacity: 1;
 }
 
 .paint-dialog input[type="range"]::-moz-range-thumb {
 	background-color: var(--accent);
-	border: var(--general-border) solid currentColor;
+	border: var(--border-width) solid currentColor;
 	border-radius: 50%;
 	opacity: 1;
 }

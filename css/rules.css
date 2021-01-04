@@ -1,58 +1,46 @@
 /* Made by dst212- https://github.com/dst212/dst212.github.io/ */
 
 :root {
-
 	--font-size:			15px; /*meter*/
+	font-size: var(--font-size);
 
-	--header-height:		calc(var(--font-size) * 3);
-	--title-height-initial:	calc(var(--font-size) * 3.8);
-/* 	--title-height-final:	calc(var(--font-size) * 1.25); */
+	--header-height:		3rem;
+	--title-height-initial:	3.8rem;
+/* 	--title-height-final:	1.25rem; */
 	--title-height-final:	0.1px;
 	--title-height:			var(--title-height-initial);
-	--footer-height:		calc(var(--font-size) * 4);
+	--footer-height:		4rem;
 	--body-height:			calc(100vh - var(--header-height) - var(--title-height) - var(--footer-height) /*- 1px*/);
 	--body-padding:			3em;
-	--body-width:			calc(var(--font-size) * 80 - var(--body-padding)*2 );/*80%;/*calc(var(--font-size)*73);*/
+	--body-width:			calc(80rem - var(--body-padding)*2 );/*80%;/*73rem;*/
 
 	--title-font-size:		1.65em;
 
-	--icon-size:			calc(var(--font-size) * 1.00);
-	--icon-size-18:			calc(var(--font-size) * 1.21);
-	--icon-size-24:			calc(var(--font-size) * 1.61);
+	--icon-size:			1rem;
+	--icon-size-18:			1.21rem;
+	--icon-size-24:			1.61rem;
 	--icon-size-nav:		var(--icon-size-24);
-	--spacing:				calc(var(--font-size) * 0.50);
-
-	--general-max-height:	70vh;
-
-	--general-margin:		0.33em;
 
 	--half-body:			49%;
 	--one-third-body:		32%;
 	--col-margin:			1%;
 
-	--general-border:		calc(var(--font-size) * 0.15);
-	--general-border-bold:	calc(var(--general-border) * 2);
-	--border-radius:		0.50em;
-	--half-border-radius:	calc(var(--border-radius) / 2);
+	--border-width:			0.15rem;
+	--border-bold:			0.3rem;
+	--border-radius:		0.5rem;
+	--half-border-radius:	0.25rem;
 
-	--font-family:			'Ubuntu Mono',Consolas,monospace;
-	--transition:			0.35s;
-	--footer-transition:	0.7s;
+	--font-family:			'Ubuntu Mono', Consolas, monospace;
+	--duration:				0.35s;
 
-	--box-shadow:			calc(var(--font-size)*0.33)	calc(var(--font-size)*0.33)	calc(var(--font-size)*0.33)	0							rgba(0,0,0,0.4);
-	--bottom-shadow:		0							calc(var(--font-size)*0.33)	calc(var(--font-size)*0.33)	0							rgba(0,0,0,0.5);
-	--grey-shadow-frame:	0							0							calc(var(--font-size)*0.14)	calc(var(--font-size)*0.2)	rgba(127,127,127,0.45);
-/* 	--general-shadow:		calc(var(--font-size)*0.2)	calc(var(--font-size)*0.2)	calc(var(--font-size)*0.14)	0							rgba(127,127,127,0.45); */
-	--general-shadow:		var(--grey-shadow-frame);
-/* 	--black-shadow-frame:	0							0							calc(var(--font-size)*0.14)	calc(var(--font-size)*0.2)	rgba(0,0,0,0.4); */
+	--box-shadow:			0.3rem 0.3rem 0.3rem 0 rgba(0,0,0,0.4);
+	--bottom-shadow:		0 0.3rem 0.3rem 0 rgba(0,0,0,0.5);
+	--grey-shadow-frame:	0 0 0.15rem 0.2rem rgba(127,127,127,0.45);
 	--black-shadow-frame:	var(--grey-shadow-frame);
+	--shadow-frame:			var(--grey-shadow-frame);
 
-	--small-image-width:	10em;
-	--logo-size:			10em;
-
-	--ddi-margin:			0.40em;
-	--ddi-width:			calc(var(--font-size) * 2.22);
-	--ddi-border-radius:	calc(var(--ddi-width) / 2);
+	--small-image-width:	10rem;
+	--logo-size:			10rem;
 }
 
 @media screen and (max-width: 865px) {
