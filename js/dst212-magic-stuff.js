@@ -20,10 +20,11 @@ function fetchSection(file, className) {
 }
 
 Page.onloadAlways = addFunction(Page.onloadAlways, function() {
-	fetchSection('logo.html', 'fetch-dst212-logo');
-	fetchSection('copyright.html', 'fetch-copyright-notice');
-	fetchSection('cc.html', 'fetch-cc-content');
-	fetchSection('contacts.html', 'fetch-contacts');
+	let d = (new Date()).valueOf();
+	fetchSection('logo.html?' + d, 'fetch-dst212-logo');
+	fetchSection('copyright.html?' + d, 'fetch-copyright-notice');
+	fetchSection('cc.html?' + d, 'fetch-cc-content');
+	fetchSection('contacts.html?' + d, 'fetch-contacts');
 	document.title += ' - dst212';
 	initTooltips();
 });
