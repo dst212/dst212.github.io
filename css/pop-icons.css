@@ -1,0 +1,128 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+:root {
+	--ddi-margin:			0.40rem;
+	--ddi-width:			2.22rem;
+	--ddi-border-radius:	calc(var(--ddi-width) / 2);
+}
+
+#theme-menu {
+	margin: 0.6rem;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	z-index: 1;
+}
+.pop-icons {
+	display: block;
+	padding: 0;
+	margin: 0;
+	max-height: var(--ddi-width);
+	width: var(--ddi-width);
+	color: var(--header-fg);
+	background-color: var(--header-bg);
+	border-radius: var(--ddi-border-radius);
+}
+.pop-icons.up {
+	overflow: hidden;
+}
+.pop-icons * {
+	color: inherit;
+/* 	background-color: inherit; */
+}
+
+.pop-icons a {
+	display: inline-block;
+	padding: calc((var(--ddi-width) - var(--icon-size-24)) / 2);
+	margin: 0;
+	height: var(--ddi-width);
+	width: var(--ddi-width);
+	background-color: transparent;/*make shadows visible*/
+	border-radius: 50%;
+	font-size: var(--icon-size-24); /*else it would inherit 0*/
+	text-shadow: 0.05em 0.05em rgba(0,0,0,0.2);
+	text-decoration: none;
+}
+.pop-icons a:hover {
+	color: var(--header-bg);
+	background-color: var(--header-fg);
+	box-shadow: var(--bottom-shadow);
+}
+.pop-icons a:focus { box-shadow: none; }
+.pop-icons a:focus:hover { box-shadow: var(--bottom-shadow); }
+.pop-icons a.no-shadow,
+.pop-icons a.no-shadow:hover {
+	text-shadow: none;
+	box-shadow: none;
+}
+.pop-icons a.rotate:hover {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.pop-icons.down .show,
+.pop-icons.up {
+	box-shadow: var(--box-shadow);
+}
+.pop-icons .hide {
+	max-height: 0;
+	overflow: hidden;
+}
+/*.pop-icons.up.greater .hide > div {
+	background-color: rgba(0,0,0,0);
+}*/
+.pop-icons.down .hide {
+	position: absolute;
+}
+.pop-icons.greater {
+	width: var(--ddi-width);
+}
+.pop-icons.down.greater .show,
+.pop-icons.down.greater .hide,
+.pop-icons.up.greater .show,
+.pop-icons.up.greater .hide {
+	box-shadow: none;
+}
+.pop-icons.greater:hover {
+	width: calc(var(--ddi-width)*3); /*modified*/
+}
+.pop-icons.greater > * > div {
+	max-height: var(--ddi-width);
+	font-size: 0;
+}
+.pop-icons.up,
+.pop-icons:hover,
+.pop-icons:hover .hide {
+	max-height: 100vh;
+	box-shadow: var(--box-shadow);
+	animation-name: overflow;
+	overflow: visible;
+}
+.pop-icons.down .hide {
+	border-radius: 0 0 var(--ddi-border-radius) var(--ddi-border-radius);
+}
+.pop-icons.down .show {
+	border-radius: var(--ddi-border-radius);
+}
+.pop-icons.down:hover .show {
+	border-radius: var(--ddi-border-radius) var(--ddi-border-radius) 0 0;
+}
+
+/*.pop-icons:hover .show {
+	max-height: 0;
+}*/
+
+.pop-icons .red { color: var(--red-dark); }
+.pop-icons .yellow { color: var(--yellow-dark); }
+.pop-icons .lime { color: var(--lime-dark); }
+.pop-icons .cyan { color: var(--cyan-dark); }
+.pop-icons .blue { color: var(--blue-dark); }
+.pop-icons .magenta { color: var(--magenta-dark); }
+.pop-icons .red:hover { background-color: var(--red-dark); }
+.pop-icons .yellow:hover { background-color: var(--yellow-dark); }
+.pop-icons .lime:hover { background-color: var(--lime-dark); }
+.pop-icons .cyan:hover { background-color: var(--cyan-dark); }
+.pop-icons .blue:hover { background-color: var(--blue-dark); }
+.pop-icons .magenta:hover { background-color: var(--magenta-dark); }

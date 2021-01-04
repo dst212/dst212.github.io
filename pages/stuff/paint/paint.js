@@ -145,7 +145,8 @@ var Paint = {
 		this.canvas.width = 1000;
 		this.canvas.height = 750;
 		this.ctx = this.canvas.getContext('2d');
-		this.canvas.style = 'max-height: 75vh; max-width: 100%; display: block; margin: auto; border: var(--general-border) solid var(--accent); background-color: white; cursor: url(\'/res/images/pencil.png\') 0 15, auto';
+		this.canvas.style = 'background-color: white; cursor: url(\'/res/images/pencil.png\') 0 15, auto';
+		this.canvas.classList.add('canvas-frame');
 		this.canvas.oncontextmenu = () => false;
 
 		document.onkeydown = function(e) {

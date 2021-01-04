@@ -15,27 +15,16 @@
 			</div>
 			<span style="display: block; width:100%; text-align: center;">Loading...</span>
 		</div>
-		<div id="demos">
-			<style>
-				#demos {
-					text-align: center;
-				}
-				#demos > div {
-					display: inline-block;
-					margin: 1em;
-				}
-				#demos > div {
-					text-align: justify;
-				}
-			</style>
-			<!--search bar-->
+		<!--search bar-->
+		<div class="align-center margin-top-bottom">
 			<div id="demo-searchbar" class="searchbar">
 				<input type="text" placeholder="Search...">
 				<i class="material-icons">search</i>
 			</div>
-			<br>
+		</div>
+		<div id="demos" class="row">
 			<!--radio input-->
-			<div class="radio">
+			<div class="radio margin-top-bottom">
 				Is this website awful?
 				<label><input type="radio" name="radio" value="yes"/><span></span>Yes</label>
 				<label><input type="radio" name="radio" value="no"/><span></span>No</label>
@@ -45,7 +34,7 @@
 				<label><input type="radio" name="radio" value="Absolutely"/><span></span>Absolutely</label>
 			</div>
 			<!--checkboxes-->
-			<div class="checkbox">
+			<div class="checkbox margin-top-bottom">
 				Which colors are best?
 				<label><input type="checkbox" name="checkbox" required/><span></span><a class="red">Tomato</a></label>
 				<label><input type="checkbox" name="checkbox" required/><span></span><a class="yellow">Banana</a></label>
@@ -59,7 +48,7 @@
 		<div id="demo-tooltips">
 			<h2>Tooltips</h2>
 			This is a normal section, which content has to do with
-			<span class="tooltip" title="What's a tooltip?">
+			<span class="tooltip no-whitespaces" title="What's a tooltip?">
 				<a class="item">tooltips</a>
 				<div class="content">
 					A <i>tooltip</i> is exactly this: a small pop-up which appears when the cursors hovers on the related text, which generally explains what the text refers, what it is or what it does.
@@ -72,9 +61,10 @@
 				<div class="content">
 					It's possible to click on a text-label of a tooltip, focusing it, to keep the tooltip there until a new element is focused.
 				</div>
-			</span> to get some tips.
+			</span>
+			to get some tips.
 			<br>What about
-			<span class="tooltip" title="Tooltips titles">
+			<span class="tooltip no-whitespaces" title="Tooltips titles">
 				<a class="item">tooltips' titles</a>
 				<div class="content">
 					The title is the label above this text. It can be set by applying the <code>title</code> property to the <code>.tooltip</code> element.

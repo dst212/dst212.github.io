@@ -1,0 +1,45 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+#dst212-logo {
+	position: relative;
+	width: var(--logo-size);
+	height: var(--logo-size);
+	margin: 0.5rem auto;
+	border-radius: 50%;
+}
+#dst212-logo * {
+	transition-timing-function: linear;
+	transition-duration: 0.2s;
+}
+#dst212-logo > .logo-below {
+	stroke: var(--accent);
+}
+#dst212-logo .logo-above {
+	stroke: var(--body-bg);
+	position: absolute;
+	left: calc(var(--logo-size) / 2 * -1);
+	top: calc(var(--logo-size) / 2 * -1);
+	width: var(--logo-size);
+	height: var(--logo-size);
+}
+#dst212-logo > .anim {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 0;
+	width: 0;
+	background-color: var(--accent);
+	border-radius: inherit;
+	overflow: hidden;
+}
+#dst212-logo:hover > .anim {
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+/* 	box-shadow: var(--black-shadow-frame); */
+}
+#dst212-logo:hover .logo-above {
+	left: 0;
+	top: 0;
+}

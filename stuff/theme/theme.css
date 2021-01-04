@@ -1,12 +1,4 @@
-/**********************************************************************
- *
- * Made by dst212
- * - 212dst212@gmail.com
- * - https://github.com/dst212/dst212.github.io/
- *
- * Here are stored all the theme-schemes. Use them with
- * https://dst212,github.io/stuff/theme/theme.js.
- **********************************************************************/
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
 
 :root{
 
@@ -105,6 +97,6 @@
 .light-magenta-theme{--accent:rgba(220,000,220,1);--accent-faded:rgba(220,000,220,0.4);--accent-dark:rgba(110,000,110,1);--accent-dark-faded:rgba(110,000,110,0.4);}
 .dark-magenta-theme	{--accent:rgba(110,000,110,1);--accent-faded:rgba(110,000,110,0.4);--accent-dark:rgba(220,000,220,1);--accent-dark-faded:rgba(220,000,220,0.4);}
 
-.disable-transitions{--transition:0s;}
+.disable-transitions{--duration:0s;}
 
 /*END*/

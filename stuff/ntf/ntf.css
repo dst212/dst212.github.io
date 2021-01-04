@@ -1,19 +1,11 @@
-/**********************************************************************
- *
- * Made by dst212
- * - 212dst212@gmail.com
- * - https://github.com/dst212/dst212.github.io/
- *
- * This CSS sets the notifications' area. Use it with
- * https://dst212,github.io/stuff/notify/notify.js.
- **********************************************************************/
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
 
 #notifications {
 	position: fixed;
 	top: var(--header-height);
 	right: 0;
-	padding: var(--general-margin);
-	max-width: 35em;
+	padding: 0.3rem;
+	max-width: 35rem;
 	max-height: var(--body-height);
 	background-color: none;
 	color: none;
@@ -23,8 +15,8 @@
 	z-index: 100;
 }
 #notifications > * {
-	margin: var(--spacing);
-	padding: var(--spacing);
+	margin: 0.5rem;
+	padding: 0.5rem;
 	max-height: 0;
 	max-width: 0;
 	opacity: 0;
@@ -33,27 +25,27 @@
 	box-shadow: var(--box-shadow);
 	border-radius: var(--border-radius);
 }
-#notifications > * .title{
+#notifications > * .ntf-title{
 	display: block;
-	height: 1.5em;
+	height: 1.5rem;
 	font-weight: bold;
 }
-#notifications > * .msg{
-	padding-top: var(--general-margin);
+#notifications > * .ntf-msg{
+	padding-top: 0.3rem;
 	display: block;
-	max-height: 5em;
+	max-height: 5rem;
 	overflow: auto;
 	text-overflow: clip;
 }
-#notifications > * .btn{
-	padding-top: var(--general-margin);
-	max-height: 4em;
+#notifications > * .ntf-buttons{
+	padding-top: 0.3rem;
+	max-height: 4rem;
 	display: block;
 	text-align: center;
 }
-#notifications > * .btn > * {
-	margin-left: 0.25em;
-	margin-right: 0.25em;
+#notifications > * .ntf-buttons > * {
+	margin-left: 0.3em;
+	margin-right: 0.3em;
 }
 
 /*END*/

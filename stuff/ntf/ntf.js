@@ -18,7 +18,7 @@ var ntf = (function() {
 		x.style.color = fg;
 		x.style.background = bg;
 		if(buttons.length) {
-			buttonsHTML = '<div class="btn">';
+			buttonsHTML = '<div class="ntf-buttons">';
 			for(i = 0; i < buttons.length; i++) {
 				if(!buttons[i].onclick) buttons[i].onclick = 'ntfClose(' + id + ');';
 				else buttons[i].onclick += ';' + 'ntfClose(' + id + ');';
@@ -28,7 +28,7 @@ var ntf = (function() {
 			}
 			buttonsHTML += '</div>';
 		}
-		x.innerHTML = '<small><big class="title">' + title + '</big><div class="msg">' + content + '</div>' + buttonsHTML + '</small>';
+		x.innerHTML = '<small><big class="ntf-title">' + title + '</big><div class="ntf-msg">' + content + '</div>' + buttonsHTML + '</small>';
 		x.style.display = 'block';
 		ntfArea.append(x);
 		//show up the notification

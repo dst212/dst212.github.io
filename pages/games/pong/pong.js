@@ -172,7 +172,7 @@ var Pong = {
 		this.canvas = document.createElement('CANVAS'),
 		this.canvas.width = 1000;
 		this.canvas.height = 750;
-		this.canvas.style = 'max-height: 75vh; max-width: 100%; display: block; margin: auto; border: var(--general-border) solid var(--accent)';
+		this.canvas.classList.add('canvas-frame');
 		this.ctx = this.canvas.getContext('2d');
 		this.player = new PongPlayer(this.canvas);
 		this.ball = new PongBall(this.canvas);

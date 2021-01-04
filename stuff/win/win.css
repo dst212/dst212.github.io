@@ -1,21 +1,13 @@
-/**********************************************************************
- *
- * Made by dst212
- * - 212dst212@gmail.com
- * - https://github.com/dst212/dst212.github.io/
- *
- * CSS for windows, use with
- * https://dst212,github.io/stuff/window/window.js.
- **********************************************************************/
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
 
 .window-element {
 	display: block;
 	position: fixed;
 	margin: 0;
-	padding: var(--spacing);
+	padding: 0.3rem;
 	color: var(--body-fg);
 	background-color: var(--body-bg);
-	border: var(--general-border) solid var(--accent);
+	border: var(--border-width) solid var(--accent);
 	border-radius: var(--border-radius);
 	box-shadow: var(--box-shadow);
 	text-align: justify;
@@ -24,7 +16,7 @@
 .window-element > .titlebar {
 	display: block;
 	padding: 0.1em 1.5em /*space left for the X button*/ 0.1em 0;
-	margin-bottom: var(--spacing);
+	margin-bottom: 0.5rem;
 	height: 1.2em;
 	text-overflow: ellipsis;
 }
@@ -35,8 +27,8 @@
 .window-element > .close {
 	display: block;
 	position: absolute;
-	top: calc(var(--general-border) * -1 + 1px);
-	right: calc(var(--general-border) * -1 + 1px);
+	top: calc(var(--border-width) * -1 + 1px);
+	right: calc(var(--border-width) * -1 + 1px);
 	padding: 0.2em;
 	color: var(--accent);
 	background-color: transparent;
@@ -50,11 +42,11 @@
 }
 .window-element > .buttons {
 	display: block;
-	margin: var(--spacing) auto auto;
+	margin: 0.3rem auto auto;
 	text-align: center;
 }
 .window-element > .buttons > * {
-	margin-left: 0.25em;
-	margin-right: 0.25em;
+	margin-left: 0.3em;
+	margin-right: 0.3em;
 	padding: 0.1em 0.4em;
 }

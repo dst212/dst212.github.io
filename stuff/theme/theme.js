@@ -36,7 +36,7 @@ var Theme = {
 		return function() {
 			removeClasses();
 			if(localStorage.themeColor === 'disco') {
-				let sleep = Theme.getComputedStyle().getPropertyValue('--transition').slice(0, this.length-1);
+				let sleep = Theme.getComputedStyle().getPropertyValue('--duration').slice(0, this.length-1);
 				if(localStorage.playDisco != 1 && localStorage.playDisco != 0) localStorage.playDisco = 1; //will be used for settings in future
 				if(localStorage.playDisco == 1) {
 					disco.currentTime = !localStorage.resumeMusic ? 0 : localStorage.resumeMusic * 1;

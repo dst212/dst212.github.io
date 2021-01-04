@@ -49,9 +49,9 @@
 		<div id="paint-stroke-dialog" class="paint-dialog">
 			<label>Stroke width:</label><br>
 			<input type="range" min="1" max="100" oninput="Paint.updateStroke(this);" style="width: 12em;">
-			<br><br><input type="number" min="1" max="100" placeholder="Size" style="display: block; margin: auto; width: 3.3ch; text-align: center;" disabled>
+			<br><br><input type="number" class="center-block align-center" min="1" max="100" placeholder="Size" style="width: 3.3ch;" disabled>
 			<div id="paint-stroke-preview"></div>
-			<button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.resetStroke();">Reset to default</button>
+			<button class="normal btn center-block" onclick="Paint.resetStroke();">Reset to default</button>
 			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.stroke);">close</button>
 		</div>
 		<div id="paint-image-dialog" class="paint-dialog">
@@ -68,7 +68,7 @@
 			<span>x</span>
 			<input type="number" id="paint-img-input-height" value="0" size="6"  placeholder="Height">
 			<img id="paint-img" src="">
-			<button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addImage()">Add</button>
+			<button class="normal btn center-block" onclick="Paint.addImage()">Add</button>
 			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.image);">close</button>
 		</div>
 		<div id="paint-square-dialog" class="paint-dialog">
@@ -83,7 +83,7 @@
 			<span>x</span>
 			<input type="number" id="paint-square-input-height" value="100" size="6"  placeholder="Height">
 			<br>
-			<br><button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addRect()">Add</button>
+			<br><button class="normal btn center-block" onclick="Paint.addRect()">Add</button>
 			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.square);">close</button>
 		</div>
 		<div id="paint-circle-dialog" class="paint-dialog">
@@ -95,7 +95,7 @@
 			<br>
 			<label>Ray: </label><input type="number" id="paint-circle-input-ray" value="50" placeholder="Ray">
 			<br>
-			<br><button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addCircle()">Add</button>
+			<br><button class="normal btn center-block" onclick="Paint.addCircle()">Add</button>
 			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.circle);">close</button>
 		</div>
 		<div id="paint-text-dialog" class="paint-dialog">
@@ -113,7 +113,7 @@
 			<label>Text to display:</label><br>
 			<input type="text" id="paint-text-input-custom" placeholder="Text to display" value="Disa">
 			<br>
-			<br><button class="normalButton" style="display: block; margin-left: auto; margin-right: auto;" onclick="Paint.addText()">Add</button>
+			<br><button class="normal btn center-block" onclick="Paint.addText()">Add</button>
 			<button class="material-icons md-same close" onclick="Paint.close(Paint.dialog.text);">close</button>
 		</div>
 	</body>
