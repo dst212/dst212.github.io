@@ -19,11 +19,24 @@ const Page = {
 		if(params.url)
 			window.history.replaceState({page: 0}, document.title, params.url);
 	},
+	refresh: function(e = null) {
+		let onloadPage = {}, pageUrl = new URL(document.URL);
+		onloadPage.status = pageUrl.searchParams.get('error');
+		onloadPage.page = pageUrl.searchParams.get('page');
+		if(onloadPage.status) {
+			onloadPage.url = pageUrl.searchParams.get('url');
+			if(onloadPage.status === 404)
+				onloadPage.statusText = 'Not found';
+			Page.error(onloadPage);
+		} else {
+			Page.fetch(onloadPage.page || 'home', {skipOnload: false, forceFetch: false, dontPush: true});
+		}
+	},
 	fetch: (function() {
 		let scriptsToRemove = [];
 		const now = (new Date()).getTime();
 
-		return function(name, flags = {skipOnload: false, forceFetch: false}, where = document.body.getElementsByTagName('MAIN')[0]) {
+		return function(name, flags = {skipOnload: false, forceFetch: false, dontPush: false}, where = document.body.getElementsByTagName('MAIN')[0]) {
 			let file, xhttp, cacheBusting, that = this;
 			flags || (flags = {});
 			flags.skipOnload !== undefined || (flags.skipOnload = false);
@@ -72,7 +85,8 @@ const Page = {
 							that.onload = undefined;
 						}
 						//update the browser's search-bar
-						window.history.pushState({page: 0}, document.title, '?page=' + name);
+						if(!flags.dontPush)
+							window.history.pushState({page: 0}, document.title, '?page=' + name);
 					} else {
 						that.error({status: this.status, statusText: this.statusText, url: document.URL}, where);
 					}
@@ -84,24 +98,7 @@ const Page = {
 	})(),
 }
 
-window.onpopstate = function(e) {
-	location.reload();
-}
-
-window.onload = addFunction(window.onload, function(){
-	let onloadPage = {}, pageUrl = new URL(document.URL);
-	onloadPage.status = pageUrl.searchParams.get('error');
-	onloadPage.page = pageUrl.searchParams.get('page');
-	if(onloadPage.status) {
-		onloadPage.url = pageUrl.searchParams.get('url');
-		if(onloadPage.status === 404) onloadPage.statusText = 'Not found';
-		Page.error(onloadPage);
-	} else {
-		if(!onloadPage.page) {
-			onloadPage.page = 'home';
-		}
-		Page.fetch(onloadPage.page);
-	}
-});
+window.onpopstate = Page.refresh;
+window.onload = addFunction(window.onload, Page.refresh);
 
 //END
