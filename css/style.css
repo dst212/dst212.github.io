@@ -577,6 +577,12 @@ input[type=button]:disabled:hover {
 	border: var(--border-width) solid var(--accent);
 }
 
+.blink {
+	animation-name: blink;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+}
+
 /*								website-structure								*/
 
 main::before {

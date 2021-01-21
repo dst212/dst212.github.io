@@ -41,4 +41,10 @@
 	}
 }
 
+@keyframes blink {
+	0% {}
+	50% { color: transparent; }
+	100% {}
+}
+
 /*END*/
