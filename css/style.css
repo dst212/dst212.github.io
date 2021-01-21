@@ -541,6 +541,12 @@ input[type=button]:disabled:hover {
 .c00f, .blue { color: var(--blue); }
 .cf0f, .magenta { color: var(--magenta); }
 
+.invalid { color: var(--invalid); }
+.background-invalid {
+	background-color: var(--invalid);
+	color: var(--body-bg);
+}
+
 .red.btn { border-color: var(--red); }
 .red.btn:hover { color: var(--body-bg); border-color: var(--red); background-color: var(--red); }
 
