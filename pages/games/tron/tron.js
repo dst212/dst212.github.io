@@ -135,16 +135,12 @@ var Tron;
 	};
 
 	//socket
-	let socket = io(SERVER, {autoConnect: false}), socketWin = null;
-
-	function socketWinClose() {
-		socketWin && socketWin.remove()
-		typeof uncoverPage !== 'undefined' && uncoverPage();
-	}
+	let socket = io(SERVER, {autoConnect: false});
+	let socketPopup = null;
 
 	socket.on('connect', function() {
 		console.log('Connected to the server (' + SERVER + ').');
-		socketWinClose();
+		socketPopup.close(false);
 	});
 	socket.on('disconnect', function() {
 		console.log('Disconnected from the server.');
@@ -174,7 +170,7 @@ var Tron;
 				priv.refresh();
 			} else {
 				Tron.roomLeave();
-				win('Tron', 'Server\'s or client\'s data was incorrect. Disconnected from the server.', [{innerHTML: 'Ok'}], () => {}, true);
+				(new Popup('Tron', 'Server\'s or client\'s data was incorrect. Disconnected from the server.', [{innerHTML: 'Ok'}], {coverBelow: true})).open();
 			}
 		}
 	});
@@ -183,12 +179,11 @@ var Tron;
 		document.getElementById('tron-multiplayer').style.display = 'none';
 		document.getElementById('tron-multiplayer-leave').style.display = 'block';
 		if(socket.disconnected) {
-			socketWin = win('Tron', 'Connecting...', [{innerHTML: 'Cancel'}], endSocket, true);
+			socketPopup.open();
 			socket.connect();
 		}
 	};
 	function endSocket() {
-		socketWinClose();
 		document.getElementById('tron-multiplayer').style.display = 'block';
 		document.getElementById('tron-multiplayer-leave').style.display = 'none';
 		elem.refreshTitle();
@@ -197,6 +192,8 @@ var Tron;
 			socket.disconnect();
 		}
 	};
+
+	socketPopup = new Popup('Tron', 'Connecting...', [{innerHTML: 'Cancel', onclick: endSocket}], {coverBelow: true});
 
 	//private object
 	let priv = {
@@ -398,7 +395,7 @@ var Tron;
 				list = 'Nobody is waiting for a opponent.<br>Try to create a room and wait for someone to join.';
 				endSocket();
 			}
-			win('Tron', list, opponents, () => {}, true);
+			(new Popup('Tron', list, opponents, {coverBelow: true})).open();
 		},
 
 		roomList() {

@@ -123,7 +123,7 @@ var Paint = {
 			that.setImage(this.result);
 		};
 		this.fileReader.onerror = function() {
-			win('Paint', 'Couldn\'t load the selected file:<br>' + this.error, [{innerHTML: 'Ok'}]);
+			(new Popup('Paint', 'Couldn\'t load the selected file:<br>' + this.error, [{innerHTML: 'Ok'}])).open();
 		};
 	},
 	init(body = document.body) {
@@ -315,9 +315,9 @@ var Paint = {
 		let that;
 		//if undefined, leave the previous image
 		if(src && src.search('data:') === 0 && src.search('image/') !== 5) {
-			win('Paint', 'The current format is not an image (<code>' + src.slice(5, src.search(';')) + '</code>). Please, choose a valid image format.', [{innerHTML: 'Ok'}], () => {}, true);
+			(new Popup('Paint', 'The current format is not an image (<code>' + src.slice(5, src.search(';')) + '</code>). Please, choose a valid image format.', [{innerHTML: 'Ok'}], {coverBelow: true})).open();
 		} else if(!src && (!this.img || !this.img.src)) {
-			win('Paint', 'Load an image first.', [{innerHTML: 'Ok'}], () => {}, true);
+			(new Popup('Paint', 'Load an image first.', [{innerHTML: 'Ok'}], {coverBelow: true})).open();
 		} else {
 			that = this;
 			if(src) {
@@ -342,7 +342,7 @@ var Paint = {
 		if(this.img && this.img.src) {
 			this.ctx.drawImage(this.img, x || this.input.image[1].value, y || this.input.image[2].value, width || this.input.image[3].value, height || this.input.image[4].value);
 		} else {
-			win('Paint', 'Load an image first.', [{innerHTML: 'Ok'}], () => {}, true);
+			(new Popup('Paint', 'Load an image first.', [{innerHTML: 'Ok'}], {coverBelow: true})).open();
 		}
 	},
 
@@ -362,7 +362,7 @@ var Paint = {
 
 	new() {
 		let that = this;
-		win('Paint', 'Discard the current drawing and create a new one?', [{onclick: that.clear.bind(that), innerHTML: 'Yes'}, {innerHTML: 'No'}], undefined, true);
+		(new Popup('Paint', 'Discard the current drawing and create a new one?', [{onclick: that.clear.bind(that), innerHTML: 'Yes'}, {innerHTML: 'No'}], {coverBelow: true})).open();
 	},
 
 	link() {
@@ -374,7 +374,7 @@ var Paint = {
 	},
 
 	showLink() {
-		win('Paint - Image data', 'Copy this string now and use it later as <code>image source</code> when adding an image to restore current state:<br><textarea style="width: 100%; height: 10em;" disabled>' + this.link() + '</textarea>');
+		(new Popup('Paint - Image data', 'Copy this string now and use it later as <code>image source</code> when adding an image to restore current state:<br><textarea style="width: 100%; height: 10em;" disabled>' + this.link() + '</textarea>')).open();
 	},
 
 	//dialog function
@@ -401,7 +401,7 @@ var Paint = {
 	},
 
 	help() {
-		win('Paint - No', 'No, there\'s no help about this paint program.', [{innerHTML: 'I hate you'}], () => {}, true);
+		(new Popup('Paint - No', 'No, there\'s no help about this paint program.', [{innerHTML: 'I hate you'}], {coverBelow: true})).open();
 	},
 }
 
