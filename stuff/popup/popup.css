@@ -1,10 +1,11 @@
 /* Made by dst212- https://github.com/dst212/dst212.github.io/ */
 
-.window-element {
+.popup-element {
 	display: block;
 	position: fixed;
 	margin: 0;
 	padding: 0.3rem;
+	max-width: 26rem;
 	color: var(--body-fg);
 	background-color: var(--body-bg);
 	border: var(--border-width) solid var(--accent);
@@ -13,18 +14,18 @@
 	text-align: justify;
 	z-index: -1;
 }
-.window-element > .titlebar {
+.popup-element > .titlebar {
 	display: block;
 	padding: 0.1em 1.5em /*space left for the X button*/ 0.1em 0;
 	margin-bottom: 0.5rem;
 	height: 1.2em;
 	text-overflow: ellipsis;
 }
-.window-element > .content {
+.popup-element > .content {
 	max-height: 50vh;
 	overflow-y: auto;
 }
-.window-element > .close {
+.popup-element > .close {
 	display: block;
 	position: absolute;
 	top: calc(var(--border-width) * -1 + 1px);
@@ -36,16 +37,16 @@
 	border-radius: 0 var(--border-radius);
 	box-sizing: border-box;
 }
-.window-element > .close:hover {
+.popup-element > .close:hover {
 	background-color: var(--accent);
 	color: var(--body-bg);
 }
-.window-element > .buttons {
+.popup-element > .buttons {
 	display: block;
 	margin: 0.3rem auto auto;
 	text-align: center;
 }
-.window-element > .buttons > * {
+.popup-element > .buttons > * {
 	margin-left: 0.3em;
 	margin-right: 0.3em;
 	padding: 0.1em 0.4em;
