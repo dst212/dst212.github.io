@@ -126,7 +126,8 @@ section, div {
 a { color: var(--accent); }
 a:focus, main a[href]:hover,
 .tooltip a[href]:hover,
-#notifications a[href]:hover {
+#notifications a[href]:hover,
+.popup-element a[href]:hover {
 	color:var(--body-bg);
 	background-color:var(--accent);
 	border-radius:0.13em;
