@@ -90,3 +90,5 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 		window.onload = addFunction(window.onload, () => document.body.appendChild(element));
 	return this;
 }
+
+const popup = (title, content, buttons, flags, onclose, style) => (new Popup(title, content, buttons, flags, onclose, style)).open();
