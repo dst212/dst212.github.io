@@ -3,7 +3,7 @@
 
 'use strict';
 
-var acceptCookie = () => localStorage.cookie4 = 214;
+var okokItIsFine = () => localStorage.okokItIsFine = 1;
 
 var discoModeIncoming = () => ntf(
 	'WARNING',
@@ -14,11 +14,11 @@ var discoModeIncoming = () => ntf(
 
 window.onload = addFunction(window.onload, function() {
 	initNotifications();
-	if(localStorage.cookie4 != 214){
+	if(localStorage.okokItIsFine != 1){
 		ntf(
-			'Cookies',
-			'By visiting this website, the use of the mystic and notorious <b>cookies</b> is agreed, <a href="https://creativecommons.org/creative-commons-cookies-notice/" target="_blank">from the gospel of terms and conditions under the Creative Commons license</a>.<br/>Keep calm: they don\'t bite, but they can hurt other ways.<br/>ACTUALLY no info of users are picked, the websites just stores on the visitors\' devices some data about theme and settings, nothing about ads, ID tracking or third party\'s services.',
-			[{innerHTML: 'Agree', onclick: 'acceptCookie();'}]
+			'Welcome',
+			'Welcome to dst212\'s website.<br>Use the navigation bar on top of the screen to access the various pages.<br>By using this website, users agree to save data locally (on their devices) in order to remember the website\'s settings (such as the theme) and other stuff (such as the game data) and blah blah blah this is not a cookie notice blah blah blah nobody cares about this blah blah blah also check my GitHub profile, thanks blah blah blah if someone arrived here the website\'s author apologizes but he congratules on the patience.',
+			[{innerHTML: 'Yes, yes, I don\'t care', onclick: 'okokItIsFine();'}]
 		);
 	}
 });
