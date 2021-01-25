@@ -74,11 +74,19 @@
 			</div>
 		</div>
 
-		<div id="load-theme-menu">
+		<!-- <div id="load-theme-menu">
 			<script type="text/javascript">
 				fetch('res/html/theme-menu.html')
 					.then(response => response.text())
 					.then(data => document.getElementById('load-theme-menu').innerHTML = data);
+			</script>
+		</div> -->
+
+		<div id="load-sidebar">
+			<script type="text/javascript">
+				fetch('res/html/sidebar.html')
+					.then(response => response.text())
+					.then(data => document.getElementById('load-sidebar').innerHTML = data);
 			</script>
 		</div>
 
