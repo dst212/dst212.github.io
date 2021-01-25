@@ -1,0 +1,113 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+#online-chat {
+	display: none;
+	min-width: 20rem;
+	min-height: 10rem;
+	width: 30rem;
+	height: 20rem;
+	max-width: 100vw;
+	max-height: 100vh;
+	resize: both;
+	position: fixed;
+	left: calc((100vw - 30rem) / 2);
+	top: calc((100vh - 20rem) / 2);
+	color: var(--body-fg);
+	background-color: var(--body-bg);
+	border: 0.15rem solid var(--accent);
+	box-shadow: var(--box-shadow);
+	overflow: hidden;
+	z-index: 10;
+}
+@supports ((-webkit-backdrop-filter: blur(0.5rem)) or (backdrop-filter: blur(0.5rem))) {
+	#online-chat {
+		background-color: rgba(50, 50, 50, 0.15);
+		-webkit-backdrop-filter: blur(0.5rem);
+		backdrop-filter: blur(0.5rem);
+		text-shadow: 0.05rem 0.05rem rgba(0, 0, 0, 1);
+	}
+}
+
+#online-chat > .dragbar {
+	padding: 0.1rem;
+	width: 100%;
+	color: var(--body-bg);
+	background-color: var(--accent);
+	text-shadow: 0 0 transparent;
+	cursor: move;
+}
+#online-chat > .dragbar > button {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	width: 1.2rem;
+	height: 1.2rem;
+	text-align: center;
+	border: 0 hidden transparent;
+	border-radius: 0;
+	color: inherit;
+	background-color: inherit;
+}
+#online-chat > .dragbar > button:hover {
+	color: var(--accent);
+	background-color: var(--body-bg);
+}
+
+#online-chat > #chat-input {
+	display: block;
+	padding: 0.3rem;
+	width: 100%;
+	height: 1.86rem;
+	max-height: 100%;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	border: 0 hidden transparent;
+	resize: none;
+	text-shadow: inherit;
+}
+
+#chat-toggle-button {
+	display: block;
+	margin: 0.5rem;
+	padding: 0.3rem;
+	position: fixed;
+	right: 0;
+	top: 0;
+	color: var(--header-fg);
+	background-color: var(--header-bg);
+	border: 0 hidden transparent;
+	border-radius: 50%;
+}
+#chat-toggle-button:hover {
+	color: var(--header-bg);
+	background-color: var(--header-fg);
+	border-radius: 50%;
+}
+
+#chat-list {
+	display: block;
+	height: calc(100% - 1.86rem - 1.2rem);
+	overflow: hidden;
+}
+#chat-list > * {
+	max-height: 100%;
+	padding-left: 0.3rem;
+	padding-right: 0.3rem;
+	overflow-y: auto;
+}
+#chat-list > * > * {
+	margin-bottom: 0.2rem;
+}
+#chat-list > * > *:last-child {
+	margin-bottom: 0.5rem;
+}
+
+.chat-command-help code:hover {
+	color: var(--body-bg);
+	background-color: var(--accent);
+	cursor: pointer;
+}
