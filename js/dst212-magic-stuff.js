@@ -31,6 +31,7 @@ Page.onloadAlways = addFunction(Page.onloadAlways, function() {
 
 window.onload = addFunction(window.onload, function() {
 	initMagnifier();
+	Chat.init();
 });
 
 //END
