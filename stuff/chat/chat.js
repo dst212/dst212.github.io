@@ -22,7 +22,8 @@ var Chat;
 
 	Chat = that = {
 		init() {
-			fetch('/stuff/chat/chat.html?2')
+			addStyleSheet('/stuff/chat/chat.css?0');
+			fetch('/stuff/chat/chat.html?0')
 				.then(res => res.text())
 				.then(data => {
 					that.div = document.createElement('DIV');
@@ -304,8 +305,8 @@ var Chat;
 			[{innerHTML: 'Ok', onclick: () => that.login(document.getElementById(id).value)}, {innerHTML: 'Cancel'}]
 		);
 	})();
-	disconnectedPopup = new Popup('Chat', 'Disconnected from the server.', [{innerHTML: 'Ok'}]);
 	connectingPopup = new Popup('Chat', 'Connecting to the server...', [{innerHTML: 'Hide'}, {innerHTML: 'Cancel', onclick: socket.disconnect}]);
+	disconnectedPopup = new Popup('Chat', 'Disconnected from the server.', [{innerHTML: 'Ok'}]);
 
 	//socket events
 	socket.on('connect', function() {
