@@ -84,4 +84,16 @@ function draggable(elem) {
 	}
 }
 
+function addStyleSheet(location, custom = {}) {
+	let stylesheet = document.createElement('LINK');
+	stylesheet.href = location;
+	for(let key in custom)
+		stylesheet[key] = custom[key];
+	if(!stylesheet.rel)
+		stylesheet.rel = 'stylesheet';
+	if(!stylesheet.type)
+		stylesheet.type = 'text/css';
+	document.head.appendChild(stylesheet);
+}
+
 //END
