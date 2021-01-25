@@ -1,11 +1,8 @@
-// made by dst212
+// made by dst212, https://github.com/dst212/dst212.github.io/
 
 /*
- * This script contains some functions to customize the website's theme.
- * It does not work without https://dst212.github.io/stuff/theme/theme.css,
- * where all theme-schemes are stored.
- *
- * Visit https://github.com/dst212/dst212.github.io/ to get more details.
+ * Website theme customization.
+ * Themes stored on https://dst212.github.io/stuff/theme/theme.css
  */
 
 'use strict';
@@ -17,10 +14,9 @@ var Theme = {
 		var disco = new Audio(localStorage.discoModeMusic || 'https://dst.altervista.org/files/audios/disco.mp3');
 		disco.loop = true;
 		function removeClasses() {
-			let i;
-			for(i = 0; i < lightThemes.length; i++) {
-				document.documentElement.classList.remove(lightThemes[i], darkThemes[i]);
-			}
+			document.documentElement.classList.forEach((item) => {
+				if(item !== 'white-mode') document.documentElement.classList.remove(item);
+			});
 		}
 		function discoMode(mode, wait, count = 2) {
 			if(localStorage.themeColor === mode) {

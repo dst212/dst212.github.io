@@ -28,6 +28,7 @@
 	--cyan:					#0ff;
 	--blue:					#00f;
 	--magenta:				#f0f;
+	--gray:					rgba(220,220,220,1);
 
 	--red-dark:				#800;
 	--yellow-dark:			#880;
@@ -35,6 +36,7 @@
 	--cyan-dark:			#088;
 	--blue-dark:			#008;
 	--magenta-dark:			#808;
+	--gray-dark:			rgba(110,110,110,1);
 }
 .white-mode{
 
@@ -64,6 +66,7 @@
 	--cyan:					#088;
 	--blue:					#008;
 	--magenta:				#808;
+	--gray:					rgba(110,110,110,1);
 
 	--red-dark:				#f00;
 	--yellow-dark:			#ff0;
@@ -71,13 +74,14 @@
 	--cyan-dark:			#0ff;
 	--blue-dark:			#00f;
 	--magenta-dark:			#f0f;
+	--gray-dark:			rgba(220,220,220,1);
 }
 
 .light-black-theme	{--accent:rgba(255,255,255,1);--accent-faded:rgba(255,255,255,0.4);--accent-dark:rgba(000,000,000,1);--accent-dark-faded:rgba(000,000,000,1.0);}
 .dark-black-theme	{--accent:rgba(000,000,000,1);--accent-faded:rgba(000,000,000,1.0);--accent-dark:rgba(255,255,255,1);--accent-dark-faded:rgba(255,255,255,0.4);}
 
-.light-white-theme	{--accent:rgba(220,220,220,1);--accent-faded:rgba(220,220,220,0.4);--accent-dark:rgba(110,110,110,1);--accent-dark-faded:rgba(110,110,110,0.4);}
-.dark-white-theme	{--accent:rgba(110,110,110,1);--accent-faded:rgba(110,110,110,0.4);--accent-dark:rgba(220,220,220,1);--accent-dark-faded:rgba(220,220,220,0.4);}
+.light-gray-theme	{--accent:rgba(220,220,220,1);--accent-faded:rgba(220,220,220,0.4);--accent-dark:rgba(110,110,110,1);--accent-dark-faded:rgba(110,110,110,0.4);}
+.dark-gray-theme	{--accent:rgba(110,110,110,1);--accent-faded:rgba(110,110,110,0.4);--accent-dark:rgba(220,220,220,1);--accent-dark-faded:rgba(220,220,220,0.4);}
 
 .light-red-theme	{--accent:rgba(220,000,000,1);--accent-faded:rgba(220,000,000,0.4);--accent-dark:rgba(110,000,000,1);--accent-dark-faded:rgba(110,000,000,0.4);--invalid:rgba(220,110,000,1);--invalid-faded:rgba(220,110,000,0.4);}
 .dark-red-theme		{--accent:rgba(110,000,000,1);--accent-faded:rgba(110,000,000,0.4);--accent-dark:rgba(220,000,000,1);--accent-dark-faded:rgba(220,000,000,0.4);--invalid:rgba(220,110,000,1);--invalid-faded:rgba(220,110,000,0.4);}
