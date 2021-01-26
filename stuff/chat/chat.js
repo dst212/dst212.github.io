@@ -291,7 +291,7 @@ var Chat;
 	loginPopup = (function() {
 		let id = 'chat-choose-a-username';
 		return new Popup('Chat',
-			'<form style="text-align: center;">\
+			'<div style="text-align: center;");">\
 				Choose a name:<br>\
 				<input id="' + id + '" type="text" placeholder="Username" value="' + (localStorage.getItem('chat-username') || '') + '" maxlength="16" style="margin: 1em;">\
 				<div class="checkbox margin-top-bottom" style="width: 20rem; margin-left: 1rem; margin-right: 1rem;">\
@@ -301,7 +301,7 @@ var Chat;
 						I have read the <a href="javascript:void(Chat.privacyPolicy());">privacy policy</a> and the <a href="javascript:void(Chat.termsOfService());">terms of service</a> and I agree to them\
 					</label>\
 				</div>\
-			</form>',
+			</div>',
 			[{innerHTML: 'Ok', onclick: () => that.login(document.getElementById(id).value)}, {innerHTML: 'Cancel'}]
 		);
 	})();
