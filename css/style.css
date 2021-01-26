@@ -150,9 +150,6 @@ a[target=_blank]::after {
 
 /*img*/
 
-img, svg {
-	vertical-align: text-bottom;
-}
 img.icon {
 	display: inline-block;
 	height: var(--icon-size);
