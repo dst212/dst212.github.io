@@ -12,7 +12,8 @@
 	padding: 0.2em 0.2em 0.2em 1.6em;
 	border: var(--border-width) solid var(--accent-faded);
 	border-radius: var(--border-radius);
-	width: 100%;
+	width: 12rem;
+	max-width: 100%;
 }
 .searchbar > input[type=text]:hover,
 .searchbar > input[type=text]:focus {
@@ -29,4 +30,8 @@
 .searchbar > input[type=text]:hover ~ .material-icons,
 .searchbar > input[type=text]:focus ~ .material-icons {
 	color: var(--accent);
+}
+
+.searchbar.expand-on-focus > input[type=text]:focus {
+	width: 30rem;
 }
