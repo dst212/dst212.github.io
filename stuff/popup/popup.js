@@ -66,7 +66,7 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 		btn = document.createElement('BUTTON');
 		if(typeof buttons[i].onclick !== 'function')
 			buttons[i].onclick = this.close;
-		else
+		else if(!buttons[i].keepOpen)
 			buttons[i].onclick = addFunction(this.close, buttons[i].onclick);
 		for(key in buttons[i])
 			btn[key] = buttons[i][key];
