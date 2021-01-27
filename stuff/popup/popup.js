@@ -37,6 +37,12 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 		element.style.zIndex = 1;
 	}.bind(this);
 
+	this.kill = function() {
+		for(let key in this)
+			delete this[key];
+		element?.remove();
+	}.bind(this);
+
 	element.classList.add('popup-element');
 
 	element.style.zIndex = 1;
@@ -87,4 +93,7 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 	return this;
 }
 
-const popup = (title, content, buttons, flags, onclose, style) => (new Popup(title, content, buttons, flags, onclose, style)).open();
+const popup = (title, content, buttons, flags, onclose, style) => {
+	let p = new Popup(title, content, buttons, flags, addFunction(onclose, () => p.kill()), style);
+	p.open();
+}
