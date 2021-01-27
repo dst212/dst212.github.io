@@ -12,10 +12,6 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 	this.show = function() {
 		shown = true;
 		element.style.display = '';
-		if(element.style.top === '')
-			element.style.top = 'calc((100vh - ' + element.offsetHeight + 'px) / 2)';
-		if(element.style.left === '')
-			element.style.left = 'calc((100vw - ' + element.offsetWidth + 'px) / 2)';
 		element.style.zIndex = 1;
 	}
 	this.hide = function() {
