@@ -6,13 +6,6 @@
 	--ddi-border-radius:	calc(var(--ddi-width) / 2);
 }
 
-#theme-menu {
-	margin: 0.6rem;
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	z-index: 1;
-}
 .pop-icons {
 	display: block;
 	padding: 0;
