@@ -535,6 +535,16 @@ input[type=button]:disabled:hover {
 .c0ff, .cyan { color: var(--cyan); }
 .c00f, .blue { color: var(--blue); }
 .cf0f, .magenta { color: var(--magenta); }
+.gray { color: var(--gray); }
+.normal { color: currentColor }
+.rainbow, .rainbow-bg, .rainbow-dark, .rainbow-dark-bg {
+	animation-duration: 2.1s;
+	animation-iteration-count: infinite;
+}
+.rainbow { animation-name: rainbow-color; }
+.rainbow-bg { animation-name: rainbow-background; }
+.rainbow-dark { animation-name: rainbow-dark-color; }
+.rainbow-dark-bg { animation-name: rainbow-dark-background; }
 
 .invalid { color: var(--invalid); }
 .background-invalid {
@@ -559,6 +569,9 @@ input[type=button]:disabled:hover {
 
 .magenta.btn { border-color: var(--magenta); }
 .magenta.btn:hover { color: var(--body-bg); border-color: var(--magenta); background-color: var(--magenta); }
+
+.gray.btn { border-color: var(--gray); }
+.gray.btn:hover { color: var(--body-bg); border-color: var(--gray); background-color: var(--gray); }
 
 .white.btn { color: #fff; background-color: #000; border-color: var(--body-fg); }
 .white.btn:hover { color: #000; background-color: #fff; }
