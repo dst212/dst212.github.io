@@ -17,27 +17,20 @@ body {
 	scrollbar-color: var(--accent) rgba(127,127,127,0.2);
 	scrollbar-width: thin;
 }
-body * {
-	-webkit-transition: all var(--duration);
-	-moz-transition: all var(--duration);
-	-ms-transition: all var(--duration);
-	-o-transition: all var(--duration);
-	transition: all var(--duration);
+body, body *, *::after, *::before {
+	-webkit-transition-duration: var(--duration);
+	-moz-transition-duration: var(--duration);
+	-ms-transition-duration: var(--duration);
+	-o-transition-duration: var(--duration);
+	transition-duration: var(--duration);
 	animation-duration: var(--duration);
+}
+body * {
 	font-size: inherit;
 	font-family: inherit;
 	box-sizing: border-box;
 	scrollbar-color: var(--accent) rgba(127,127,127,0.2);
 	scrollbar-width: thin;
-}
-*::after,
-*::before {
-	-webkit-transition: all var(--duration);
-	-moz-transition: all var(--duration);
-	-ms-transition: all var(--duration);
-	-o-transition: all var(--duration);
-	transition: all var(--duration);
-	animation-duration: var(--duration);
 }
 ::-webkit-scrollbar {
 	width: 0.4rem;
@@ -311,7 +304,7 @@ input[type=button] {
 	padding: 0.3em 1em;
 	height: initial;
 	color: var(--accent);
-	background-color: var(--body-bg);
+	background-color: transparent;
 	border: var(--border-width) solid var(--accent);
 	border-radius: var(--border-radius);
 	cursor: pointer;
@@ -613,16 +606,10 @@ main {
 	/*width: 100%;
 	padding: 1rem calc((100% - var(--body-width)) / 2) 0;*/
 	max-width: var(--body-width);
-	padding: 1em var(--body-padding) 0;
+	padding: 1rem var(--body-padding) 1rem;
 	margin: 0 auto;
 	text-align: justify;
 /* 	text-align: left; */
-}
-main::after { /*Adds a spacer on the bottom of the body*/
-	content: '';
-	clear: both;
-	display: block;
-	height: var(--title-height-initial);
 }
 
 #title {
