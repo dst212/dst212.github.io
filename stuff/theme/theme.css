@@ -23,6 +23,7 @@
 	--footer-fg:			var(--body-bg);
 
 	--red:					#f00;
+	--orange:				#f80;
 	--yellow:				#ff0;
 	--lime:					#0f0;
 	--cyan:					#0ff;
@@ -31,6 +32,7 @@
 	--gray:					rgba(220,220,220,1);
 
 	--red-dark:				#800;
+	--orange-dark:			#840;
 	--yellow-dark:			#880;
 	--lime-dark:			#080;
 	--cyan-dark:			#088;
