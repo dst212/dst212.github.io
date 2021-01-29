@@ -658,6 +658,7 @@ footer {
 	color: var(--footer-fg);
 	background-color: var(--footer-bg);
 	font-size: 0.7rem;
+	clear: both;
 }
 footer a {
 	color: var(--body-bg);
