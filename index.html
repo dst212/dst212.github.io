@@ -76,13 +76,19 @@
 			</div>
 		</div>
 
-		<!-- <div id="load-theme-menu">
+		<div id="load-theme-menu">
 			<script type="text/javascript">
 				fetch('res/html/theme-menu.html')
 					.then(response => response.text())
-					.then(data => document.getElementById('load-theme-menu').innerHTML = data);
+					.then(function(data) {
+						let a, i;
+						document.getElementById('load-theme-menu').innerHTML = data;
+						a = document.getElementById('theme-menu-themes').getElementsByTagName('A');
+						for(i = 0; i < a.length; i++)
+							a[i].style.transform = 'translate(-50%,-50%) rotateZ(' + (i * 360 / a.length - 180) + 'deg) translateX(var(--distance)) rotateZ(' + (i * -360 / a.length + 180) + 'deg)';
+					});
 			</script>
-		</div> -->
+		</div>
 
 		<div id="load-sidebar">
 			<script type="text/javascript">

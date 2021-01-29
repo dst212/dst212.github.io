@@ -1,0 +1,81 @@
+#theme-menu {
+	--distance: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	opacity: 0;
+	z-index: -2;
+}
+#theme-menu-chek:checked + #theme-menu {
+	--distance: 5.4rem;
+	opacity: 1;
+	z-index: 2;
+}
+#theme-menu > * {
+	opacity: inherit;
+}
+#theme-menu-chek {
+	position: fixed;
+	top: 100vw;
+	margin: 0;
+	padding: 0;
+	height: 0;
+	width: 0;
+	opacity: 0;
+}
+#theme-menu > .container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 0;
+	height: 0;
+	box-shadow: var(--shadow-frame);
+	border-radius: 50%;
+}
+#theme-menu-chek:checked + #theme-menu > .container {
+	width: 16rem;
+	height: 16rem;
+}
+/* #theme-menu-chek:checked + #theme-menu > .container > div {
+	width: 9rem;
+	height: 9rem;
+} */
+#theme-menu > .container > div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	transform: translate(-50%, -50%);
+	z-index: 0;
+}
+#theme-menu a:hover {
+	color: var(--body-bg);
+	background-color: var(--accent);
+	border-radius: var(--border-radius);
+	text-shadow: none;
+}
+#theme-menu a {
+	position: absolute;
+	display: block;
+	padding: 0.5rem 0;
+	height: 3rem;
+	width: 3rem;
+	font-size: 2rem;
+	text-align: center;
+	border-radius: 50%;
+	text-shadow: 0.1em 0.1em 0.1em var(--body-bg);
+	cursor: pointer;
+}
+#theme-menu-themes + a {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
