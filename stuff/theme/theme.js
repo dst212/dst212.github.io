@@ -9,8 +9,7 @@
 
 var Theme = {
 	update: (function () {
-		const darkThemes =	['dark-red-theme',	'dark-yellow-theme',	'dark-lime-theme',	'dark-cyan-theme',	'dark-blue-theme',	'dark-magenta-theme'];
-		const lightThemes =	['light-red-theme',	'light-yellow-theme',	'light-lime-theme',	'light-cyan-theme',	'light-blue-theme',	'light-magenta-theme'];
+		const themes = ['red-theme', 'orange-theme', 'yellow-theme', 'lime-theme', 'cyan-theme', 'blue-theme', 'magenta-theme'];
 		let tempMode = false, tempModeTheme = localStorage.theme;
 		let disco = new Audio(localStorage.discoModeMusic || 'https://dst.altervista.org/files/audios/disco.mp3');
 		disco.loop = true;
@@ -22,13 +21,13 @@ var Theme = {
 		}
 		function discoMode(mode, wait, count = 0) {
 			if(localStorage.themeColor === mode || tempMode) {
-				document.documentElement.classList.remove(darkThemes[count], lightThemes[count++]);
-				if(count >= darkThemes.length)
+				document.documentElement.classList.remove('dark-' + themes[count], 'light-' + themes[count++]);
+				if(count >= themes.length)
 					count = 0;
 				if(localStorage.theme === 'black' || (tempMode && tempModeTheme === 'black'))
-					document.documentElement.classList.add(lightThemes[count]);
+					document.documentElement.classList.add('light-' + themes[count]);
 				else if(localStorage.theme === 'white' || (tempMode && tempModeTheme === 'white'))
-					document.documentElement.classList.add(darkThemes[count]);
+					document.documentElement.classList.add('dark-' + themes[count]);
 				Theme.computedStyle = null; //make it always null so that the function getComputedStyle() will be triggered each time Theme.getComputedStyle() will be called
 				localStorage.resumeMusic = disco.currentTime;
 				setTimeout(discoMode, wait, mode, wait, count);
