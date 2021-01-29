@@ -1,0 +1,19 @@
+
+<input id="theme-menu-chek" type="checkbox" onchange="document.getElementsByTagName('MAIN')[0].style = this.checked ? 'filter: blur(0.2rem); transform: scale(0.9);' : ''">
+<label id="theme-menu" for="theme-menu-chek">
+	<div class="container">
+		<div id="theme-menu-themes">
+			<a class="fas fa-palette red" onmouseout="Theme.update();" onclick="Theme.color.set('red');" onmouseover="Theme.color.set('red', false);"></a>
+			<a class="fas fa-palette orange" onmouseout="Theme.update();" onclick="Theme.color.set('orange');" onmouseover="Theme.color.set('orange', false);"></a>
+			<a class="fas fa-palette yellow" onmouseout="Theme.update();" onclick="Theme.color.set('yellow');" onmouseover="Theme.color.set('yellow', false);"></a>
+			<a class="fas fa-palette lime" onmouseout="Theme.update();" onclick="Theme.color.set('lime');" onmouseover="Theme.color.set('lime', false);"></a>
+			<a class="fas fa-palette cyan" onmouseout="Theme.update();" onclick="Theme.color.set('cyan');" onmouseover="Theme.color.set('cyan', false);"></a>
+			<a class="fas fa-palette blue" onmouseout="Theme.update();" onclick="Theme.color.set('blue');" onmouseover="Theme.color.set('blue', false);"></a>
+			<a class="fas fa-palette magenta" onmouseout="Theme.update();" onclick="Theme.color.set('magenta');" onmouseover="Theme.color.set('magenta', false);"></a>
+			<a class="fas fa-palette gray" onmouseout="Theme.update();" onclick="Theme.color.set('gray');" onmouseover="Theme.color.set('gray', false);"></a>
+			<a class="fas fa-palette normal" onmouseout="Theme.update();" onclick="Theme.color.set('black');" onmouseover="Theme.color.set('black', false);"></a>
+			<a class="material-icons rainbow" onmouseout="Theme.update();" onclick="Theme.color.set('disco');" onmouseover="Theme.color.set('disco', false);">warning</a>
+		</div>
+		<a class="material-icons normal" onmouseout="Theme.update();" onclick="this.onmouseout = () => {}; Theme.background.toggle(); Theme.update();" onmouseover="this.onmouseout = _ => Theme.update(); Theme.background.toggle(false);">brightness_medium</a>
+	</div>
+</label>

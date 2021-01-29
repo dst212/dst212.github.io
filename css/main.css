@@ -12,6 +12,7 @@
 @import url('stuff.css');
 @import url('logo.css');
 @import url('sidebar.css');
+@import url('theme-menu.css');
 
 @import url('../stuff/theme/theme.css');
 @import url('../stuff/ntf/ntf.css');
