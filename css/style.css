@@ -523,6 +523,7 @@ input[type=button]:disabled:hover {
 .no-whitespaces * { font-size: 1rem; }
 
 .cf00, .red { color: var(--red); }
+.orange { color: var(--orange); }
 .cff0, .yellow { color: var(--yellow); }
 .c0f0, .lime { color: var(--lime); }
 .c0ff, .cyan { color: var(--cyan); }
@@ -547,6 +548,9 @@ input[type=button]:disabled:hover {
 
 .red.btn { border-color: var(--red); }
 .red.btn:hover { color: var(--body-bg); border-color: var(--red); background-color: var(--red); }
+
+.orange.btn { border-color: var(--orange); }
+.orange.btn:hover { color: var(--body-bg); border-color: var(--orange); background-color: var(--orange); }
 
 .yellow.btn { border-color: var(--yellow); }
 .yellow.btn:hover { color: var(--body-bg); border-color: var(--yellow); background-color: var(--yellow); }
