@@ -9,7 +9,7 @@ main::before {
 .building::after,
 .beta::after {
 	display: block;
-	color: var(--accent);
+	--fg: var(--accent);
 	font-weight: bold;
 	font-style: italic;
 	text-align: center;
@@ -59,9 +59,12 @@ nav span.optional {
 	bottom: 0;
 	left: 0;
 	margin: 0.6rem;
-	background-color: var(--accent);
+	--bg: var(--accent);
 	border-radius: 50%;
 	box-shadow: var(--box-shadow);
+}
+#cc-floating > * {
+	--bg: transparent;
 }
 #cc-floating .item {
 	display: block;

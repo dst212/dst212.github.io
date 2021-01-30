@@ -1,14 +1,18 @@
 /* Made by dst212- https://github.com/dst212/dst212.github.io/ */
-
+:root {
+	--fg: var(--body-fg);
+	--bg: var(--body-bg);
+}
 html {
 	height: 100%;
+	scroll-behavior: smooth;
 	scrollbar-color: var(--accent) rgba(127,127,127,0.2);
 	scrollbar-width: thin;
 }
 body {
 	position: relative;
-	background-color: var(--body-bg);
-	color: var(--body-fg);
+	--bg: transparent;
+	--fg: var(--body-fg);
 	font-family: var(--font-family);
 	font-size: 1rem;
 	line-height: 1.1;
@@ -17,13 +21,15 @@ body {
 	scrollbar-color: var(--accent) rgba(127,127,127,0.2);
 	scrollbar-width: thin;
 }
-body, body *, *::after, *::before {
+* {
 	-webkit-transition-duration: var(--duration);
 	-moz-transition-duration: var(--duration);
 	-ms-transition-duration: var(--duration);
 	-o-transition-duration: var(--duration);
 	transition-duration: var(--duration);
 	animation-duration: var(--duration);
+	color: var(--fg);
+	background-color: var(--bg);
 }
 body * {
 	font-size: inherit;
@@ -56,7 +62,6 @@ body * {
 }
 *:focus {
 	outline: none;
-	/*background-color:var(--accent-dark-faded) linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2));*/
 	box-shadow: var(--shadow-frame);
 }
 
@@ -82,8 +87,7 @@ main ul > li::before {
 
 hr {
 	height: var(--border-width);
-	color: var(--body-fg);
-	background-color: var(--body-fg);
+	--bg: var(--fg);
 	border-color: transparent;
 }
 small { font-size:0.8em; }
@@ -105,8 +109,8 @@ p {
 }
 code {
 	padding: 0 0.2em;
-	color: #fff;
-	background-color: #333;
+	--fg: #fff;
+	--bg: #333;
 	border-radius: 0.2em;
 }
 
@@ -116,10 +120,11 @@ section, div {
 
 /*a*/
 
-a { color: var(--accent); }
+a { --fg: var(--accent); }
+a > * { --bg: transparent; }
 a:focus,  a:hover {
-	color:var(--body-bg);
-	background-color:var(--accent);
+	--fg: var(--body-bg);
+	--bg: var(--accent);
 	border-radius:0.13em;
 	text-decoration:none;
 }
@@ -139,16 +144,6 @@ a[target=_blank]::after {
 	width: 1em;
 	height: 1em;
 	content: '➚';*/
-}
-
-/*img*/
-
-img.icon {
-	display: inline-block;
-	height: var(--icon-size);
-	width: var(--icon-size);
-	background-color: white;
-	border-radius: 35%;
 }
 
 /*table*/
@@ -199,8 +194,7 @@ textarea {
 	margin: 0;
 	padding: 0;
 	height: 1.3em;
-	color: var(--body-fg);
-	background-color: rgba(0,0,0,0);
+	--bg: transparent;
 	border: none;
 	border-bottom: var(--border-width) solid var(--accent-faded);
 	font-family: inherit;
@@ -242,13 +236,13 @@ input[type=range] {
 	appearance: none;
 	width: 5em;
 	height: 0.1em;
-	background-color: var(--accent-faded);
+	--bg: var(--accent-faded);
 }
 input[type=range]::-webkit-slider-thumb {
 	margin: 0;
 	height: 0.5em;
 	width: 0.5em;
-	background-color: var(--body-bg);
+	--bg: var(--body-bg);
 	border: var(--border-width) solid var(--accent-faded);
 	border-radius: 50%;
 	opacity: 1;
@@ -260,7 +254,7 @@ input[type=range]::-moz-range-thumb {
 	margin: 0;
 	height: 0.5em;
 	width: 0.5em;
-	background-color: var(--body-bg);
+	--bg: var(--body-bg);
 	border: var(--border-width) solid var(--accent-faded);
 	border-radius: 50%;
 	opacity: 1;
@@ -270,14 +264,14 @@ input[type=range]::-moz-range-thumb {
 }
 input[type=range]:hover,
 input[type=range]:focus {
-	background-color: var(--accent);
+	--bg: var(--accent);
 }
 
 input[type=range]:hover::-webkit-slider-thumb,
 input[type=range]:hover::-moz-range-thumb,
 input[type=range]:focus::-webkit-slider-thumb,
 input[type=range]:focus::-moz-range-thumb {
-	background-color: var(--body-bg);
+	--bg: var(--body-bg);
 	border: var(--border-width) solid var(--accent);
 	border-radius: 50%;
 }
@@ -303,8 +297,8 @@ input[type=reset],
 input[type=button] {
 	padding: 0.3em 1em;
 	height: initial;
-	color: var(--accent);
-	background-color: transparent;
+	--fg: var(--accent);
+	--bg: transparent;
 	border: var(--border-width) solid var(--accent);
 	border-radius: var(--border-radius);
 	cursor: pointer;
@@ -314,8 +308,8 @@ button:hover,
 input[type=submit]:hover,
 input[type=reset]:hover,
 input[type=button]:hover {
-	color: var(--body-bg);
-	background-color: var(--accent);
+	--fg: var(--body-bg);
+	--bg: var(--accent);
 	border-radius: var(--half-border-radius);
 	user-select: none;
 	-o-user-select: none;
@@ -364,7 +358,7 @@ input[type=button]:disabled:hover {
 	left: 0;
 	height: 1em;
 	width: 1em;
-	/*background-color: var(--body-bg);*/
+	--bg: transparent;
 	border-radius: 50%;
 	border: var(--border-width) solid var(--accent-faded);
 	box-sizing: border-box;
@@ -388,7 +382,7 @@ input[type=button]:disabled:hover {
 }
 .checkbox label input[type=checkbox]:checked ~ span {
 	border: var(--border-bold) solid var(--accent);
-	background-color: var(--accent);
+	--bg: var(--accent);
 }
 .checkbox label input[type=checkbox]:checked ~ span::after {
 	display: block;
@@ -522,62 +516,68 @@ input[type=button]:disabled:hover {
 .no-whitespaces { font-size: 0; }
 .no-whitespaces * { font-size: 1rem; }
 
-.cf00, .red { color: var(--red); }
-.orange { color: var(--orange); }
-.cff0, .yellow { color: var(--yellow); }
-.c0f0, .lime { color: var(--lime); }
-.c0ff, .cyan { color: var(--cyan); }
-.c00f, .blue { color: var(--blue); }
-.cf0f, .magenta { color: var(--magenta); }
-.gray { color: var(--gray); }
-.normal { color: currentColor }
-.rainbow, .rainbow-bg, .rainbow-dark, .rainbow-dark-bg {
+.cf00, .red { --fg: var(--red); }
+.orange { --fg: var(--orange); }
+.cff0, .yellow { --fg: var(--yellow); }
+.c0f0, .lime { --fg: var(--lime); }
+.c0ff, .cyan { --fg: var(--cyan); }
+.c00f, .blue { --fg: var(--blue); }
+.cf0f, .magenta { --fg: var(--magenta); }
+.gray { --fg: var(--gray); }
+.normal { --fg: currentColor }
+.rainbow {
 	animation-duration: 2.1s;
 	animation-iteration-count: infinite;
 }
-.rainbow { animation-name: rainbow-color; }
-.rainbow-bg { animation-name: rainbow-background; }
-.rainbow-dark { animation-name: rainbow-dark-color; }
-.rainbow-dark-bg { animation-name: rainbow-dark-background; }
 
-.invalid { color: var(--invalid); }
+.rainbow { animation-name: rainbow-color; }
+.rainbow.bg { animation-name: rainbow-background; }
+.rainbow.dark { animation-name: rainbow-dark-color; }
+.rainbow.bg.dark { animation-name: rainbow-dark-background; }
+
+.rainbow.hover:hover { animation-name: rainbow-dark-color; }
+.rainbow.bg.hover:hover { animation-name: rainbow-dark-background; }
+.rainbow.dark.hover:hover { animation-name: rainbow-color; }
+.rainbow.bg.dark.hover:hover { animation-name: rainbow-background; }
+
+.invalid { --fg: var(--invalid); }
 .background-invalid {
-	background-color: var(--invalid);
-	color: var(--body-bg);
+	--bg: var(--invalid);
+	--fg: var(--body-bg);
 }
 
 .red.btn { border-color: var(--red); }
-.red.btn:hover { color: var(--body-bg); border-color: var(--red); background-color: var(--red); }
+.red.btn:hover { --fg: var(--body-bg); border-color: var(--red); --bg: var(--red); }
 
 .orange.btn { border-color: var(--orange); }
-.orange.btn:hover { color: var(--body-bg); border-color: var(--orange); background-color: var(--orange); }
+.orange.btn:hover { --fg: var(--body-bg); border-color: var(--orange); --bg: var(--orange); }
 
 .yellow.btn { border-color: var(--yellow); }
-.yellow.btn:hover { color: var(--body-bg); border-color: var(--yellow); background-color: var(--yellow); }
+.yellow.btn:hover { --fg: var(--body-bg); border-color: var(--yellow); --bg: var(--yellow); }
 
 .green.btn { border-color: var(--lime); }
-.green.btn:hover { color: var(--body-bg); border-color: var(--lime); background-color: var(--lime); }
+.green.btn:hover { --fg: var(--body-bg); border-color: var(--lime); --bg: var(--lime); }
 
 .cyan.btn { border-color: var(--cyan); }
-.cyan.btn:hover { color: var(--body-bg); border-color: var(--cyan); background-color: var(--cyan); }
+.cyan.btn:hover { --fg: var(--body-bg); border-color: var(--cyan); --bg: var(--cyan); }
 
 .blue.btn { border-color: var(--blue); }
-.blue.btn:hover { color: var(--body-bg); border-color: var(--blue); background-color: var(--blue); }
+.blue.btn:hover { --fg: var(--body-bg); border-color: var(--blue); --bg: var(--blue); }
 
 .magenta.btn { border-color: var(--magenta); }
-.magenta.btn:hover { color: var(--body-bg); border-color: var(--magenta); background-color: var(--magenta); }
+.magenta.btn:hover { --fg: var(--body-bg); border-color: var(--magenta); --bg: var(--magenta); }
 
 .gray.btn { border-color: var(--gray); }
-.gray.btn:hover { color: var(--body-bg); border-color: var(--gray); background-color: var(--gray); }
+.gray.btn:hover { --fg: var(--body-bg); border-color: var(--gray); --bg: var(--gray); }
 
-.white.btn { color: #fff; background-color: #000; border-color: var(--body-fg); }
-.white.btn:hover { color: #000; background-color: #fff; }
+.white.btn { --fg: #fff; --bg: #000; border-color: var(--body-fg); }
+.white.btn:hover { --fg: #000; --bg: #fff; }
 
-.black.btn { color: #000; background-color: #fff; border-color: var(--body-fg); }
-.black.btn:hover { color: #fff; background-color: #000; }
+.black.btn { --fg: #000; background-color: #fff; border-color: var(--body-fg); }
+.black.btn:hover { --fg: #fff; --bg: #000; }
 
-.normal.btn { color: currentColor; background-color: transparent; border-color: currentColor; }
-.normal.btn:hover { color: currentColor; background-color: transparent; }
+.normal.btn { --fg: currentColor; --bg: transparent; border-color: currentColor; }
+.normal.btn:hover { --fg: currentColor; --bg: transparent; }
 
 .canvas-frame {
 	width: 100vh;
@@ -598,7 +598,7 @@ input[type=button]:disabled:hover {
 
 main::before {
 	display: block;
-	color: var(--invalid);
+	--fg: var(--invalid);
 	text-align: center;
 	font-style: italic;
 	margin-bottom: 1em;
@@ -621,8 +621,8 @@ main {
 	height: calc(var(--header-height) + var(--title-height));
 	padding: calc(var(--title-height) - var(--title-font-size) + var(--header-height)) 0 calc(var(--title-height) - var(--title-font-size));
 	text-align: center;
-	background-color: var(--title-bg);
-	color: var(--title-fg);
+	--bg: var(--title-bg);
+	--fg: var(--title-fg);
 	font-size: var(--title-font-size);
 	font-weight: bold;
 	box-shadow: var(--bottom-shadow);
@@ -641,8 +641,8 @@ header {
 	height: var(--header-height);
 	top: 0;
 	width: 100%;
-	background-color: var(--header-bg);
-	color: var(--header-fg);
+	--bg: var(--header-bg);
+	--fg: var(--header-fg);
 	z-index: 1;
 	text-align: center;
 	box-shadow: var(--bottom-shadow);
@@ -655,18 +655,18 @@ footer {
 	height: var(--footer-height);
 	width: 100%;
 	text-align: center;
-	color: var(--footer-fg);
-	background-color: var(--footer-bg);
+	--fg: var(--footer-fg);
+	--bg: var(--footer-bg);
 	font-size: 0.7rem;
 	clear: both;
 }
 footer a {
-	color: var(--body-bg);
+	--fg: var(--footer-fg);
 }
 footer::selection,
 footer *::selection {
-	color: var(--footer-bg);
-	background-color: var(--footer-fg);
+	--fg: var(--footer-bg);
+	--bg: var(--footer-fg);
 }
 
 /* END */

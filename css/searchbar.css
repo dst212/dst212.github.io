@@ -23,13 +23,13 @@
 .searchbar > input[type=text] ~ .material-icons {
 	position: absolute;
 	left: 0;
-	color: var(--accent-faded);
+	--fg: var(--accent-faded);
 	font-size: 1.2em;
 	padding: 0.3em;
 }
 .searchbar > input[type=text]:hover ~ .material-icons,
 .searchbar > input[type=text]:focus ~ .material-icons {
-	color: var(--accent);
+	--fg: var(--accent);
 }
 
 .searchbar.expand-on-focus > input[type=text]:focus {

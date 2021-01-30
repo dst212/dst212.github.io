@@ -12,16 +12,12 @@
 	margin: 0;
 	max-height: var(--ddi-width);
 	width: var(--ddi-width);
-	color: var(--header-fg);
-	background-color: var(--header-bg);
+	--fg: var(--header-fg);
+	--bg: var(--header-bg);
 	border-radius: var(--ddi-border-radius);
 }
 .pop-icons.up {
 	overflow: hidden;
-}
-.pop-icons * {
-	color: inherit;
-/* 	background-color: inherit; */
 }
 
 .pop-icons a {
@@ -30,15 +26,15 @@
 	margin: 0;
 	height: var(--ddi-width);
 	width: var(--ddi-width);
-	background-color: transparent;/*make shadows visible*/
+	--bg: transparent;/*make shadows visible*/
 	border-radius: 50%;
 	font-size: var(--icon-size-24); /*else it would inherit 0*/
 	text-shadow: 0.05em 0.05em rgba(0,0,0,0.2);
 	text-decoration: none;
 }
 .pop-icons a:hover {
-	color: var(--header-bg);
-	background-color: var(--header-fg);
+	--fg: var(--header-bg);
+	--bg: var(--header-fg);
 	box-shadow: var(--bottom-shadow);
 }
 .pop-icons a:focus { box-shadow: none; }
@@ -64,7 +60,7 @@
 	overflow: hidden;
 }
 /*.pop-icons.up.greater .hide > div {
-	background-color: rgba(0,0,0,0);
+	--bg: rgba(0,0,0,0);
 }*/
 .pop-icons.down .hide {
 	position: absolute;
@@ -107,15 +103,15 @@
 	max-height: 0;
 }*/
 
-.pop-icons .red { color: var(--red-dark); }
-.pop-icons .yellow { color: var(--yellow-dark); }
-.pop-icons .lime { color: var(--lime-dark); }
-.pop-icons .cyan { color: var(--cyan-dark); }
-.pop-icons .blue { color: var(--blue-dark); }
-.pop-icons .magenta { color: var(--magenta-dark); }
-.pop-icons .red:hover { background-color: var(--red-dark); }
-.pop-icons .yellow:hover { background-color: var(--yellow-dark); }
-.pop-icons .lime:hover { background-color: var(--lime-dark); }
-.pop-icons .cyan:hover { background-color: var(--cyan-dark); }
-.pop-icons .blue:hover { background-color: var(--blue-dark); }
-.pop-icons .magenta:hover { background-color: var(--magenta-dark); }
+.pop-icons .red { --fg: var(--red-dark); }
+.pop-icons .yellow { --fg: var(--yellow-dark); }
+.pop-icons .lime { --fg: var(--lime-dark); }
+.pop-icons .cyan { --fg: var(--cyan-dark); }
+.pop-icons .blue { --fg: var(--blue-dark); }
+.pop-icons .magenta { --fg: var(--magenta-dark); }
+.pop-icons .red:hover { --bg: var(--red-dark); }
+.pop-icons .yellow:hover { --bg: var(--yellow-dark); }
+.pop-icons .lime:hover { --bg: var(--lime-dark); }
+.pop-icons .cyan:hover { --bg: var(--cyan-dark); }
+.pop-icons .blue:hover { --bg: var(--blue-dark); }
+.pop-icons .magenta:hover { --bg: var(--magenta-dark); }

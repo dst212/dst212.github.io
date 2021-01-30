@@ -7,15 +7,15 @@ nav {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
+	--bg: transparent;
 }
 .nav-element,
 nav a {
 	display: inline-block;
 	margin: 0;
 	padding: 0.3rem 0.7rem;
-	color: inherit;
-	background-color: transparent;
 	font-size: var(--md-icon-nav);
+	--fg: currentColor;
 	text-decoration: none;
 	border-style: none;
 	border-radius: 50%;
@@ -24,8 +24,8 @@ nav a {
 .nav-element:hover,
 .dropdown:hover > a,
 nav a:hover {
-	color: var(--header-bg);
-	background-color: var(--header-fg);
+	--fg: var(--header-bg);
+	--bg: var(--header-fg);
 	box-shadow: var(--bottom-shadow);
 	border-radius: 0.4rem;
 }
@@ -64,7 +64,7 @@ nav a:focus {
 	overflow: hidden;
 	max-height: 0;
 
-	background-color: var(--header-bg);
+	--fg: var(--header-bg);
 	border-radius: var(--border-radius);
 }
 

@@ -56,8 +56,8 @@
 	z-index: 0;
 }
 #theme-menu a:hover {
-	color: var(--body-bg);
-	background-color: var(--accent);
+	--fg: var(--body-bg);
+	--bg: var(--accent);
 	border-radius: var(--border-radius);
 	text-shadow: none;
 }
