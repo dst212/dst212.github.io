@@ -49,6 +49,7 @@
 	width: 1.2rem;
 	height: 1.2rem;
 	text-align: center;
+	--fg: var(--body-bg);
 	border: 0 hidden transparent;
 	border-radius: 0;
 }
