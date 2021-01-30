@@ -67,7 +67,7 @@
 			<div class="tooltip" title="Creative Commons License">
 				<a class="item" href="javascript:void(0)" title="Creative Commons License"></a>
 				<div class="content" id="cc-floating-content">
-					<script id="cc-script" type="text/javascript">
+					<script type="text/javascript">
 						fetch('res/html/cc.html')
 							.then(response => response.text())
 							.then(data => document.getElementById('cc-floating-content').innerHTML = data);
@@ -82,7 +82,7 @@
 					.then(response => response.text())
 					.then(function(data) {
 						let a, i;
-						document.getElementById('load-theme-menu').innerHTML = data;
+						document.getElementById('load-theme-menu').outerHTML = data;
 						a = document.getElementById('theme-menu-themes').getElementsByTagName('A');
 						for(i = 0; i < a.length; i++)
 							a[i].style.transform = 'translate(-50%,-50%) rotateZ(' + (i * 360 / a.length - 180) + 'deg) translateX(var(--distance)) rotateZ(' + (i * -360 / a.length + 180) + 'deg)';
@@ -94,7 +94,7 @@
 			<script type="text/javascript">
 				fetch('res/html/sidebar.html')
 					.then(response => response.text())
-					.then(data => document.getElementById('load-sidebar').innerHTML = data);
+					.then(data => document.getElementById('load-sidebar').outerHTML = data);
 			</script>
 		</div>
 

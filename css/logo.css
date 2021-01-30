@@ -28,7 +28,7 @@
 	left: 50%;
 	height: 0;
 	width: 0;
-	background-color: var(--accent);
+	--bg: var(--accent);
 	border-radius: inherit;
 	overflow: hidden;
 }

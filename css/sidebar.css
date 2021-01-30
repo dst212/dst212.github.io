@@ -7,8 +7,8 @@
 	left: 100vw;
 	width: var(--header-height);
 	height: calc(100vh - var(--header-height));
-	color: var(--body-bg);
-	background-color: var(--accent);
+	--fg: var(--body-bg);
+	--bg: var(--accent);
 }
 #sidebar-checkbox:checked + #sidebar,
 #sidebar:hover {
@@ -16,8 +16,6 @@
 }
 
 #sidebar > .content {
-	color: inherit;
-	background-color: inherit;
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -29,14 +27,14 @@
 	text-align: center;
 	text-decoration: none;
 	text-shadow: 0.05em 0.05em rgba(0,0,0,0.2);
-	color: inherit;
-	background-color: transparent;
+	--fg: currentColor;
+	--bg: transparent;
 	border-radius: 50%;
 	cursor: pointer;
 }
 #sidebar > .content > *:hover {
-	color: var(--accent);
-	background-color: var(--body-bg);
+	--fg: var(--accent);
+	--bg: var(--body-bg);
 	border-radius: 0;
 }
 
@@ -49,8 +47,7 @@
 	height: 4rem;
 	padding-top: 1.1rem;
 	padding-left: 0.1rem;
-	color: inherit;
-	background-color: inherit;
+	--bg: var(--accent);
 	border-radius: 50%;
 	cursor: pointer;
 	border: var(--border-width) solid var(--accent);
@@ -63,8 +60,8 @@
 
 #sidebar-checkbox:checked + #sidebar #sidebar-pin-button {
 	border-radius: 0;
-	color: var(--accent);
-	background-color: var(--body-bg);
+	--fg: var(--accent);
+	--bg: var(--body-bg);
 }
 
 #sidebar-checkbox {
@@ -79,19 +76,3 @@
 	width: 0;
 	z-index: -100;
 }
-
-#sidebar > .content > .red { color: var(--red-dark); }
-#sidebar > .content > .yellow { color: var(--yellow-dark); }
-#sidebar > .content > .lime { color: var(--lime-dark); }
-#sidebar > .content > .cyan { color: var(--cyan-dark); }
-#sidebar > .content > .blue { color: var(--blue-dark); }
-#sidebar > .content > .magenta { color: var(--magenta-dark); }
-#sidebar > .content > .gray { color: var(--gray-dark); }
-#sidebar > .content > .red:hover { background-color: var(--red-dark); }
-#sidebar > .content > .yellow:hover { background-color: var(--yellow-dark); }
-#sidebar > .content > .lime:hover { background-color: var(--lime-dark); }
-#sidebar > .content > .cyan:hover { background-color: var(--cyan-dark); }
-#sidebar > .content > .blue:hover { background-color: var(--blue-dark); }
-#sidebar > .content > .magenta:hover { background-color: var(--magenta-dark); }
-#sidebar > .content > .gray:hover { background-color: var(--gray-dark); }
-#sidebar > .content > *:hover { color: var(--accent); }
