@@ -3,7 +3,7 @@
 
 'use strict';
 
-const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, coverBelow: false}, onclose = null, style = {}) {
+const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, coverBelow: false, draggable: false}, onclose = null, style = {}) {
 	let i, key, btn;
 
 	let shown = flags.autoSpawn;
@@ -85,6 +85,11 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 
 	if(!shown)
 		this.hide();
+	if(flags.draggable) {
+		this.title.classList.add('dragbar');
+		this.title.style.cursor = 'move';
+		draggable(element);
+	}
 
 	if(document.body)
 		document.body.appendChild(element);
