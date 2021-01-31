@@ -1,37 +1,60 @@
-// made by dst212
-// https://github.com/dst212/dst212.github.io/
+// made by dst212, https://github.com/dst212/dst212.github.io/
 
-//still not ready
+const Settings = (function() {
+	let pop, that, fileLoader, fileReader;
 
+	fileLoader = document.createElement('INPUT');
+	fileLoader.type = 'file';
+	fileLoader.accept = 'application/json';
+	fileReader = new FileReader();
 
-/*if((navigator.userAgent.indexOf('AppleWebKit')!=-1&&localStorage.sTransitions!=true)||localStorage.sTransitions==false){
-	document.documentElement.classList.toggle("disable-transitions");
-	if(settingsGet("transitions")==undefined) settingsToggle("transitions",false);
-}else if(settingsGet("transitions")==undefined) settingsToggle("transitions",true);*/
-/*var settingsEl;
-//document.getElementById("settings").onload=function(){settingsEl=document.getElementById("settings");};
+	fileLoader.onchange = function() {
+		fileReader.readAsText(this.files[0]);
+	}
 
-function settingsToggle(target,value){
-	var s=document.getElementById(target);
-	if(value==null) value=s.value;
-	if(target=="transitions") localStorage.sTransitions=value; //to finish...
-}
-function settingsGet(target){
+	fileReader.onload = function() {
+		that.load(JSON.parse(this.result));
+	};
+	fileReader.onerror = function() {
+		popup('Settings', 'Couldn\'t load the selected file:<br>' + this.error, [{innerHTML: 'Ok'}]);
+	};
 
-}
-function settingsLoad(){
-	console.log("Loading settings...");
-	//lol
-	console.log("Settings loaded.");
-}
+	pop = new Popup('Settings', '', [
+		{innerHTML: 'Import', keepOpen: true, onclick: () => fileLoader.click()},
+		{innerHTML: 'Export', keepOpen: true, onclick: () => that.save()},
+		{innerHTML: 'Reset', keepOpen: true, onclick: () => {
+			popup('Settings - Reset', `
+				Reset the website settings?<br>
+				All the preferences will be lost unless they have been exported.
+			`, [
+				{innerHTML: 'Yes', onclick: () => { localStorage.clear(); window.location.reload(); }},
+				{innerHTML: 'NONONO'}
+			]);
+		}},
+		{innerHTML: 'Close'}
+	], {draggable: true});
 
-window.onload=addFunction(
-	function(){
-		if(settingsEl!=undefined){
-			console.log("This is the settings' page.");
-			settingsLoad();
-		}
-	},window.onload
-);*/
+	pop.content.innerHTML = `
+	`;
 
-//END
+	return that = {
+		save(filename = window.location.hostname + '-settings-' + (new Date()).toISOString().slice(0, 10) + '.json') {
+			let a = document.createElement('A');
+			a.target = '_self';
+			a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(localStorage));
+			a.download = filename;
+			a.click();
+		},
+		load(ls) {
+			if(ls) {
+				for(let key in ls)
+					localStorage.setItem(key, ls[key]);
+				popup('Settings', 'Settings imported successfully.<br>Reloading the page is needed in order to apply the changes.<br>Reload now?', [{innerHTML: 'Yes', onclick: () => window.location.reload()}, {innerHTML: 'No'}])
+			} else
+				popup('Settings', 'Couldn\'t parse the provided file.', [{innerHTML: 'Ok'}]);
+		},
+		open: () => pop.open(),
+		close: () => pop.close(),
+		toggle: () => pop.isUp() ? pop.close() : pop.open(),
+	};
+})();
