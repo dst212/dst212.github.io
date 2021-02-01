@@ -1,9 +1,9 @@
 /* Made by dst212- https://github.com/dst212/dst212.github.io/ */
 
 .sections {
-	display: grid;
-	position: relative;
 	height: max-content;
+	width: 100%;
+	overflow-x: auto;
 }
 
 .sections > input[type="radio"] {
@@ -11,27 +11,37 @@
 }
 
 .sections > label {
-	grid-row: 1;
-	font-size: 1em;
+	display: inline-block;
+	float: left;
 	padding: 0.5em;
 	height: 2em;
+	width: max-content;
 	--fg: var(--accent-faded);
+	border-bottom: var(--border-width) solid transparent;
 	cursor: pointer;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
 }
 .sections > input[type="radio"]:checked + label {
-	border-bottom: var(--border-width) solid var(--accent);
 	--fg: var(--accent);
+	border-color: var(--accent);
 }
 
 .sections > section {
-	/*no more than 15 labels can be added- who needs more than 15 labels though?*/
-	grid-column: 1 / 15;
-	grid-row: 2;
+	position: relative;
+	float: right;
+	width: 100%;
+	margin-top: 3em;
+	margin-left: -100%;
 	max-height: 0;
 	overflow: hidden;
 	--bg: var(--body-bg);
+	z-index: -1;
+
 }
 .sections > input[type="radio"]:checked + label + section {
 	max-height: 1000vh;
-	z-index: 1;
+	z-index: 0;
 }
