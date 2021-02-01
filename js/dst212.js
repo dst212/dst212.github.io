@@ -60,22 +60,41 @@ function beep(freq = 1000, ms = 500, type = 'sine') {
 function draggable(elem) {
 	if(elem) {
 		let x, y;
+		let xn, yn;
 		//set the transition duration of top and left to 0, so that it moves instantly
 		elem.style.transition = 'all var(--duration), top 0s, left 0s';
 		//if there's a "dragbar" element, it is used, else the whole element acts like the drag-bar
 		(elem.getElementsByClassName('dragbar')[0] || elem).onmousedown = function(e) {
 			let docmouseup = document.onmouseup;
 			let docmousemove = document.onmousemove;
+			document.documentElement.style.cursor = 'move';
 			x = e.clientX;
 			y = e.clientY;
 			//the element follows the mouse
 			document.onmousemove = function(e) {
-				elem.style.top = elem.offsetTop - y + (y = e.clientY) + 'px';
-				elem.style.left = elem.offsetLeft - x + (x = e.clientX) + 'px';
+				//move element
+				if(0 <= e.clientY && e.clientY < document.documentElement.clientHeight) // if(0 <= elem.offsetTop - y + e.clientY && elem.offsetTop - y + e.clientY + elem.clientHeight < document.documentElement.clientHeight)
+					elem.style.top = (yn = elem.offsetTop - y + (y = e.clientY)) + 'px';
+				if(0 <= e.clientX && e.clientX < document.documentElement.clientWidth) // if(0 <= elem.offsetLeft - x + e.clientX && elem.offsetLeft - x + e.clientX + elem.clientWidth < document.documentElement.clientWidth)
+					elem.style.left = (xn = elem.offsetLeft - x + (x = e.clientX)) + 'px';
+
+				//avoid escaping the viewport
+				//top and bottom sides
+				if(yn < 0)
+					elem.style.top = '0px';
+				else if(document.documentElement.clientHeight - elem.clientHeight < yn)
+					elem.style.top = document.documentElement.clientHeight - elem.clientHeight + 'px';
+				//left and right sides
+				if(xn < 0)
+					elem.style.left = '0px';
+				else if(document.documentElement.clientWidth - elem.clientWidth < xn)
+					elem.style.left = document.documentElement.clientWidth - elem.clientWidth + 'px';
+
 				return false;
 			}
 			//the element stops following the mouse
 			document.onmouseup = function(e) {
+				document.documentElement.style.cursor = '';
 				document.onmouseup = docmouseup;
 				document.onmousemove = docmousemove;
 			}
