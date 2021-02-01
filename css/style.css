@@ -564,8 +564,8 @@ input[type=button]:disabled:hover {
 .yellow.btn { border-color: var(--yellow); }
 .yellow.btn:hover { --fg: var(--body-bg); border-color: var(--yellow); --bg: var(--yellow); }
 
-.green.btn { border-color: var(--lime); }
-.green.btn:hover { --fg: var(--body-bg); border-color: var(--lime); --bg: var(--lime); }
+.lime.btn { border-color: var(--lime); }
+.lime.btn:hover { --fg: var(--body-bg); border-color: var(--lime); --bg: var(--lime); }
 
 .cyan.btn { border-color: var(--cyan); }
 .cyan.btn:hover { --fg: var(--body-bg); border-color: var(--cyan); --bg: var(--cyan); }
