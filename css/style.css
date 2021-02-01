@@ -65,6 +65,15 @@ body * {
 	box-shadow: var(--shadow-frame);
 }
 
+h1:target, h2:target, h3:target, h4:target, h5:target, h6:target,
+div:target, section:target {
+	animation-name: blink-bg;
+	animation-iteration-count: 3;
+	animation-duration: calc(var(--duration) * 2);
+	background-color: var(--accent-dark-faded);
+	border-radius: var(--border-radius);
+}
+
 ul, ol {
 	margin: 0;
 	padding: 0;
