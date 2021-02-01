@@ -129,24 +129,24 @@
 		btn.onclick = onclick;
 		return btn;
 	}
-	function updateManageLinksContent() {
+	function updateManageLinks(elem = linksSec) {
 		let i, div, tmp;
-		manageLinksPopup.content.innerHTML = '';
-		manageLinksPopup.content.classList.add('search-page-editor');
+		elem.innerHTML = '';
+		elem.classList.add('search-page-editor');
 		for(i = 0; i < linksList.length; i++) {
 			let cur = i;
 			div = document.createElement('DIV');
 			div.innerHTML = '<a class="' + linksList[i].class + '" title="' + linksList[i]?.title + '">' + linksList[i]?.innerHTML + '</a>';
 			//"move up/down", "edit" and "remove" buttons
-			div.appendChild(newBtn('Move up', 'material-icons', 'expand_less', e => { moveLink(cur, -1); updateManageLinksContent(); }, i === 0));
-			div.appendChild(newBtn('Move down', 'material-icons', 'expand_more', e => { moveLink(cur, 1); updateManageLinksContent(); }, i === linksList.length - 1));
+			div.appendChild(newBtn('Move up', 'material-icons', 'expand_less', e => { moveLink(cur, -1); updateManageLinks(); }, i === 0));
+			div.appendChild(newBtn('Move down', 'material-icons', 'expand_more', e => { moveLink(cur, 1); updateManageLinks(); }, i === linksList.length - 1));
 			div.appendChild(newBtn('Edit', 'material-icons', 'edit', e => { fillInput(linksList[cur]); linkEditorOpen(cur); }));
-			div.appendChild(newBtn('Remove', 'material-icons red btn', 'close', e => { removeLink(cur); updateManageLinksContent();}));
-			//calling updateManageLinksContent() each time is an ugly solution, but it works, for now
-			manageLinksPopup.content.appendChild(div);
+			div.appendChild(newBtn('Remove', 'material-icons red btn', 'close', e => { removeLink(cur); updateManageLinks();}));
+			//calling updateManageLinks() each time is an ugly solution, but it works, for now
+			elem.appendChild(div);
 		}
-		manageLinksPopup.content.appendChild(newBtn('New link', 'material-icons', 'add', e => linkEditorOpen()));
-		manageLinksPopup.content.appendChild(newBtn('Refresh', 'material-icons', 'refresh', e => updateManageLinksContent()));
+		elem.appendChild(newBtn('New link', 'material-icons', 'add', e => linkEditorOpen()));
+		elem.appendChild(newBtn('Refresh', 'material-icons', 'refresh', e => updateManageLinks()));
 	}
 
 	function newAliasDiv(key) {
@@ -175,51 +175,55 @@
 		return div;
 	}
 
-	function updateAliasesEditorContent() {
-		aliasesEditor.content.innerHTML = '<span>Trigger aliases with <code>@</code> or <code>!</code>.<br> E.g.: <code>!g how to use google</code>.</span>';
-		aliasesEditor.content.style.marginBottom = '0.8rem';
-		aliasesEditor.content.style.textAlign = 'center';
-		for(let key in aliases)
-			aliasesEditor.content.appendChild(newAliasDiv(key));
-	}
+	let updateAliasesEditor = (function() {
+		let div = document.createElement('DIV');
+		return function(elem = aliasesSec) {
+			if(elem.innerHTML === '') {
+				elem.innerHTML = '<div>Trigger aliases with <code>@</code> or <code>!</code>.<br> E.g.: <code>!g how to use google</code>.</div>';
+				elem.style.marginBottom = '0.8rem';
+				elem.style.textAlign = 'center';
+				elem.appendChild(div);
+				elem.appendChild(newBtn('New link', 'material-icons md-same square margin', 'add', () => div.appendChild(newAliasDiv(''))));
+				elem.appendChild(newBtn('Save', 'material-icons md-same square margin', 'save', () => saveAliases));
+				elem.appendChild(newBtn('Cancel', 'material-icons md-same square margin', 'close', () => { aliases = JSON.parse(localStorage.getItem('search-page-aliases')); updateAliasesEditor(); }));
+			}
+			div.innerHTML = '';
+			for(let key in aliases)
+				div.appendChild(newAliasDiv(key));
+		}
+	})();
 
 	//the main settings dialog
-	let settingsPopup = new Popup('Search page - Settings', '', [
-		{innerHTML: 'Links', onclick: function() {
-			updateManageLinksContent();
-			manageLinksPopup.open();
-		}},
-		{innerHTML: 'Aliases', onclick: function() {
-			updateAliasesEditorContent();
-			aliasesEditor.open();
-		}},
-		{innerHTML: 'Title', onclick: function() { //change page title (below navbar)
-			titlePopup.content.innerHTML = `
-			<input type="text" value="` + document.getElementById('title').innerHTML + `" onkeyup="localStorage.setItem('search-page-title', this.value)">
-			`;
-			titlePopup.open();
-		}},
-		{innerHTML: 'Close'}
-	], {draggable: true});
+	let settingsPopup = new Popup('Search page - Settings', `
+		<input type="radio" name="search-page-settings" id="search-page-settings-1" checked>
+		<label for="search-page-settings-1">Links</label>
+		<section id="search-page-settings-links"></section>
 
-	//title editor popup
-	let titlePopup = new Popup('Change title', '', [{innerHTML: 'Ok', onclick: () => updateTitle()}, {innerHTML: 'Cancel', onclick: e => { localStorage.setItem('search-page-title', document.getElementById('title').innerHTML); }}], {draggable: true});
+		<input type="radio" name="search-page-settings" id="search-page-settings-2">
+		<label for="search-page-settings-2">Aliases</label>
+		<section id="search-page-settings-aliases"></section>
 
-	//link manager dialog
-	let manageLinksPopup = new Popup('', '', [{innerHTML: 'Close'}], {draggable: true});
+		<input type="radio" name="search-page-settings" id="search-page-settings-3">
+		<label for="search-page-settings-3">Title</label>
+		<section id="search-page-settings-title"></section>
+	`, [{innerHTML: 'Close'}], {draggable: true});
 
-	//aliases manager dialog
-	let aliasesEditor = new Popup('Aliases', '', [
-		{innerHTML: 'New', onclick: () => aliasesEditor.content.appendChild(newAliasDiv('')), keepOpen: true},
-		{innerHTML: 'Save', onclick: () => saveAliases()},
-		{innerHTML: 'Cancel', onclick: () => aliases = JSON.parse(localStorage.getItem('search-page-aliases'))}
-	], {draggable: true});
+	settingsPopup.content.classList.add('sections');
+	settingsPopup.content.style.overflowX = 'hidden';
+
+	//sections
+	let linksSec = document.getElementById('search-page-settings-links');
+	let aliasesSec = document.getElementById('search-page-settings-aliases');
+	let titleSec = document.getElementById('search-page-settings-title');
+	titleSec.style.textAlign = 'center';
+	titleSec.innerHTML = `
+		<input type="text" class="margin-top-bottom" placeholder="Title" value="` + (localStorage.getItem('search-page-title') || '') + `" onkeyup="localStorage.setItem('search-page-title', document.getElementById('title').innerHTML = this.value)">
+	`;
 
 	//link editor dialog
 	let linkEditor = new Popup('', '', [{innerHTML: 'Save', onclick: function() {
 		linksList.push(objFromInput());
-		if(manageLinksPopup.isUp())
-			updateManageLinksContent();
+		updateManageLinks(linksSec);
 		saveLinks();
 		addLink(linksList[linksList.length - 1], links.childNodes.length - 1);
 	}}, {innerHTML: 'Cancel'}], {draggable: true});
@@ -364,6 +368,9 @@
 	//load saved aliases
 	aliases = JSON.parse(localStorage.getItem('search-page-aliases'))
 
+	//update settings content
+	updateManageLinks(linksSec);
+	updateAliasesEditor(aliasesSec);
 	updateTitle();
 
 	//directly put focus on search bar if typing nowhere
