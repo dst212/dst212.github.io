@@ -11,12 +11,13 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 
 	this.show = function() {
 		shown = true;
-		element.style.display = '';
-		element.style.zIndex = 1;
+		element.style.zIndex = 2;
+		element.style.opacity = '';
 	}
 	this.hide = function() {
 		shown = false;
-		element.style.display = 'none';
+		element.style.zIndex = -1;
+		element.style.opacity = 0;
 	}
 	this.isUp = () => shown;
 
@@ -25,7 +26,8 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 		if(flags.coverBelow)
 			coverPage();
 		this.show();
-		element.style.zIndex = 2;
+		if(!element.style.top && !element.style.left)
+			center(element);
 	}.bind(this);
 
 	//close the window and run last button's action if runOnclose == true
@@ -34,7 +36,6 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 		if(flags.coverBelow)
 			uncoverPage();
 		onclose?.();
-		element.style.zIndex = 1;
 	}.bind(this);
 
 	this.kill = function() {
