@@ -1,0 +1,37 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+.sections {
+	display: grid;
+	position: relative;
+	height: max-content;
+}
+
+.sections > input[type="radio"] {
+	display: none;
+}
+
+.sections > label {
+	grid-row: 1;
+	font-size: 1em;
+	padding: 0.5em;
+	height: 2em;
+	--fg: var(--accent-faded);
+	cursor: pointer;
+}
+.sections > input[type="radio"]:checked + label {
+	border-bottom: var(--border-width) solid var(--accent);
+	--fg: var(--accent);
+}
+
+.sections > section {
+	/*no more than 15 labels can be added- who needs more than 15 labels though?*/
+	grid-column: 1 / 15;
+	grid-row: 2;
+	max-height: 0;
+	overflow: hidden;
+	--bg: var(--body-bg);
+}
+.sections > input[type="radio"]:checked + label + section {
+	max-height: 1000vh;
+	z-index: 1;
+}
