@@ -129,13 +129,23 @@ section, div {
 
 /*a*/
 
-a { --fg: var(--accent); }
-a > * { --bg: transparent; }
-a:focus,  a:hover {
+a, .fakelink {
+	--fg: var(--accent);
+}
+a > * {
+	--bg: transparent;
+}
+a:focus,  a:hover, .fakelink:hover {
 	--fg: var(--body-bg);
 	--bg: var(--accent);
 	border-radius:0.13em;
 	text-decoration:none;
+}
+.fakelink {
+	text-decoration: underline;
+}
+.fakelink:hover {
+	cursor: pointer;
 }
 
 a[target=_blank]:hover {
