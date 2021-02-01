@@ -46,6 +46,11 @@
 	50% { color: transparent; }
 	100% {}
 }
+@keyframes blink-bg {
+	0% {}
+	50% { background-color: transparent; }
+	100% {}
+}
 
 @keyframes rainbow-color {
 	0%		{ color: var(--red); }
