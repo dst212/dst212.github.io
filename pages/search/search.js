@@ -423,6 +423,10 @@
 
 		//restore the default document.body.onkeydown function on unload
 		if(typeof Page !== 'undefined')
-			Page.unload = () => document.body.onkeydown = onkeydown;
+			Page.unload = () => {
+				document.body.onkeydown = onkeydown;
+				linkEditor.kill();
+				settingsPopup.kill();
+			}
 	})();
 })();
