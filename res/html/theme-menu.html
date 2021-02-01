@@ -1,6 +1,6 @@
 
-<input id="theme-menu-chek" type="checkbox" onchange="document.getElementsByTagName('MAIN')[0].style = this.checked ? 'filter: blur(0.2rem); transform: scale(0.9);' : ''">
-<label id="theme-menu" for="theme-menu-chek">
+<input id="theme-menu-check" type="checkbox" onchange="document.getElementsByTagName('MAIN')[0].style = this.checked ? 'filter: blur(0.2rem); transform: scale(0.9);' : ''; document.querySelectorAll('.popup-element').forEach(item => item.style.filter = this.checked ? 'blur(0.2rem)' : '');">
+<label id="theme-menu" for="theme-menu-check">
 	<div class="container">
 		<div id="theme-menu-themes">
 			<a class="fas fa-palette red" onmouseout="Theme.update();" onclick="Theme.color.set('red');" onmouseover="Theme.color.set('red', false);"></a>
