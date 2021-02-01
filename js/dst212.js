@@ -61,7 +61,7 @@ function draggable(elem) {
 	if(elem) {
 		let x, y;
 		//set the transition duration of top and left to 0, so that it moves instantly
-		elem.style.transition = 'top 0s, left 0s';
+		elem.style.transition = 'all var(--duration), top 0s, left 0s';
 		//if there's a "dragbar" element, it is used, else the whole element acts like the drag-bar
 		(elem.getElementsByClassName('dragbar')[0] || elem).onmousedown = function(e) {
 			let docmouseup = document.onmouseup;
