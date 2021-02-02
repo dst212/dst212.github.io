@@ -258,28 +258,31 @@ input[type=range] {
 	--bg: var(--accent-faded);
 }
 input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
 	margin: 0;
-	height: 0.5em;
-	width: 0.5em;
+	height: 0.7em;
+	width: 0.7em;
 	--bg: var(--body-bg);
+	background-color: var(--bg);
 	border: var(--border-width) solid var(--accent-faded);
 	border-radius: 50%;
 	opacity: 1;
-	-webkit-appearance: none;
-	appearance: none;
 	cursor: grabbing;
+	transition: all var(--duration);
 }
 input[type=range]::-moz-range-thumb {
+	appearance: none;
 	margin: 0;
-	height: 0.5em;
-	width: 0.5em;
+	height: 0.7em;
+	width: 0.7em;
 	--bg: var(--body-bg);
+	background-color: var(--bg);
 	border: var(--border-width) solid var(--accent-faded);
 	border-radius: 50%;
 	opacity: 1;
-	-webkit-appearance: none;
-	appearance: none;
 	cursor: grabbing;
+	transition: all var(--duration);
 }
 input[type=range]:hover,
 input[type=range]:focus {
