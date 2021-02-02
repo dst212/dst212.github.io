@@ -616,6 +616,11 @@ input[type=button]:disabled:hover {
 	animation-iteration-count: infinite;
 }
 
+.blur-and-scale {
+	filter: blur(0.2rem);
+	transform: scale(0.9);
+}
+
 /*								website-structure								*/
 
 main::before {
