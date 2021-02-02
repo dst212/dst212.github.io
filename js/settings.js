@@ -19,7 +19,28 @@ const Settings = (function() {
 		popup('Settings', 'Couldn\'t load the selected file:<br>' + this.error, [{innerHTML: 'Ok'}]);
 	};
 
-	pop = new Popup('Settings', '', [
+	pop = new Popup('Settings', `
+		<input type="radio" name="settings-sections" id="settings-sections-1" checked>
+		<label for="settings-sections-1">Theme</label>
+		<section>
+			<p>Use the <label for="theme-menu-check" class="fakelink">theme menu</label> to change <strong>accent</strong>.</p>
+			<p>
+				Background intensity:<br>
+				<div class="center-block" style="width: 10rem; max-width: 100%;">
+					<div style="float: left;">` + Theme.background.intensity.min() + `</div>
+					<div style="float: right;">` + Theme.background.intensity.max() + `</div>
+					<input
+						class="clear margin-top-bottom" style="width: 100%;"
+						type="range"
+						value="` + Theme.background.intensity.get() + `"
+						min="` + Theme.background.intensity.min() + `"
+						max="` + Theme.background.intensity.max() + `"
+						onchange="Theme.background.intensity.set(this.value);"
+					>
+				</div>
+			</p>
+		</section>
+	`, [
 		{innerHTML: 'Import', keepOpen: true, onclick: () => fileLoader.click()},
 		{innerHTML: 'Export', keepOpen: true, onclick: () => that.save()},
 		{innerHTML: 'Reset', keepOpen: true, onclick: () => {
@@ -34,8 +55,7 @@ const Settings = (function() {
 		{innerHTML: 'Close'}
 	], {draggable: true});
 
-	pop.content.innerHTML = `
-	`;
+	pop.content.classList.add('sections', 'margin-bottom');
 
 	return that = {
 		save(filename = window.location.hostname + '-settings-' + (new Date()).toISOString().slice(0, 10) + '.json') {
