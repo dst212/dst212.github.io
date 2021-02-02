@@ -83,8 +83,8 @@
 
 	//change order
 	function moveLink(pos, shift) {
-		let tmp, a;
-		if(pos + shift >= 0 && pos + shift < linksList.length) {
+		if(shift !== 0 && pos + shift >= 0 && pos + shift < linksList.length) {
+			let tmp, a;
 			tmp = linksList[pos];
 			linksList.splice(pos, 1);
 			linksList.splice(pos + shift, 0, tmp);
@@ -104,21 +104,40 @@
 
 	//dialogs
 	//open the "add link" dialog
-	function linkEditorOpen(i = -1/*future use, index of link to edit*/) {
-		if(presets === undefined) { //presets still not fetched
-			let loading = new Popup('', 'Downloading presets...');
-			loading.open();
-			//fetch presets then open the addLink dialog
-			fetch('/pages/search/presets.json')
-			.then(res => res.json())
-			.then(data => {
-				presets = data;
-				loading.close();
+	let linkEditorOpen = (function() {
+		let btn;
+		return function(i = -1) {
+			if(!btn)
+				btn = linkEditor.buttons.getElementsByTagName('BUTTON')[0];
+			//an already saved link is being edited
+			if(i !== -1) {
+				linkEditor.onopen = function() {
+					let onsave = btn.onclick;
+					btn.onclick = function() {
+						onsave();
+						removeLink(i);
+						moveLink(linksList.length - 1, i - (linksList.length - 1));
+						updateManageLinks();
+						btn.onclick = onsave;
+						linkEditor.onopen = null;
+					}
+				}
+			}
+			if(presets === undefined) { //presets still not fetched
+				let loading = new Popup('', 'Downloading presets...');
+				loading.open();
+				//fetch presets then open the addLink dialog
+				fetch('/pages/search/presets.json')
+				.then(res => res.json())
+				.then(data => {
+					presets = data;
+					loading.close();
+					linkEditor.open();
+				});
+			} else //open directly the dialog
 				linkEditor.open();
-			});
-		} else //open directly the dialog
-			linkEditor.open();
-	}
+		}
+	})();
 
 	function newBtn(title, classList, innerHTML, onclick, disabled = false) {
 		let btn = document.createElement('button');
@@ -259,7 +278,7 @@
 					<strong>Telegram's icon</strong><br>
 					- CSS classes: <code>fab fa-telegram</code><br>
 					<br>
-					<strong>Settings' icon, (the gear):</strong><br>
+					<strong>Settings' icon (the gear):</strong><br>
 					- CSS classes: <code>material-icons</code><br>
 					- Inner text: <code>settings</code><br>
 				</div>
