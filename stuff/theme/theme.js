@@ -91,6 +91,16 @@ var Theme = {
 			document.documentElement.classList.toggle('white-mode');
 			Theme.update(null, document.documentElement.classList.contains('white-mode') ? 'white' : 'black');
 		},
+		intensity: {
+			min: () => 0,
+			max: () => 60,
+			get: () => Theme.getComputedStyle().getPropertyValue('--bg-delta') || '0',
+			set(value = 0) {
+				localStorage.setItem('theme-background-intensity', value);
+				document.documentElement.style.setProperty('--bg-delta', value);
+				Theme.computedStyle = null;
+			},
+		}
 	},
 	color: {
 		get: () => Theme.getComputedStyle().getPropertyValue('--accent'),
@@ -104,6 +114,9 @@ var Theme = {
 	},
 	get: (prop) => Theme.getComputedStyle().getPropertyValue('--' + prop),
 };
+
+//set a background intensity if set
+document.documentElement.style.setProperty('--bg-delta', localStorage.getItem('theme-background-intensity') || '0');
 
 //default theme
 if(localStorage.theme === 'white')

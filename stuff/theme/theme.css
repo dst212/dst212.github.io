@@ -2,6 +2,14 @@
 
 :root{
 
+	--bg-delta:				0;
+	--background:			rgba(
+								var(--bg-delta),
+								var(--bg-delta),
+								var(--bg-delta),
+							1);
+	--foreground:			rgba(255,255,255,1);
+
 	--accent:				rgba(255,255,255,1);
 	--accent-faded:			rgba(255,255,255,0.4);
 	--accent-dark:			rgba(0,0,0,1);
@@ -11,16 +19,16 @@
 	--invalid-faded:		rgba(255,000,000,0.4);
 
 	--header-bg:			var(--accent);
-	--header-fg:			rgba(000,000,000,1);
+	--header-fg:			var(--background);
 
 	--title-bg:				var(--accent-dark);
-	--title-fg:				rgba(255,255,255,1);
+	--title-fg:				var(--foreground);
 
-	--body-bg:				rgba(000,000,000,1);
-	--body-fg:				rgba(255,255,255,1);
+	--body-bg:				var(--background);
+	--body-fg:				var(--foreground);
 
 	--footer-bg:			var(--accent);
-	--footer-fg:			var(--body-bg);
+	--footer-fg:			var(--background);
 
 	--red:					#f00;
 	--orange:				#f80;
@@ -42,6 +50,13 @@
 }
 .white-mode{
 
+	--background:			rgba(
+								calc(255 - var(--bg-delta)),
+								calc(255 - var(--bg-delta)),
+								calc(255 - var(--bg-delta)),
+							1);
+	--foreground:			rgba(000,000,000,1);
+
 	--accent:				rgba(0,0,0,1);
 	--accent-faded:			rgba(0,0,0,1);
 	--accent-dark:			rgba(255,255,255,1);
@@ -49,18 +64,6 @@
 
 	--invalid:				rgba(255,000,000,1);
 	--invalid-faded:		rgba(255,000,000,0.4);
-
-	--header-bg:			var(--accent);
-	--header-fg:			rgba(255,255,255,1);
-
-	--title-bg:				var(--accent-dark);
-	--title-fg:				rgba(000,000,000,1);
-
-	--body-bg:				rgba(255,255,255,1);
-	--body-fg:				rgba(000,000,000,1);
-
-	--footer-bg:			var(--accent);
-	--footer-fg:			var(--body-bg);
 
 	--red:					#800;
 	--orange:				#840;
