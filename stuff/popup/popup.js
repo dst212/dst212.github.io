@@ -21,8 +21,16 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 	}
 	this.isUp = () => shown;
 
+	//what to perform when the popup is open/closed
+	this.onopen = null;
+	this.onclose = onclose;
+	this.restoreOnclose = function() {
+		this.onclose = onclose;
+	};
+
 	//open the window
 	this.open = function() {
+		this.onopen?.();
 		if(flags.coverBelow)
 			coverPage();
 		this.show();
@@ -35,7 +43,7 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 		this.hide();
 		if(flags.coverBelow)
 			uncoverPage();
-		onclose?.();
+		this.onclose?.();
 	}.bind(this);
 
 	this.kill = function() {
