@@ -47,7 +47,13 @@ var Chat;
 							}
 						}
 					}
+					document.getElementById('chat-send-button').onclick = function(e) {
+						if(that.input.value && that.send(that.input.value))
+							that.input.value = '';
+						that.input.focus();
+					}
 					draggable(that.div);
+					that.div.style.transition += ', width 0s, height 0s';
 				});
 		},
 		loginForm() {
