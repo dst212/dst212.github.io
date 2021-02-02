@@ -3,7 +3,37 @@
 
 'use strict';
 
-var okokItIsFine = () => localStorage.okokItIsFine = 1;
+var okokItIsFine = () => {
+	fetch('/res/images/arrow.svg')
+	.then(res => res.text())
+	.then(data => {
+		//sidebar menu instructions
+		let div, svg, btn, main = document.getElementsByTagName('MAIN')[0];
+		div = document.createElement('DIV');
+		div.style = 'position: fixed; top: calc(50% - 6rem); right: 2rem; z-index: 3; width: 7rem; font-size: 1rem; text-align: center;';
+		div.innerHTML = 'Hover/tap here to access the sidebar menu.';
+
+		svg = document.createElement('SVG');
+		div.appendChild(svg);
+		svg.outerHTML = data.replace('<svg ', '<svg style="display:block; margin: auto; width:5rem;" ');
+
+		btn = document.createElement('BUTTON');
+		btn.classList.add('margin');
+		btn.innerHTML = 'Ok';
+		btn.onclick = e => {
+			main.classList.remove('blur-and-scale');
+			div.remove();
+			uncoverPage('hover-here-sidebar-menu');
+			localStorage.okokItIsFine = 1;
+		}
+		div.appendChild(btn);
+
+		main.classList.add('blur-and-scale');
+		document.body.appendChild(div);
+		coverPage('transparent', 'hover-here-sidebar-menu');
+
+	});
+};
 
 var discoModeIncoming = () => ntf(
 	'WARNING',
