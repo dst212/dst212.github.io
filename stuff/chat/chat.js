@@ -36,9 +36,10 @@ var Chat;
 					that.input = document.getElementById('chat-input');
 					that.input.onkeypress = function(e) {
 						if(e.code === 'Enter') {
-							if(e.ctrlKey) {
-								// this.value += '\n';
-								// that.input.scrollTo(0, that.input.scrollHeight);
+							if(e.ctrlKey || e.shiftKey) {
+								let i = this.selectionStart;
+								this.value = this.value.slice(0, i) + '\n' + this.value.slice(i);
+								this.setSelectionRange(++i, i);
 							} else if(this.value) {
 								if(that.send(this.value))
 									this.value = '';
