@@ -1,7 +1,19 @@
 // made by dst212, https://github.com/dst212/dst212.github.io/
 
 const Settings = (function() {
-	let pop, that, fileLoader, fileReader;
+	let pop, that, fileLoader, fileReader, customValues;
+
+	function customValuesContent() {
+		customValues = '';
+		for(let key in Theme.custom.get()) {
+			customValues += `<p class="clear">
+				<label style="display: block; float: left;"><code>` + key + `</code>:</label>
+				<input type="text" value="` + Theme.custom.get()[key] + `" onchange="Theme.custom.set('` + key + `', this.value); Theme.custom.update(); if(localStorage.themeStyle === 'custom') Theme.custom.save();" style="display: block; width: 50%; float: right;">
+			</p>`;
+		}
+		customValues += '<div class="clear margin-bottom"></div>';
+		return customValues;
+	}
 
 	fileLoader = document.createElement('INPUT');
 	fileLoader.type = 'file';
@@ -19,28 +31,7 @@ const Settings = (function() {
 		popup('Settings', 'Couldn\'t load the selected file:<br>' + this.error, [{innerHTML: 'Ok'}]);
 	};
 
-	pop = new Popup('Settings', `
-		<input type="radio" name="settings-sections" id="settings-sections-1" checked>
-		<label for="settings-sections-1">Theme</label>
-		<section>
-			<p>Use the <label for="theme-menu-check" class="fakelink">theme menu</label> to change <strong>accent</strong>.</p>
-			<p>
-				Background intensity:<br>
-				<div class="center-block" style="width: 10rem; max-width: 100%;">
-					<div style="float: left;">` + Theme.background.intensity.min() + `</div>
-					<div style="float: right;">` + Theme.background.intensity.max() + `</div>
-					<input
-						class="clear margin-top-bottom" style="width: 100%;"
-						type="range"
-						value="` + Theme.background.intensity.get() + `"
-						min="` + Theme.background.intensity.min() + `"
-						max="` + Theme.background.intensity.max() + `"
-						onchange="Theme.background.intensity.set(this.value);"
-					>
-				</div>
-			</p>
-		</section>
-	`, [
+	pop = new Popup('Settings', '', [
 		{innerHTML: 'Import', keepOpen: true, onclick: () => fileLoader.click()},
 		{innerHTML: 'Export', keepOpen: true, onclick: () => that.save()},
 		{innerHTML: 'Reset', keepOpen: true, onclick: () => {
@@ -56,6 +47,17 @@ const Settings = (function() {
 	], {draggable: true});
 
 	pop.content.classList.add('sections', 'margin-bottom');
+	pop.content.style.height = '100vh';
+
+	pop.onopen = () => {
+		document.getElementById('settings-theme-' + (localStorage.themeStyle || 'default') + '-style-radio')?.setAttribute('checked','true');
+	}
+
+	fetch('/res/html/settings.html')
+	.then(res => res.text())
+	.then(data => {
+		pop.content.innerHTML = data.replace(/&js:--bg-delta;/g, Theme.background.intensity.get()).replace(/&js:customvalues;/g, customValuesContent());
+	});
 
 	return that = {
 		save(filename = window.location.hostname + '-settings-' + (new Date()).toISOString().slice(0, 10) + '.json') {
