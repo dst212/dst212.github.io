@@ -54,11 +54,11 @@ body * {
 
 *::selection {
 	background-color: var(--accent);
-	color: var(--body-bg);
+	color: var(--background);
 }
 *::-moz-selection {
 	background-color: var(--accent);
-	color: var(--body-bg);
+	color: var(--background);
 }
 *:focus {
 	outline: none;
@@ -637,10 +637,9 @@ main {
 	/*width: 100%;
 	padding: 1rem calc((100% - var(--body-width)) / 2) 0;*/
 	max-width: var(--body-width);
-	padding: 1rem var(--body-padding) 1rem;
+	padding: 1rem var(--body-padding);
 	margin: 0 auto;
 	text-align: justify;
-/* 	text-align: left; */
 }
 
 #title {
@@ -682,18 +681,24 @@ footer {
 	height: var(--footer-height);
 	width: 100%;
 	text-align: center;
-	--fg: var(--footer-fg);
-	--bg: var(--footer-bg);
+	--bg: var(--header-bg);
+	--fg: var(--header-fg);
 	font-size: 0.7rem;
 	clear: both;
 }
 footer a {
-	--fg: var(--footer-fg);
+	--fg: var(--header-fg);
 }
+
 footer::selection,
 footer *::selection {
-	--fg: var(--footer-bg);
-	--bg: var(--footer-fg);
+	background-color: var(--header-fg);
+	color: var(--header-bg);
+}
+footer::-moz-selection,
+footer *::-moz-selection {
+	background-color: var(--header-fg);
+	color: var(--header-bg);
 }
 
 /* END */

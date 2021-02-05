@@ -16,8 +16,8 @@
 #paint-toolbar {
 	display: block;
 	position: fixed;
-	--fg: var(--body-bg);
-	--bg: var(--accent);
+	--fg: var(--header-fg);
+	--bg: var(--header-bg);
 	border-radius: 1rem;
 	overflow: hidden;
 	font-size: 0;
@@ -111,8 +111,8 @@
 /*end of stupid solution*/
 #paint-toolbar .material-icons:hover,
 #paint-toolbar .overflow-button:hover ~ .overflow > .more {
-	--fg: var(--accent);
-	--bg: var(--body-bg);
+	--fg: var(--header-bg);
+	--bg: var(--header-fg);
 	border-radius: initial;
 }
 
@@ -124,8 +124,8 @@
 	right: -100%;
 	padding: 1em;
 	top: var(--paint-hor-toolbar-top);
-	--bg: var(--accent);
-	--fg: var(--body-bg);
+	--bg: var(--header-bg);
+	--fg: var(--header-fg);
 	border-radius: var(--border-radius);
 	box-shadow: var(--box-shadow);
 }
@@ -143,27 +143,31 @@
 	box-sizing: border-box;
 }
 .paint-dialog > .close:hover {
-	--bg: var(--body-bg);
-	--fg: var(--accent);
+	--bg: var(--header-fg);
+	--fg: var(--header-bg);
 }
 
 .paint-dialog input {
 	border-color: currentColor;
 }
 .paint-dialog *::selection {
-	--bg: var(--body-bg);
-	--fg: var(--accent);
+	background-color: var(--header-fg);
+	color: var(--header-bg);
+}
+.paint-dialog *::-moz-selection {
+	background-color: var(--header-fg);
+	color: var(--header-bg);
 }
 
 .paint-dialog input[type="range"]::-webkit-slider-thumb {
-	--bg: var(--accent);
+	--bg: var(--header-bg);
 	border: var(--border-width) solid currentColor;
 	border-radius: 50%;
 	opacity: 1;
 }
 
 .paint-dialog input[type="range"]::-moz-range-thumb {
-	--bg: var(--accent);
+	--bg: var(--header-bg);
 	border: var(--border-width) solid currentColor;
 	border-radius: 50%;
 	opacity: 1;
