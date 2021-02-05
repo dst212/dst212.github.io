@@ -1,23 +1,56 @@
 /* Made by dst212- https://github.com/dst212/dst212.github.io/ */
 
 :root, .default-style {
-	--header-bg:			var(--accent);
-	--header-fg:			var(--background);
+	--header-bg:	var(--accent);
+	--header-fg:	var(--background);
 
-	--title-bg:				var(--accent-dark);
-	--title-fg:				var(--foreground);
+	--title-bg:		var(--accent-dark);
+	--title-fg:		var(--foreground);
 
-	--body-bg:				var(--background);
-	--body-fg:				var(--foreground);
+	--body-bg:		var(--background);
+	--body-fg:		var(--foreground);
+}
+
+.swap-style {
+	--header-bg:	var(--accent-dark);
+	--header-fg:	var(--foreground);
+
+	--title-bg:		var(--accent);
+	--title-fg:		var(--background);
+
+	--body-bg:		var(--background);
+	--body-fg:		var(--foreground);
 }
 
 .mono-style {
-	--header-bg:			var(--background);
-	--header-fg:			var(--foreground);
+	--header-bg:	var(--background);
+	--header-fg:	var(--foreground);
 
-	--title-bg:				var(--background);
-	--title-fg:				var(--foreground);
+	--title-bg:		var(--background);
+	--title-fg:		var(--foreground);
 
-	--body-bg:				var(--background);
-	--body-fg:				var(--foreground);
+	--body-bg:		var(--background);
+	--body-fg:		var(--foreground);
+}
+
+.high-contrast-style {
+	--header-bg:	var(--foreground);
+	--header-fg:	var(--background);
+
+	--title-bg:		var(--foreground);
+	--title-fg:		var(--background);
+
+	--body-bg:		var(--background);
+	--body-fg:		var(--foreground);
+}
+
+.zebra-style {
+	--header-bg:	var(--background);
+	--header-fg:	var(--foreground);
+
+	--title-bg:		var(--foreground);
+	--title-fg:		var(--background);
+
+	--body-bg:		var(--background);
+	--body-fg:		var(--foreground);
 }
