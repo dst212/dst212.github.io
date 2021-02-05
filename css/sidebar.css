@@ -64,14 +64,5 @@
 }
 
 #sidebar-checkbox {
-	display: inline;
-	position: fixed;
-	top: 0;
-	left: 100vw;
-	opacity: 0;
-	padding: 0;
-	margin: 0;
-	height: 0;
-	width: 0;
-	z-index: -100;
+	display: none;
 }
