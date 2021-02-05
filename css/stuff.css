@@ -59,7 +59,7 @@ nav span.optional {
 	bottom: 0;
 	left: 0;
 	margin: 0.6rem;
-	--bg: var(--accent);
+	--bg: var(--header-bg);
 	border-radius: 50%;
 	box-shadow: var(--box-shadow);
 }

@@ -7,8 +7,8 @@
 	left: 100vw;
 	width: var(--header-height);
 	height: calc(100vh - var(--header-height));
-	--fg: var(--body-bg);
-	--bg: var(--accent);
+	--fg: var(--header-fg);
+	--bg: var(--header-bg);
 }
 #sidebar-checkbox:checked + #sidebar,
 #sidebar:hover {
@@ -33,8 +33,8 @@
 	cursor: pointer;
 }
 #sidebar > .content > *:hover {
-	--fg: var(--accent);
-	--bg: var(--body-bg);
+	--fg: var(--header-bg);
+	--bg: var(--header-fg);
 	border-radius: 0;
 }
 
@@ -47,10 +47,9 @@
 	height: 4rem;
 	padding-top: 1.1rem;
 	padding-left: 0.1rem;
-	--bg: var(--accent);
+	--bg: var(--header-bg);
 	border-radius: 50%;
 	cursor: pointer;
-	border: var(--border-width) solid var(--accent);
 	z-index: -1;
 }
 #sidebar-checkbox:checked + #sidebar > #sidebar-button,
@@ -60,8 +59,8 @@
 
 #sidebar-checkbox:checked + #sidebar #sidebar-pin-button {
 	border-radius: 0;
-	--fg: var(--accent);
-	--bg: var(--body-bg);
+	--fg: var(--header-bg);
+	--bg: var(--header-fg);
 }
 
 #sidebar-checkbox {
