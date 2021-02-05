@@ -353,7 +353,7 @@
 	go.onmousedown = e => e.button === 0 && search();
 
 	searchbar.onkeyup = function(e) {
-		if(e.code === 'Enter')
+		if(e.code === 'Enter' && searchbar.value)
 			search();
 		else if(e.code === 'Escape')
 			e.target.blur();
