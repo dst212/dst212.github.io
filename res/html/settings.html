@@ -1,0 +1,53 @@
+<input type="radio" name="settings-sections" id="settings-sections-1" checked>
+<label for="settings-sections-1">Theme</label>
+<section>
+	<div class="margin-bottom">
+		<strong>Accent</strong>:<br>
+		Use the <label for="theme-menu-check" class="fakelink">theme menu</label> to change <strong>accent</strong>.
+	</div>
+	<div class="margin-bottom">
+		<strong>Background intensity</strong>:<br>
+		<div class="center-block" style="width: 10rem; max-width: 100%;">
+			<div style="float: left;">0</div>
+			<div style="float: right;">60</div>
+			<input
+				class="clear margin-top-bottom" style="width: 100%;"
+				type="range"
+				value="&js:--bg-delta;"
+				min="0"
+				max="60"
+				oninput="Theme.background.intensity.set(this.value, false);"
+				onchange="Theme.background.intensity.set(this.value, true);"
+			/>
+		</div>
+	</div>
+	<div id="settings-theme-styles" class="margin-bottom radio">
+		<strong>Theme style</strong>:<br>
+		<label>
+			<input type="radio" name="settings-theme-style-radio" id="settings-theme-default-style-radio" onclick="Theme.style.set();">
+			<span></span>Default
+		</label>
+		<label>
+			<input type="radio" name="settings-theme-style-radio" id="settings-theme-swap-style-radio" onclick="Theme.style.set('swap');">
+			<span></span>Swap
+		</label>
+		<label>
+			<input type="radio" name="settings-theme-style-radio" id="settings-theme-mono-style-radio" onclick="Theme.style.set('mono');">
+			<span></span>Mono
+		</label>
+		<label>
+			<input type="radio" name="settings-theme-style-radio" id="settings-theme-zebra-style-radio" onclick="Theme.style.set('zebra');">
+			<span></span>Zebra
+		</label>
+		<label>
+			<input type="radio" name="settings-theme-style-radio" id="settings-theme-hight-contrast-style-radio" onclick="Theme.style.set('high-contrast');">
+			<span></span>High contrast
+		</label>
+		<label>
+			<input type="radio" name="settings-theme-style-radio" id="settings-theme-custom-style-radio" onclick="Theme.style.set('custom');">
+			<span></span>Custom:
+		</label>
+	</div>
+	Custom values are nothing but <em>CSS variables</em>, therefore any valid CSS color value is acceptable.<br>
+	<div>&js:customvalues;</div>
+</section>
