@@ -1,0 +1,28 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+.black-theme				{--accent:rgba(255,255,255,1);--accent-faded:rgba(255,255,255,0.4);--accent-dark:rgba(000,000,000,1);--accent-dark-faded:rgba(000,000,000,1.0);}
+.white-mode.black-theme		{--accent:rgba(000,000,000,1);--accent-faded:rgba(000,000,000,1.0);--accent-dark:rgba(255,255,255,1);--accent-dark-faded:rgba(255,255,255,0.4);}
+
+.gray-theme					{--accent:rgba(220,220,220,1);--accent-faded:rgba(220,220,220,0.4);--accent-dark:rgba(110,110,110,1);--accent-dark-faded:rgba(110,110,110,0.4);}
+.white-mode.gray-theme		{--accent:rgba(110,110,110,1);--accent-faded:rgba(110,110,110,0.4);--accent-dark:rgba(220,220,220,1);--accent-dark-faded:rgba(220,220,220,0.4);}
+
+.red-theme					{--accent:rgba(220,000,000,1);--accent-faded:rgba(220,000,000,0.4);--accent-dark:rgba(110,000,000,1);--accent-dark-faded:rgba(110,000,000,0.4);--invalid:rgba(220,110,000,1);--invalid-faded:rgba(220,110,000,0.4);}
+.white-mode.red-theme		{--accent:rgba(110,000,000,1);--accent-faded:rgba(110,000,000,0.4);--accent-dark:rgba(220,000,000,1);--accent-dark-faded:rgba(220,000,000,0.4);--invalid:rgba(220,110,000,1);--invalid-faded:rgba(220,110,000,0.4);}
+
+.orange-theme				{--accent:rgba(220,110,000,1);--accent-faded:rgba(220,110,000,0.4);--accent-dark:rgba(110,055,000,1);--accent-dark-faded:rgba(110,055,000,0.4);}
+.white-mode.orange-theme	{--accent:rgba(110,055,000,1);--accent-faded:rgba(110,055,000,0.4);--accent-dark:rgba(220,110,000,1);--accent-dark-faded:rgba(220,110,000,0.4);}
+
+.yellow-theme				{--accent:rgba(220,220,000,1);--accent-faded:rgba(220,220,000,0.4);--accent-dark:rgba(110,110,000,1);--accent-dark-faded:rgba(110,110,000,0.4);}
+.white-mode.yellow-theme	{--accent:rgba(110,110,000,1);--accent-faded:rgba(110,110,000,0.4);--accent-dark:rgba(220,220,000,1);--accent-dark-faded:rgba(220,220,000,0.4);}
+
+.lime-theme					{--accent:rgba(000,220,000,1);--accent-faded:rgba(000,220,000,0.4);--accent-dark:rgba(000,110,000,1);--accent-dark-faded:rgba(000,110,000,0.4);}
+.white-mode.lime-theme		{--accent:rgba(000,110,000,1);--accent-faded:rgba(000,110,000,0.4);--accent-dark:rgba(000,220,000,1);--accent-dark-faded:rgba(000,220,000,0.4);}
+
+.cyan-theme					{--accent:rgba(000,220,220,1);--accent-faded:rgba(000,220,220,0.4);--accent-dark:rgba(000,110,110,1);--accent-dark-faded:rgba(000,110,110,0.4);}
+.white-mode.cyan-theme		{--accent:rgba(000,110,110,1);--accent-faded:rgba(000,110,110,0.4);--accent-dark:rgba(000,220,220,1);--accent-dark-faded:rgba(000,220,220,0.4);}
+
+.blue-theme					{--accent:rgba(000,000,220,1);--accent-faded:rgba(000,000,220,0.4);--accent-dark:rgba(000,000,110,1);--accent-dark-faded:rgba(000,000,110,0.4);}
+.white-mode.blue-theme		{--accent:rgba(000,000,110,1);--accent-faded:rgba(000,000,110,0.4);--accent-dark:rgba(000,000,220,1);--accent-dark-faded:rgba(000,000,220,0.4);}
+
+.magenta-theme				{--accent:rgba(220,000,220,1);--accent-faded:rgba(220,000,220,0.4);--accent-dark:rgba(110,000,110,1);--accent-dark-faded:rgba(110,000,110,0.4);}
+.white-mode.magenta-theme	{--accent:rgba(110,000,110,1);--accent-faded:rgba(110,000,110,0.4);--accent-dark:rgba(220,000,220,1);--accent-dark-faded:rgba(220,000,220,0.4);}

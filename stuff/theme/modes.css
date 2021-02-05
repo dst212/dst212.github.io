@@ -1,0 +1,73 @@
+/* Made by dst212- https://github.com/dst212/dst212.github.io/ */
+
+:root, .black-mode {
+
+	--bg-delta:				0;
+	--background:			rgba(
+								var(--bg-delta),
+								var(--bg-delta),
+								var(--bg-delta),
+							1);
+	--foreground:			rgba(255,255,255,1);
+
+	--accent:				rgba(255,255,255,1);
+	--accent-faded:			rgba(255,255,255,0.4);
+	--accent-dark:			rgba(0,0,0,1);
+	--accent-dark-faded:	rgba(0,0,0,1);
+
+	--invalid:				rgba(255,000,000,1);
+	--invalid-faded:		rgba(255,000,000,0.4);
+
+	--red:					#f00;
+	--orange:				#f80;
+	--yellow:				#ff0;
+	--lime:					#0f0;
+	--cyan:					#0ff;
+	--blue:					#00f;
+	--magenta:				#f0f;
+	--gray:					rgba(220,220,220,1);
+
+	--red-dark:				#800;
+	--orange-dark:			#840;
+	--yellow-dark:			#880;
+	--lime-dark:			#080;
+	--cyan-dark:			#088;
+	--blue-dark:			#008;
+	--magenta-dark:			#808;
+	--gray-dark:			rgba(110,110,110,1);
+}
+.white-mode{
+
+	--background:			rgba(
+								calc(255 - var(--bg-delta)),
+								calc(255 - var(--bg-delta)),
+								calc(255 - var(--bg-delta)),
+							1);
+	--foreground:			rgba(000,000,000,1);
+
+	--accent:				rgba(0,0,0,1);
+	--accent-faded:			rgba(0,0,0,1);
+	--accent-dark:			rgba(255,255,255,1);
+	--accent-dark-faded:	rgba(255,255,255,0.4);
+
+	--invalid:				rgba(255,000,000,1);
+	--invalid-faded:		rgba(255,000,000,0.4);
+
+	--red:					#800;
+	--orange:				#840;
+	--yellow:				#880;
+	--lime:					#080;
+	--cyan:					#088;
+	--blue:					#008;
+	--magenta:				#808;
+	--gray:					rgba(110,110,110,1);
+
+	--red-dark:				#f00;
+	--orange-dark:			#f80;
+	--yellow-dark:			#ff0;
+	--lime-dark:			#0f0;
+	--cyan-dark:			#0ff;
+	--blue-dark:			#00f;
+	--magenta-dark:			#f0f;
+	--gray-dark:			rgba(220,220,220,1);
+}
