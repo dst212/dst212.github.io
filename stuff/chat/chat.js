@@ -102,7 +102,7 @@ var Chat;
 		message(id, message, sender, timeout) {
 			let scrollFlag, div= document.createElement('DIV');
 			if(typeof(sender?.[0]) === 'string')
-				div.innerHTML = '<b>&lt;</b><a title="User ID: ' + sender[1] + '" href="javascript:void(0);" onclick="Chat.inputSetBefore(\'/pm ' + sender[1] + ' \');">' + sender[0] + '<span style="color:#808080">#' + sender[1] + '</span></a><b>&gt;</b>&nbsp;';
+				div.innerHTML = '<b>&lt;</b><a title="User ID: ' + sender[1] + '" href="javascript:void(0);" onclick="Chat.inputSetBefore(\'/p ' + sender[1] + ' \');">' + sender[0] + '<span style="color:#808080">#' + sender[1] + '</span></a><b>&gt;</b>&nbsp;';
 			else if(sender === 1)
 				div.innerHTML = '<code class="blink">PM</code> ';
 			else if(sender === -1)
