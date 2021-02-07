@@ -254,7 +254,7 @@ var Chat;
 			lastpm = recipient;
 		},
 		pmsent(recipient, message, timeout) {
-			this.message(cr, 'to #' + recipient + ': ' + message, 1, timeout);
+			this.message(cr, 'to ' + recipient + ': ' + message, 1, timeout);
 		},
 		gotpm(sender, message, timeout) {
 			this.message(cr, 'from ' + sender + ': ' + message, 1, timeout);
