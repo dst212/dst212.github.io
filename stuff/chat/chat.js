@@ -186,6 +186,18 @@ var Chat;
 					case 'id': //get id of the current chat
 						this.message(cr, 'ID: ' + cr);
 						break;
+					case 'list': //list partecipants
+						if(rooms[msg[1] || cr])
+							this.message(cr, 'List of members\' IDs of room ' + (msg[1] || cr) + ': ' + rooms[msg[1] || cr].members.join(', '));
+						else
+							this.message(cr, 'No room with id <code>' + msg[1] + '</code>', -1);
+						break;
+					case 'whois': //get alias of a user
+						socket.emit('whois', msg[1] * 1);
+						break;
+					case 'whoami': //get own alias
+						socket.emit('whois');
+						break;
 					case 't': //send a message with self-destruction
 						this.send(msg.slice(2).join(' '), msg[1] * 1000);
 						break;
@@ -290,6 +302,9 @@ var Chat;
 							<code onclick="Chat.help(this.innerHTML);">rename</code>, \
 							<code onclick="Chat.help(this.innerHTML);">clear</code>, \
 							<code onclick="Chat.help(this.innerHTML);">id</code>, \
+							<code onclick="Chat.help(this.innerHTML);">list</code>, \
+							<code onclick="Chat.help(this.innerHTML);">whois</code>, \
+							<code onclick="Chat.help(this.innerHTML);">whoami</code>, \
 							<code onclick="Chat.help(this.innerHTML);">t</code>, \
 							<code onclick="Chat.help(this.innerHTML);">p</code>, \
 							<code onclick="Chat.help(this.innerHTML);">pt</code>, \
@@ -307,6 +322,9 @@ var Chat;
 				case 'rename': this.printHelp(command, 'Change username.', '&lt;new name&gt;'); break;
 				case 'clear': this.printHelp(command, 'Clear messages history.'); break;
 				case 'id': this.printHelp(command, 'Get id of current room.'); break;
+				case 'list': this.printHelp(command, 'List partecipants\'s IDs.'); break;
+				case 'whois': this.printHelp(command, 'Get a user\'s alias from their ID.', '&lt;user id&gt;'); break;
+				case 'whoami': this.printHelp(command, 'Same as <code>/whois &lt;own id&gt;</code>.'); break;
 				case 't': this.printHelp(command, 'Send a temporary message to destroy after a specified number of seconds.', '&lt;life time&gt; &lt;message&gt;'); break;
 				case 'r': this.printHelp(command, 'Re-send a private message to the recipient of the last private message.', '&lt;message&gt;'); break;
 				case 'rt': this.printHelp(command, 'Re-send a temporary private message to the recipient of the last private message.', '&lt;life time&gt; &lt;message&gt;'); break;
