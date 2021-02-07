@@ -353,20 +353,19 @@ var Chat;
 
 	loginPopup = (function() {
 		let id = 'chat-choose-a-username';
-		return new Popup('Chat',
-			'<div style="text-align: center;");">\
-				Choose a name:<br>\
-				<input id="' + id + '" type="text" placeholder="Username" value="' + (localStorage.getItem('chat-username') || '') + '" maxlength="16" style="margin: 1em;">\
-				<div class="checkbox margin-top-bottom" style="width: 20rem; margin-left: 1rem; margin-right: 1rem;">\
-					<label>\
-						<input type="checkbox" onchange="if(this.checked) localStorage.chatAgreed = 1; else localStorage.chatAgreed = 0;" ' + (localStorage.chatAgreed == 1 ? 'checked' : '') + '>\
-						<span></span>\
-						I have read the <a href="javascript:void(Chat.privacyPolicy());">privacy policy</a> and the <a href="javascript:void(Chat.termsOfService());">terms of service</a> and I agree to them\
-					</label>\
-				</div>\
-			</div>',
-			[{innerHTML: 'Ok', onclick: () => that.login(document.getElementById(id).value)}, {innerHTML: 'Cancel'}]
-		);
+		return new Popup('Chat',`
+			<div style="text-align: center;");">
+				Choose a name:<br>
+				<input id="` + id + `" type="text" placeholder="Username" value="` + (localStorage.getItem('chat-username') || '') + `" maxlength="16" style="margin: 1em;">
+				<div class="checkbox margin-top-bottom" style="width: 20rem; margin-left: 1rem; margin-right: 1rem;">
+					<label>
+						<input type="checkbox" onchange="if(this.checked) localStorage.chatAgreed = 1; else localStorage.chatAgreed = 0;" ` + (localStorage.chatAgreed == 1 ? 'checked' : '') + `>
+						<span></span>
+						I have read the <a href="javascript:void(Chat.privacyPolicy());">privacy policy</a> and the <a href="javascript:void(Chat.termsOfService());">terms of service</a> and I agree to them
+					</label>
+				</div>
+			</div>
+		`, [{innerHTML: 'Ok', onclick: () => that.login(document.getElementById(id).value)}, {innerHTML: 'Cancel'}]);
 	})();
 	connectingPopup = new Popup('Chat', 'Connecting to the server...', [{innerHTML: 'Hide'}, {innerHTML: 'Cancel', onclick: socket.disconnect}]);
 	disconnectedPopup = new Popup('Chat', 'Disconnected from the server.', [{innerHTML: 'Ok'}]);
