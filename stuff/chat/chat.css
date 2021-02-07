@@ -102,15 +102,22 @@
 	border-color: var(--accent);
 }
 
+#chat-header {
+	display: block;
+	height: 1.2rem;
+	padding: 0 0.3rem;
+	--fg: var(--accent);
+	overflow: hidden;
+}
+
 #chat-list {
 	display: block;
 	height: calc(100% - 1.86rem - 1.2rem);
 	overflow: hidden;
 }
 #chat-list > * {
-	max-height: 100%;
-	padding-left: 0.3rem;
-	padding-right: 0.3rem;
+	max-height: calc(100% - 1.2rem);
+	padding: 0 0.3rem;
 	overflow-y: auto;
 }
 #chat-list > * > * {

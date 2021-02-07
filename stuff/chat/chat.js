@@ -9,14 +9,35 @@ var Chat;
 	const SERVER = window.location.protocol + '//' + (window.location.hostname === 'dst212.github.io' ? 'dst212.herokuapp.com' : window.location.hostname + ':5000') + '/chat';
 	const socket = io(SERVER, {autoConnect: false});
 
-	const show = () => that.div && (that.div.style.display = 'block');
-	const hide = () => that.div && (that.div.style.display = 'none');
-	const isHidden = () => that.div?.style.display === 'none';
+	let anim, header, headertext, input, title, div, chatListDiv;
+
+	const show = () => div && (div.style.display = 'block');
+	const hide = () => div && (div.style.display = 'none');
+	const isHidden = () => div?.style.display === 'none';
+
+	function refreshHeader(id) {
+		if(rooms[id] && cr === id) {
+			let m = Object.keys(rooms[id].members).length;
+			let t = Object.keys(rooms[id].typing);
+			if(t.length === 0 && rooms[id].members) {
+				anim.style.display = 'none';
+				headertext.innerHTML = m + ' member' + (m > 1 ? 's' : '');
+			} else {
+				anim.style.display = '';
+				headertext.innerHTML = (
+					t.length === 1 ? (rooms[id].typing[t[0]] || '') + '#' + t[0] + ' is typing' :
+					((t.length < 4 ? t.length : 'Several') + ' people are typing')
+				);
+			}
+		}
+	}
 
 	let rooms = {};			//list of available rooms
 	let cr = '';			//current room's name
 	let lastpm = undefined;	//sender of the last pm
 	let username = '';
+
+	let isTypingTimeout;
 
 	let loginPopup, disconnectedPopup, connectingPopup;
 
@@ -26,15 +47,29 @@ var Chat;
 			fetch('/stuff/chat/chat.html?0')
 				.then(res => res.text())
 				.then(data => {
-					that.div = document.createElement('DIV');
-					that.div.id = 'online-chat';
-					that.div.innerHTML = data;
-					document.body.appendChild(that.div)
+					div = document.createElement('DIV');
+					div.id = 'online-chat';
+					div.innerHTML = data;
+					document.body.appendChild(div)
 					that.hide();
-					that.chatListDiv = document.getElementById('chat-list');
-					that.title = document.getElementById('chat-title');
-					that.input = document.getElementById('chat-input');
-					that.input.onkeypress = function(e) {
+					chatListDiv = document.getElementById('chat-list');
+					title = document.getElementById('chat-title');
+
+					header = document.getElementById('chat-header');
+					anim = document.createElement('SPAN');
+					anim.innerHTML = '<div class="three-dots-anim"><span>·</span><span>·</span><span>·</span></div>';
+					anim.style.display = 'none';
+					headertext = document.createElement('SPAN');
+					header.appendChild(anim);
+					header.appendChild(headertext);
+
+					input = document.getElementById('chat-input');
+					input.onkeypress = function(e) {
+						if(isTypingTimeout)
+							clearTimeout(isTypingTimeout);
+						socket.emit('started-typing', cr);
+						isTypingTimeout = setTimeout(() => socket.emit('stopped-typing', cr), 1000);
+
 						if(e.code === 'Enter') {
 							if(e.ctrlKey || e.shiftKey) {
 								let i = this.selectionStart;
@@ -48,12 +83,12 @@ var Chat;
 						}
 					}
 					document.getElementById('chat-send-button').onclick = function(e) {
-						if(that.input.value && that.send(that.input.value))
-							that.input.value = '';
-						that.input.focus();
+						if(input.value && that.send(input.value))
+							input.value = '';
+						input.focus();
 					}
-					draggable(that.div);
-					that.div.style.transition += ', width 0s, height 0s';
+					draggable(div);
+					div.style.transition += ', width 0s, height 0s';
 				});
 		},
 		loginForm() {
@@ -94,9 +129,10 @@ var Chat;
 			if(rooms[cr]?.div)
 				rooms[cr].div.style.height = '0px';
 			if(rooms[cr = id]) {
-				this.title.innerHTML = 'Chat - ' + rooms[cr].name + (cr != rooms[cr].name ? ' (' + cr + ')' : '');
+				title.innerHTML = 'Chat - ' + rooms[cr].name + (cr != rooms[cr].name ? ' (' + cr + ')' : '');
 				if(rooms[cr]?.div)
 					rooms[cr].div.style.height = '';
+				refreshHeader(cr);
 			}
 		},
 		message(id, message, sender, timeout) {
@@ -125,6 +161,8 @@ var Chat;
 				console.log('[' + id + '] ' + (div?.textContent || 'Couldn\'t retrieve message'));
 		},
 		send(message, timeout = 0) {
+			clearTimeout(isTypingTimeout);
+			socket.emit('stopped-typing', cr);
 			if(this.command(message)) {
 				return true;
 			} else if(rooms[cr]) {
@@ -232,15 +270,15 @@ var Chat;
 			rooms[id || cr]?.div?.scrollTo(0, rooms[id || cr].div.scrollHeight);
 		},
 		inputAppend(append) {
-			if(this.input) {
-				this.input.value += append;
-				this.input.focus();
+			if(input) {
+				input.value += append;
+				input.focus();
 			}
 		},
 		inputSetBefore(value) {
-			if(this.input) {
-				this.input.value = value + this.input.value;
-				this.input.focus();
+			if(input) {
+				input.value = value + input.value;
+				input.focus();
 			}
 		},
 		help(command) {
@@ -319,7 +357,7 @@ var Chat;
 	socket.on('connect', function() {
 		connectingPopup.close(false);
 		this.rename(username);
-		this.chatListDiv.innerHTML = '';
+		chatListDiv.innerHTML = '';
 		show();
 		disconnectedPopup.close();
 	}.bind(that));
@@ -329,17 +367,20 @@ var Chat;
 		disconnectedPopup.open();
 	});
 	socket.on('message', that.message.bind(that));
-	socket.on('joined', function(id, name) {
+	socket.on('joined', function(id, name, members) {
 		if(rooms[id]?.div) {
 			rooms[id].name = name || id;
 		} else {
 			rooms[id] = {
 				name: name || id,
 				div: document.createElement('DIV'),
+				members: members,
+				typing: {},
 			};
-			this.chatListDiv.appendChild(rooms[id].div);
+			chatListDiv.appendChild(rooms[id].div);
 		}
 		this.switch(id);
+		refreshHeader(id);
 	}.bind(that));
 	socket.on('left', function(id) {
 		rooms[id]?.div?.remove?.();
@@ -349,6 +390,23 @@ var Chat;
 	}.bind(that));
 	socket.on('pm', that.gotpm.bind(that));
 	socket.on('pmsent', that.pmsent.bind(that));
+	socket.on('started-typing', function(user, name, id) {
+		if(rooms[id])
+			rooms[id].typing[user] = name;
+			refreshHeader(id);
+	});
+	socket.on('stopped-typing', function(user, id) {
+		if(rooms[id]) {
+			delete rooms[id].typing[user];
+			refreshHeader(id);
+		}
+	});
+	socket.on('update-members-list', function(id, members) {
+		if(rooms[id]) {
+			rooms[id].members = members;
+			refreshHeader(id);
+		}
+	}.bind(that));
 	socket.on('error', function(data, timeout) {
 		console.error(data);
 		this.message(cr, data, -1, timeout);
