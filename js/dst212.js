@@ -26,35 +26,38 @@ function uncoverPage(id = 'cover-page-id') {
 	div && document.body.removeChild(div);
 }
 
-const Beep = {
-	ctx: null,
-	osc: null,
-	initContext() {
-		this.ctx || (this.ctx = new (window.AudioContext || window.webkitAudioContext)());
-	},
-	start(freq = 1000) {
-		this.initContext();
-		this.osc = this.ctx.createOscillator();
-		this.osc.frequency.value = freq;
-		this.osc.start(this.ctx.currentTime);
-		this.osc.connect(this.ctx.destination);
-	},
-	stop() {
-		this.osc.stop(this.ctx.currentTime);
-		this.osc.disconnect(this.ctx.destination);
-		this.osc = null;
-	},
-};
+const Beep = (function() {
+	let ctx, osc;
+	return {
+		ctx: () => ctx || (ctx = new (window.AudioContext || window.webkitAudioContext)()),
+		start(freq = 1000) {
+			this.ctx().resume().then(function() {
+				osc = ctx.createOscillator();
+				osc.frequency.value = freq;
+				osc.start(ctx.currentTime);
+				osc.connect(ctx.destination);
+			});
+		},
+		stop() {
+			osc.stop(ctx.currentTime);
+			osc.disconnect(ctx.destination);
+			osc = null;
+			ctx.suspend();
+		},
+	};
+})();
 
 function beep(freq = 1000, ms = 500, type = 'sine') {
 	let osc;
-	Beep.initContext();
-	osc = Beep.ctx.createOscillator();
-	osc.type = type;
-	osc.frequency.value = freq;
-	osc.start(Beep.ctx.currentTime);
-	osc.stop(Beep.ctx.currentTime + (ms/1000));
-	osc.connect(Beep.ctx.destination);
+	Beep.ctx().resume().then(function() {
+		osc = Beep.ctx().createOscillator();
+		osc.type = type;
+		osc.frequency.value = freq;
+		osc.start(Beep.ctx().currentTime);
+		osc.stop(Beep.ctx().currentTime + (ms / 1000));
+		osc.connect(Beep.ctx().destination);
+		osc.onended = () => Beep.ctx().suspend();
+	});
 }
 
 function draggable(elem) {
