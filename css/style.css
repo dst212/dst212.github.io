@@ -567,6 +567,8 @@ input[type=button]:disabled:hover {
 	--bg: var(--invalid);
 	--fg: var(--body-bg);
 }
+.invalid.btn { border-color: var(--invalid); }
+.invalid.btn:hover { --fg: var(--body-bg); border-color: var(--invalid); --bg: var(--invalid);}
 
 .red.btn { border-color: var(--red); }
 .red.btn:hover { --fg: var(--body-bg); border-color: var(--red); --bg: var(--red); }
