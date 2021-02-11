@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Beep</title>
+		<script type="text/javascript" src="/pages/stuff/beep/beep.js"></script>
+	</head>
+	<body>
+		<style>
+			#beep-keyboard {
+				text-align: center;
+			}
+			#beep-keyboard > button {
+				margin: 0.25rem;
+				padding: 0.5rem 0;
+				height: 3rem;
+				width: 3rem;
+				max-width: calc(100%/13 - 0.5rem);
+			}
+			#beep-keyboard > button.beep-active {
+				--bg: var(--accent);
+				--fg: var(--body-bg);
+			}
+			#beep-keyboard > button.invalid.beep-active {
+				--bg: var(--invalid);
+			}
+			#beep-current-note {
+				font-size: 3rem;
+				text-align: center;
+			}
+		</style>
+		<div class="align-center">Press a key to beep.</div>
+		<div id="beep-keyboard" class="margin-bottom"></div>
+		<div id="beep-current-note"></div>
+	</body>
+</html>
