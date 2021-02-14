@@ -9,6 +9,7 @@
 	height: calc(100vh - var(--header-height));
 	--fg: var(--header-fg);
 	--bg: var(--header-bg);
+	z-index: 2;
 }
 #sidebar-checkbox:checked + #sidebar,
 #sidebar:hover {

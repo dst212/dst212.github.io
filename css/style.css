@@ -677,7 +677,7 @@ header {
 	width: 100%;
 	--bg: var(--header-bg);
 	--fg: var(--header-fg);
-	z-index: 1;
+	z-index: 3;
 	text-align: center;
 	box-shadow: var(--bottom-shadow);
 }
