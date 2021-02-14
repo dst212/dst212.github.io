@@ -348,7 +348,13 @@ input[type=button]:disabled:hover {
 	animation-timing-function: ease-in-out;
 }
 
-.square { padding: 0.3em; }
+.square {
+	display: inline-block;
+	width: 2em;
+	height: 2em;
+	padding: calc(0.5em - var(--border-width)) 0;
+	text-align: center;
+}
 
 /*radio and checkbox*/
 .radio label,
