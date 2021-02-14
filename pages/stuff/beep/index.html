@@ -7,30 +7,80 @@
 	</head>
 	<body>
 		<style>
-			#beep-keyboard {
-				text-align: center;
-			}
-			#beep-keyboard > button {
-				margin: 0.25rem;
-				padding: 0.5rem 0;
-				height: 3rem;
-				width: 3rem;
-				max-width: calc(100%/13 - 0.5rem);
-			}
-			#beep-keyboard > button.beep-active {
-				--bg: var(--accent);
-				--fg: var(--body-bg);
-			}
-			#beep-keyboard > button.invalid.beep-active {
-				--bg: var(--invalid);
+			@media only screen and (min-height: 15rem) {
+				main {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+				#search-page-container {
+					width: calc(100vw - (var(--body-padding) * 2));
+				}
 			}
 			#beep-current-note {
 				font-size: 3rem;
 				text-align: center;
+				height: 3rem;
+			}
+			#beep-hints {
+				overflow: hidden;
+				max-height: 100vh;
+			}
+
+			#beep-container {
+				max-width: 100%;
+				overflow-x: auto;
+			}
+			#beep-keyboard {
+				display: block;
+				margin: auto;
+				width: max-content;
+				font-size: 1rem;
+				text-align: center;
+				overflow-x: hidden;
+			}
+			#beep-keyboard > button {
+				position: relative;
+				z-index: 0;
+				margin: 0;
+				padding: 7rem 0 0.5rem;
+				width: 2.5rem;
+				height: 9rem;
+				--bg: white;
+				--fg: black;
+				border-color: black;
+				border-radius: 0;
+				box-shadow: none;
+			}
+			#beep-keyboard > button.beep-black {
+				z-index: 1;
+				top: -3rem;
+				margin: 0 -0.875rem;
+				padding: 4rem 0 0.5rem;
+				width: 1.75rem;
+				height: 6rem;
+				--bg: black;
+				--fg: white;
+			}
+			#beep-keyboard > button.beep-active {
+				--bg: var(--accent);
+				--fg: black;
+			}
+			#beep-keyboard > button.beep-black.beep-active {
+				--bg: var(--accent-dark);
+				--fg: white;
+			}
+
+			#beep-octave > button.beep-active {
+				--bg: var(--accent);
+				--fg: var(--body-bg);
 			}
 		</style>
-		<div class="align-center">Press a key to beep.</div>
-		<div id="beep-keyboard" class="margin-bottom"></div>
-		<div id="beep-current-note"></div>
+		<div class="align-center">
+			<div id="beep-hints" class="margin-bottom">Press a key to beep.<br>Use <code>←→</code> to shift octave and <code>SPACE</code> to reset.<br>The keys refers to the keyboard's US layout, but order doesn't change.</div>
+			<div id="beep-octave" class="margin-bottom"></div>
+			<div id="beep-container" class="margin-bottom"><div id="beep-keyboard"></div></div>
+			<div id="beep-current-note" class="margin-bottom"></div>
+		</div>
 	</body>
 </html>
