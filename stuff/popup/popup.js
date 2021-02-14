@@ -11,7 +11,7 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 
 	this.show = function() {
 		shown = true;
-		element.style.zIndex = 2;
+		element.style.zIndex = 4;
 		element.style.opacity = '';
 	}
 	this.hide = function() {
@@ -54,7 +54,7 @@ const Popup = function(title, content, buttons = [], flags = {autoSpawn: false, 
 
 	element.classList.add('popup-element');
 
-	element.style.zIndex = 1;
+	element.style.zIndex = -1;
 	this.style = function(s = style) {
 		for(let key in s)
 			element.style[key] = s[key];

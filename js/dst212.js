@@ -14,7 +14,7 @@ function addFunction(f, t) {	//concatenate functions
 
 function coverPage(color = 'transparent', id = 'cover-page-id') {
 	let div = document.createElement('DIV');
-	div.style = 'position: fixed; top: 0; left: 0; display: block; height: 100vh; width: 100vw; z-index: 1';
+	div.style = 'position: fixed; top: 0; left: 0; display: block; height: 100vh; width: 100vw; z-index: 3';
 	div.style.backgroundColor = color;
 	//everything z-indexed above 1 will be accessible
 	div.setAttribute('id', id);
