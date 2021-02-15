@@ -7,16 +7,18 @@
 	</head>
 	<body>
 		<style>
-			@media only screen and (min-height: 15rem) {
-				main {
-					display: flex;
-					justify-content: center;
-					align-items: center;
-				}
-				#search-page-container {
-					width: calc(100vw - (var(--body-padding) * 2));
-				}
+			#beep-warning { display: none; }
+			@media only screen and (max-width: 48rem) {
+				#beep-warning { display: block; }
+				#beep-container { display: none; }
 			}
+
+			main {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
 			#beep-current-note {
 				font-size: 3rem;
 				text-align: center;
@@ -27,10 +29,6 @@
 				max-height: 100vh;
 			}
 
-			#beep-container {
-				max-width: 100%;
-				overflow-x: auto;
-			}
 			#beep-keyboard {
 				display: block;
 				margin: auto;
@@ -76,7 +74,8 @@
 				--fg: var(--body-bg);
 			}
 		</style>
-		<div class="align-center">
+		<div id="beep-warning" class="align-center">The screen (or window) isn't wide enough, rotate (or resize) it to correctly display the keyboard.</div>
+		<div id="beep-container" class="align-center">
 			<div id="beep-hints" class="margin-bottom">Press a key to beep.<br>Use <code>←→</code> to shift octave and <code>SPACE</code> to reset.<br>The keys refers to the keyboard's US layout, but order doesn't change.</div>
 			<div id="beep-octave" class="margin-bottom"></div>
 			<div id="beep-container" class="margin-bottom"><div id="beep-keyboard"></div></div>

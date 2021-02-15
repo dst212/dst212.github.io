@@ -84,7 +84,7 @@
 			el.ontouchstart = el.onmouseover = el.onmousedown = function(e) {
 				if(!ctx)
 					init();
-				if((e.buttons > 0 && e.button === 0) || (e.code) && !this.active) {
+				if(((e.buttons > 0 && e.button === 0) || e.code || e.touches?.length > 0) && !this.active) {
 					this.classList.add('beep-active');
 					this.osc = oscillator(value + shift.value() * 12);
 					this.active = true;
@@ -94,6 +94,7 @@
 						this.osc.type = TYPE;
 					this.osc.connect(ctx.destination);
 					noteDiv.innerHTML = noteToString(value);
+					return false;
 				}
 			}
 			el.ontouchcancel = el.ontouchend = el.onmouseout = el.onmouseup = function(e) {
@@ -103,6 +104,7 @@
 					this.active = false;
 					if(noteDiv.innerHTML === noteToString(value))
 						noteDiv.innerHTML = '';
+					return false;
 				}
 			}
 			return keyboard.appendChild(el);
