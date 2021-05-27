@@ -10,6 +10,7 @@
 	display: inline-block;
 	height: 2em;
 	padding: 0.2em 0.2em 0.2em 1.6em;
+	margin: 0;
 	border: var(--border-width) solid var(--accent-faded);
 	border-radius: var(--border-radius);
 	width: 12rem;
