@@ -66,7 +66,7 @@ function draggable(target, parent = document.documentElement) {
 		let xn, yn;
 		//positions of elements: parent needs to be relative in order to set top and left props to target
 		parent.style.position = 'relative';
-		target.style.position = 'absolute';
+		target.style.position = (parent === document.documentElement ? 'fixed' : 'absolute');
 		target.style.margin = '0'; //margins conflict with offsetTop and offsetLeft (JS) combined to top and left (CSS)
 		//set the transition duration of top and left to 0, so that it moves instantly
 		target.style.transition = 'all var(--duration), top 0s, left 0s';
