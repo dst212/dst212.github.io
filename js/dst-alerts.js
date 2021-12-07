@@ -11,7 +11,7 @@ var okokItIsFine = () => {
 		let div, svg, btn, main = document.getElementsByTagName('MAIN')[0];
 		div = document.createElement('DIV');
 		div.style = 'position: fixed; top: calc(50% - 6rem); right: 2rem; z-index: 4; width: 7rem; font-size: 1rem; text-align: center;';
-		div.innerHTML = 'Hover/tap here to access the sidebar menu.';
+		div.innerHTML = 'Click/tap here to access the sidebar menu.';
 
 		svg = document.createElement('SVG');
 		div.appendChild(svg);
