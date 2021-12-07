@@ -35,6 +35,7 @@
 
 	--box-shadow:			0.3rem 0.3rem 0.3rem 0 rgba(0,0,0,0.4);
 	--bottom-shadow:		0 0.3rem 0.3rem 0 rgba(0,0,0,0.5);
+	--left-shadow:			-0.3rem 0 0.3rem 0 rgba(0,0,0,0.5);
 	--grey-shadow-frame:	0 0 0.15rem 0.2rem rgba(127,127,127,0.45);
 	--black-shadow-frame:	var(--grey-shadow-frame);
 	--shadow-frame:			var(--grey-shadow-frame);
