@@ -15,7 +15,12 @@ function fetchSection(file, className) {
 			collection[i].innerHTML = '<div class="loading-anim"><span></span><span></span><span></span></div>';
 		fetch('/res/html/' + file)
 			.then(response => response.text())
-			.then(data => {for(i = 0; i < collection.length; i++) collection[i].innerHTML = data;});
+			.then(data => {
+				while(collection.length > 0) {
+					collection[0].innerHTML = data;
+					collection[0].classList.remove(className);
+				}
+			});
 	}
 }
 
