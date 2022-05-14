@@ -177,15 +177,43 @@
 		alias.type = 'text';
 		alias.style.width = '12ch';
 		alias.value = key || '';
-		alias.onkeydown = e => delete aliases[e.target.value];
-		alias.onkeyup = e => e.target.value && (aliases[e.target.value] = trigger.value);
-
+		alias.setAttribute('original-value', key || '');
+		(function() {
+			let prev = '';
+			alias.onkeydown = function(e) {
+				;
+			};
+			alias.onkeyup = function(e) {
+				if(e.target.value) { // alias is set, shall save it
+					// delete previous alias if it's different from the new one
+					e.target.style.borderColor === '' && prev && e.target.value !== prev && delete aliases[prev];
+					// if it already exists and it's not the original
+					if(aliases[e.target.value] && e.target.getAttribute('original-value') !== e.target.value) {
+						// set it as invalid, checking the value of borderColor defines whether it's valid or not
+						e.target.style.borderColor = 'var(--invalid)';
+					} else {
+						// it's valid, update it
+						e.target.style.borderColor = '';
+						aliases[e.target.value] = trigger.value;
+					}
+					prev = e.target.value;
+				} else { // the "key → value" association should be deleted
+					delete aliases[e.target.getAttribute('original-value')];
+					prev = '';
+				}
+			};
+		})();
+		alias.onchange = function(e) {
+			// when it's changed and it's valid, update the original value to this one
+			if(e.target.style.borderColor === '')
+				e.target.setAttribute('original-value', e.target.value);
+		}
 		span.innerHTML = ' → ';
 
 		trigger.type = 'text';
 		trigger.style.width = '12ch';
 		trigger.value = aliases[key] || '';
-		trigger.onkeyup = e => aliases[alias.value] = e.target.value;
+		trigger.onkeyup = e => alias.style.borderColor === '' && (aliases[alias.value] = e.target.value);
 
 		div.appendChild(alias);
 		div.appendChild(span);
@@ -203,7 +231,7 @@
 				elem.style.textAlign = 'center';
 				elem.appendChild(div);
 				elem.appendChild(newBtn('New link', 'material-icons md-same square margin', 'add', () => div.appendChild(newAliasDiv(''))));
-				elem.appendChild(newBtn('Save', 'material-icons md-same square margin', 'save', () => saveAliases));
+				elem.appendChild(newBtn('Save', 'material-icons md-same square margin', 'save', () => saveAliases()));
 				elem.appendChild(newBtn('Cancel', 'material-icons md-same square margin', 'close', () => { aliases = JSON.parse(localStorage.getItem('search-page-aliases')); updateAliasesEditor(); }));
 			}
 			div.innerHTML = '';
