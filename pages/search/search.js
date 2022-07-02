@@ -431,7 +431,7 @@
 				document.activeElement.nodeName !== 'TEXTAREA'
 			)
 				searchbar.focus();
-			if(e.ctrlKey && e.shiftKey && e.code === 'KeyL') {
+			if(e.altKey && e.shiftKey && e.code === 'KeyL') {
 				//I'm feeling lucky
 				let butt = document.getElementById('search-page-lucky');
 
