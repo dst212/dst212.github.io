@@ -4,7 +4,7 @@
 var Tron;
 
 (function() {
-	const SERVER = window.location.protocol + '//dst212.herokuapp.com/tron-game';
+	const SERVER = window.location.protocol + '//' + (window.location.hostname === 'dst212.github.io' ? 'dst212.onrender.com' : window.location.hostname + ':5000') + '/tron-game';
 
 	let player = [];
 

@@ -6,7 +6,7 @@ var Chat;
 (function() {
 	let that;
 
-	const SERVER = window.location.protocol + '//' + (window.location.hostname === 'dst212.github.io' ? 'dst212.herokuapp.com' : window.location.hostname + ':5000') + '/chat';
+	const SERVER = window.location.protocol + '//' + (window.location.hostname === 'dst212.github.io' ? 'dst212.onrender.com' : window.location.hostname + ':5000') + '/chat';
 	const socket = io(SERVER, {autoConnect: false});
 
 	let anim, header, headertext, input, title, div, chatListDiv;
