@@ -414,58 +414,348 @@
 		};
 	})();
 
-	//settings popup
-	let settingsPopup = new Popup('Beep - Settings', `
-		<div class="radio margin-bottom">Wave type:</div><br>
-		<div class="checkbox margin-bottom"></div>
+	// Settings popup
+	const settingsPopup = new Popup('Beep - Settings', `
+	<input id="beep-settings-0" type="radio" name="beep-settings" checked></div>
+	<label for="beep-settings-0">Wave</label>
+	<section></section>
+	<input id="beep-settings-1" type="radio" name="beep-settings"></div>
+	<label for="beep-settings-1">Tuning</label>
+	<section></section>
+	<input id="beep-settings-2" type="radio" name="beep-settings"></div>
+	<label for="beep-settings-2">UI</label>
+	<section></section>
+	<input id="beep-settings-4" type="radio" name="beep-settings"></div>
+	<label for="beep-settings-4">About</label>
+	<section><div>
+		More about temperaments:<br>
+		<a target="_blank" href="https://en.wikipedia.org/wiki/Musical_temperament">What is temperament?</a><br>
+		<a target="_blank" href="https://en.wikipedia.org/wiki/Equal_temperament">Equal temperament</a><br>
+		<a target="_blank" href="https://en.wikipedia.org/wiki/Pythagorean_tuning">Pythagorean tuning</a><br>
+		<a target="_blank" href="https://en.wikipedia.org/wiki/Five-limit_tuning#The_just_ratios">5-, 7-, and 17-limit tables</a>
+	</div></section>
 	`, [{innerHTML: 'Ok'}], {draggable: true});
+	settingsPopup.content.classList.add('sections');
 
-	//print a radio input for each wave type
-	(function() {
-		let label, input, div = settingsPopup.content.getElementsByClassName('radio')[0];
-		['sine', 'square', 'sawtooth', 'triangle'].forEach((item, i) => {
-			label = document.createElement('LABEL');
-			label.innerHTML = item[0].toUpperCase() + item.slice(1);
-			input = document.createElement('INPUT');
-			input.type = 'radio';
-			input.name = 'beep-settings-wave';
-			input.value = item;
-			input.onclick = function(e) {
-				TYPE = this.value;
+	const sections = settingsPopup.content.querySelectorAll('section');
+
+	(function () {
+		const newBR = () => document.createElement('BR');
+
+		const radios = [
+			{
+				id: 'beep-settings-wave',
+				label: 'Wave type:',
+				items: AVAILABLE_WAVES,
+				category: 0,
+				set(value) {
+					TYPE = value;
+				},
+				get value() {
+					return TYPE;
+				},
+			},
+			{
+				id: 'beep-settings-temperament',
+				label: 'Temperament:',
+				items: AVAILABLE_TEMPERAMENTS,
+				category: 1,
+				set(value) {
+					TEMPERAMENT = value;
+				},
+				get value() {
+					return TEMPERAMENT;
+				},
+			},
+		];
+
+		for (let i = 0; i < radios.length; i++) {
+			const div = document.createElement('DIV');
+			const r = radios[i];
+			const value = localStorage.getItem(r.id);
+			div.innerHTML = r.label;
+			div.classList.add('radio', 'margin-botom');
+			if (value) {
+				r.set(value);
+			}
+
+			for (let j = 0; j < r.items.length; j++) {
+				const item = r.items[j];
+				const label = document.createElement('LABEL');
+				const input = document.createElement('INPUT');
+				label.innerHTML = item.name;
+				input.type = 'radio';
+				input.name = r.id;
+				input.value = item.value;
+				input.onclick = function (_e) {
+					this.blur();
+					r.set(this.value);
+					localStorage.setItem(r.id, r.value);
+					console.log(r.id, '=', r.value);
+				};
+
+				if (r.value === item.value) {
+					input.setAttribute('checked', '');
+				}
+
+				label.appendChild(input);
+				label.appendChild(document.createElement('SPAN'));
+				div.appendChild(label);
+			}
+
+			sections[r.category].appendChild(div);
+			sections[r.category].appendChild(newBR());
+		}
+
+		// Boolean settings
+		const bools = [
+			{
+				// Hide key references on keyboard's keys and hints above the keyboard
+				id: 'beep-clean-keys',
+				label: 'Hide hints',
+				tooltip: 'Hide key references on the keyboard and the explanation above for a cleaner UI.',
+				category: 2,
+				set(value) {
+					keyboard.style.setProperty(
+						'font-size',
+						document.getElementById('beep-hints').style.maxHeight = value ? '0px' : '',
+					);
+				},
+			},
+			{
+				id: 'beep-fix-gain',
+				label: 'Fix gain',
+				tooltip: 'When playing multiple notes, reduce amplitude to produce a more harmonic sound.',
+				category: 0,
+				set(value) {
+					FIX_GAIN = value;
+					// Reset gain if oscillators are playing
+					resetGain();
+				},
+			},
+			{
+				id: 'beep-use-diminished-5th',
+				label: 'Use diminished fifth',
+				tooltip: 'Use the diminished fifth instead of the augmented fourth in non-equal tunings.',
+				category: 1,
+				set(value) {
+					USE_DIM_5TH = value;
+				},
+			},
+		];
+
+		const checkboxes = [];
+		for (let i = 0; i < sections.length; i++) {
+			checkboxes[i] = document.createElement('DIV');
+			checkboxes[i].classList.add('checkbox', 'margin-bottom');
+			sections[i].appendChild(checkboxes[i]);
+			sections[i].appendChild(newBR());
+		}
+
+		for (let i = 0; i < bools.length; i++) {
+			const item = bools[i];
+			const label = document.createElement('LABEL');
+			const input = document.createElement('INPUT');
+			label.innerHTML = item.label;
+			label.title = item.tooltip;
+			label.style.setProperty('cursor', 'help');
+			input.type = 'checkbox';
+			input.name = item.name;
+			input.onchange = function (_e) {
 				this.blur();
+				item.set(this.checked);
+				if (this.checked) {
+					localStorage.setItem(item.id, '1');
+				} else {
+					localStorage.removeItem(item.id);
+				}
+
+				console.log(item.id, '=', this.checked);
 			};
-			if(TYPE === item)
+
+			if (localStorage.getItem(item.id)) {
+				item.set(true);
 				input.setAttribute('checked', '');
+			}
+
 			label.appendChild(input);
 			label.appendChild(document.createElement('SPAN'));
-			div.appendChild(label);
-		});
+			checkboxes[item.category].appendChild(label);
+		}
 
-		//hide key references on keyboard's keys and hints above the keyboard
-		const hide = () =>  document.getElementById('beep-hints').style.maxHeight = keyboard.style.fontSize = '0px';
-		const show = () =>  document.getElementById('beep-hints').style.maxHeight = keyboard.style.fontSize = '';
-		div = settingsPopup.content.getElementsByClassName('checkbox')[0];
-		label = document.createElement('LABEL');
-		label.innerHTML = 'Hide hints';
-		input = document.createElement('INPUT');
-		input.type = 'checkbox';
-		input.onchange = function(e) {
-			this.blur();
-			if(this.checked) {
-				localStorage.setItem('beep-clean-keys', '1');
-				hide();
-			} else {
-				localStorage.removeItem('beep-clean-keys');
-				show();
+		const options = [
+			{
+				id: 'beep-reference-key',
+				label: 'Reference note for temperament:',
+				options: [
+					{id: 0, name: 'A'},
+					{id: 1, name: 'A#'},
+					{id: 2, name: 'B'},
+					{id: 3, name: 'C'},
+					{id: 4, name: 'C#'},
+					{id: 5, name: 'D'},
+					{id: 6, name: 'D#'},
+					{id: 7, name: 'E'},
+					{id: 8, name: 'F'},
+					{id: 9, name: 'F#'},
+					{id: 10, name: 'G'},
+					{id: 11, name: 'G#'},
+				],
+				category: 1,
+				set(value) {
+					REFERENCE_KEY = typeof value === 'number' ? value : parseInt(value, 10);
+				},
+				get value() {
+					return REFERENCE_KEY;
+				},
+			},
+		];
+
+		for (let i = 0; i < options.length; i++) {
+			const item = options[i];
+			const label = document.createElement('LABEL');
+			const select = document.createElement('SELECT');
+			const value = localStorage.getItem(item.id);
+			label.innerHTML = options[i].label;
+			if (value) {
+				item.set(value);
 			}
+
+			for (let j = 0; j < item.options.length; j++) {
+				const option = document.createElement('OPTION');
+				option.value = item.options[j].id;
+				option.innerHTML = item.options[j].name;
+				if (item.value === item.options[j].id) {
+					option.setAttribute('selected', '');
+				}
+
+				select.appendChild(option);
+			}
+
+			select.onchange = function (_e) {
+				item.set(this.value);
+				localStorage.setItem(item.id, item.value);
+				console.log(item.id, '=', item.value);
+			};
+
+			sections[item.category].appendChild(label);
+			sections[item.category].appendChild(newBR());
+			sections[item.category].appendChild(select);
+			sections[item.category].appendChild(newBR());
+			sections[item.category].appendChild(newBR());
 		}
-		if(localStorage.getItem('beep-clean-keys')) {
-			hide();
-			input.setAttribute('checked', '');
+
+		const numeric = [
+			{
+				id: 'beep-gain',
+				label: 'Volume (gain):',
+				slider: true,
+				step: 0.0000000000000001,
+				min: -1,
+				max: 1,
+				minInc: true,
+				maxInc: true,
+				category: 0,
+				parse: value => parseFloat(value, 10),
+				set(value) {
+					DEFAULT_GAIN = value;
+				},
+				get value() {
+					return DEFAULT_GAIN;
+				},
+			},
+			{
+				id: 'beep-a-frequency',
+				label: 'Frequency of A:',
+				step: 0.0000000000000001,
+				min: 0,
+				max: Infinity,
+				minInc: false,
+				maxInc: false,
+				category: 1,
+				parse: value => parseFloat(value, 10),
+				set(value) {
+					A = value;
+					if (value < 20 || value > 20000) {
+						console.warn('A frequency of', value, ' Hz won\'t probably be heard by any regular human.');
+					}
+				},
+				get value() {
+					return A;
+				},
+			},
+		];
+
+		function numericIsValid(value, item) {
+			return !(
+				(item.minInc && value < item.min)
+				|| (item.minExc && value <= item.min)
+				|| (item.maxInc && value > item.max)
+				|| (item.maxExc && value >= item.max)
+			);
 		}
-		label.appendChild(input);
-		label.appendChild(document.createElement('SPAN'));
-		div.appendChild(label);
+
+		function constraintsToString(item) {
+			if (item.min === -Infinity && item.max === Infinity) {
+				return 'Any real number';
+			}
+
+			const low = item.minExc ? '&lt;' : '&lt;=';
+			const high = item.maxExc ? '&lt;' : '&lt;=';
+
+			if (item.min === -Infinity) {
+				return `value ${high} ${item.max}`;
+			}
+
+			if (item.max === Infinity) {
+				return `${item.min} ${low} value`;
+			}
+
+			return `${item.min} ${low} value ${high} ${item.max}`;
+		}
+
+		for (let i = 0; i < numeric.length; i++) {
+			const item = numeric[i];
+			const input = document.createElement('INPUT');
+			const label = document.createElement('LABEL');
+			let value = localStorage.getItem(item.id);
+			// Input.type = item.slider ? 'range' : 'number';
+			input.type = 'number';
+			input.min = item.min;
+			input.max = item.max;
+			if (item.step !== undefined) {
+				input.step = item.step;
+			}
+
+			label.innerHTML = item.label;
+			if (value) {
+				try {
+					value = item.parse(value);
+					if (numericIsValid(value, item)) {
+						item.set(value);
+					}
+				} catch (e) {
+					console.error(e);
+				}
+			}
+
+			input.value = item.value;
+			input.onchange = function (_e) {
+				this.blur();
+				const value = item.parse(this.value);
+				if (numericIsValid(value, item)) {
+					item.set(value);
+					localStorage.setItem(item.id, item.value);
+				} else {
+					popup('Beep', 'Invalid value. Constraints:<br><div class="center"><code>' + constraintsToString(item) + '</code></div>', [{innerHTML: 'Ok'}]);
+				}
+			};
+
+			sections[item.category].appendChild(label);
+			sections[item.category].appendChild(newBR());
+			sections[item.category].appendChild(input);
+			sections[item.category].appendChild(newBR());
+		}
 	})();
 
 	// Settings button
