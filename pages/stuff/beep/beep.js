@@ -38,6 +38,7 @@
 	let TEMPERAMENT = 'equal';
 	let A = 440;
 	let REFERENCE_KEY = 0; // 0 is A
+	let USE_DIM_5TH = false; // Use the diminished fifth instead of the augmented fourth
 	const CUSTOM_WAVES = {
 		'custom-1': ctx.createPeriodicWave(new Float32Array([0, Math.sqrt(3) / 2, 0, 0]), new Float32Array([0, 0.25, 0, -0.25])),
 	};
@@ -50,60 +51,122 @@
 	];
 	const AVAILABLE_TEMPERAMENTS = [
 		{name: 'Equal', value: 'equal'},
-		{name: 'Pythagorean (4th+)', value: 'pyth-4'},
-		{name: 'Pythagorean (5th-)', value: 'pyth-5'},
+		{name: 'Pythagorean', value: 'pyth'},
+		{name: '5-limit (symmetric)', value: '5-limit-sym'},
+		{name: '5-limit (asymmetric extended)', value: '5-limit-asym'},
+		{name: '7-limit', value: '7-limit'},
+		{name: '17-limit', value: '17-limit'},
 	];
 
-	const pyth4 = [
-		1, // Unison
-		256 / 243, // Minor second
-		9 / 8, // Major second
-		32 / 27, // Minor third
-		81 / 64, // Major third
-		4 / 3, // Perfect fourth
-		729 / 512, // Augmented fourth
-		3 / 2, // Perfetct fifth
-		128 / 81, // Minor sixth
-		27 / 16, // Major sixth
-		16 / 9, // Minor seventh
-		243 / 128, // Major seventh
-	];
+	const ratios = {
+		pyth: [
+			1, // Unison
+			256 / 243, // Minor second
+			9 / 8, // Major second
+			32 / 27, // Minor third
+			81 / 64, // Major third
+			4 / 3, // Perfect fourth
+			// Augmented fourth , Diminished fifth
+			[729 / 512, 1024 / 729],
+			3 / 2, // Perfetct fifth
+			128 / 81, // Minor sixth
+			27 / 16, // Major sixth
+			16 / 9, // Minor seventh
+			243 / 128, // Major seventh
+		],
+		'5-limit-sym': [
+			1, // Unison
+			16 / 15, // Minor second
+			9 / 8, // Major second
+			6 / 5, // Minor third
+			5 / 4, // Major third
+			4 / 3, // Perfect fourth
+			// Augmented fourth , Diminished fifth
+			[45 / 32, 64 / 45],
+			3 / 2, // Perfetct fifth
+			8 / 5, // Minor sixth
+			5 / 3, // Major sixth
+			16 / 9, // Minor seventh
+			15 / 8, // Major seventh
+		],
+		'5-limit-asym': [
+			1, // Unison
+			16 / 15, // Minor second
+			9 / 8, // Major second
+			6 / 5, // Minor third
+			5 / 4, // Major third
+			4 / 3, // Perfect fourth
+			// Augmented fourth , Diminished fifth
+			[25 / 18, 36 / 25],
+			3 / 2, // Perfetct fifth
+			8 / 5, // Minor sixth
+			5 / 3, // Major sixth
+			9 / 5, // Minor seventh
+			15 / 8, // Major seventh
+		],
+		'7-limit': [
+			1, // Unison
+			15 / 14, // Minor second
+			8 / 7, // Major second
+			6 / 5, // Minor third
+			5 / 4, // Major third
+			4 / 3, // Perfect fourth
+			// Augmented fourth , Diminished fifth
+			[7 / 5, 10 / 7],
+			3 / 2, // Perfetct fifth
+			8 / 5, // Minor sixth
+			5 / 3, // Major sixth
+			7 / 4, // Minor seventh
+			15 / 8, // Major seventh
+		],
+		'17-limit': [
+			1, // Unison
+			14 / 13, // Minor second
+			8 / 7, // Major second
+			6 / 5, // Minor third
+			5 / 4, // Major third
+			4 / 3, // Perfect fourth
+			// Augmented fourth , Diminished fifth
+			[17 / 12, 24 / 17],
+			3 / 2, // Perfetct fifth
+			8 / 5, // Minor sixth
+			5 / 3, // Major sixth
+			7 / 4, // Minor seventh
+			13 / 7, // Major seventh
+		],
+	};
 
-	const pyth5 = [
-		1, // Unison
-		256 / 243, // Minor second
-		9 / 8, // Major second
-		32 / 27, // Minor third
-		81 / 64, // Major third
-		4 / 3, // Perfect fourth
-		1024 / 729, // Diminished fifth
-		3 / 2, // Perfetct fifth
-		128 / 81, // Minor sixth
-		27 / 16, // Major sixth
-		16 / 9, // Minor seventh
-		243 / 128, // Major seventh
-	];
 	function frequency(n, a, temp, ref = null) {
 		if (ref === null) {
 			ref = REFERENCE_KEY;
 		}
 
-		let ratio;
-		switch (temp) {
-			case 'pyth-4':
-				n -= ref;
-				ratio = pyth4[((n % 12) + 12) % 12];
-				// Multiplying by 2**(n//12) gives the octave shift of A
-				// Dividing by the ratio between ref and A allows arranging the ratios starting from ref rather than A
-				// TODO: fix the octave beign shifted one below when changing REFERENCE_KEY
-				return ratio * a / pyth4[(12 - ref) % 12] * (2 ** Math.floor(n / 12));
-			case 'pyth-5':
-				n -= ref;
-				ratio = pyth5[((n % 12) + 12) % 12];
-				return ratio * a / pyth5[(12 - ref) % 12] * (2 ** Math.floor(n / 12));
-			default: // Equal
-				return a * (2 ** (n / 12));
+		if (temp === 'equal') {
+			return a * (2 ** (n / 12));
 		}
+
+		// Retrieve the ratios table given the temperament
+		const table = ratios[temp];
+
+		if (!table) {
+			throw Error('Temperament "' + temp + '" not found.');
+		} else if (ref) {
+			n += 12 - ref;
+		}
+
+		let ratioN = table[((n % 12) + 12) % 12];
+		let ratioRef = table[(12 - ref) % 12];
+		if (typeof ratioN !== 'number') {
+			ratioN = ratioN[USE_DIM_5TH ? 1 : 0];
+		}
+
+		if (typeof ratioRef !== 'number') {
+			ratioRef = ratioRef[USE_DIM_5TH ? 1 : 0];
+		}
+
+		// Dividing by the ratio between ref and A allows arranging the ratios starting from ref rather than A
+		// (ratio between n and ref) / (ratio between ref and A) * (frequency of A) * (octave shift)
+		return ratioN / ratioRef * a * (2 ** Math.floor(n / 12));
 	}
 
 	const noteDiv = document.getElementById('beep-current-note');
