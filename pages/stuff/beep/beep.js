@@ -6,6 +6,33 @@
 (function () {
 	const ctx = new AudioContext();
 
+	let DEFAULT_GAIN = 0.3;
+	let FIX_GAIN = true;
+	const masterGain = ctx.createGain();
+
+	const {resetGain, lowerGain, increaseGain} = (function () {
+		let activeNodes = 0; // Number of playing oscillators
+		return {
+			resetGain() {
+				masterGain.gain.value = FIX_GAIN ? DEFAULT_GAIN / (activeNodes || 1) : DEFAULT_GAIN;
+			},
+			lowerGain() {
+				activeNodes++;
+				if (FIX_GAIN) {
+					masterGain.gain.value = DEFAULT_GAIN / (activeNodes || 1);
+				}
+			},
+			increaseGain() {
+				activeNodes--;
+				if (FIX_GAIN) {
+					masterGain.gain.value = DEFAULT_GAIN / (activeNodes || 1);
+				}
+			},
+		};
+	})();
+
+	masterGain.connect(ctx.destination);
+
 	// They're not constant because can be modified in future
 	let TYPE = 'square';
 	let TEMPERAMENT = 'equal';
@@ -134,8 +161,12 @@
 			osc.type = type;
 		}
 
-		osc.connect(ctx.destination);
+		osc.connect(masterGain);
+		lowerGain();
 		osc.start(ctx.currentTime);
+		osc.onended = () => {
+			increaseGain();
+		};
 
 		if (typeof duration === 'number') {
 			const stop = ctx.currentTime + duration;
