@@ -7,31 +7,33 @@
 	const ctx = new AudioContext();
 
 	let DEFAULT_GAIN = 0.3;
-	let FIX_GAIN = true;
+	let FIX_GAIN = false; // Lower the gain the more oscillators are playing
+	let QUICK_FADE = true; // Quickly lower the gain before stopping an oscillator to avoid audio clicking
+	const MAGIC_NUMBER = 0.015; // Remove audio clicking when stopping an oscillator
 	const masterGain = ctx.createGain();
+	const compressor = ctx.createDynamicsCompressor();
+	const activeNodes = []; // Playing oscillators, needed to display ratios between frequencies etc.
 
-	const {resetGain, lowerGain, increaseGain} = (function () {
-		let activeNodes = 0; // Number of playing oscillators
-		return {
-			resetGain() {
-				masterGain.gain.value = FIX_GAIN ? DEFAULT_GAIN / (activeNodes || 1) : DEFAULT_GAIN;
-			},
-			lowerGain() {
-				activeNodes++;
-				if (FIX_GAIN) {
-					masterGain.gain.value = DEFAULT_GAIN / (activeNodes || 1);
-				}
-			},
-			increaseGain() {
-				activeNodes--;
-				if (FIX_GAIN) {
-					masterGain.gain.value = DEFAULT_GAIN / (activeNodes || 1);
-				}
-			},
-		};
-	})();
+	function resetGain() {
+		masterGain.gain.setTargetAtTime(FIX_GAIN ? DEFAULT_GAIN / (activeNodes.length || 1) : DEFAULT_GAIN, ctx.currentTime, MAGIC_NUMBER);
+	}
 
-	masterGain.connect(ctx.destination);
+	function lowerGain(osc) {
+		activeNodes.push(osc);
+		if (FIX_GAIN) {
+			masterGain.gain.setTargetAtTime(DEFAULT_GAIN / (activeNodes.length || 1), ctx.currentTime, MAGIC_NUMBER);
+		}
+	}
+
+	function increaseGain(osc) {
+		activeNodes.pop(osc);
+		if (FIX_GAIN) {
+			masterGain.gain.setTargetAtTime(DEFAULT_GAIN / (activeNodes.length || 1), ctx.currentTime, MAGIC_NUMBER);
+		}
+	}
+
+	masterGain.connect(compressor).connect(ctx.destination);
+	resetGain();
 
 	// They're not constant because can be modified in future
 	let TYPE = 'square';
@@ -217,6 +219,7 @@
 	// Create an oscillator
 	function oscillator(freq, type, duration = null) {
 		const osc = ctx.createOscillator();
+		const gainNode = ctx.createGain();
 		osc.frequency.value = freq;
 		if (CUSTOM_WAVES[type]) {
 			osc.setPeriodicWave(CUSTOM_WAVES[type]);
@@ -224,15 +227,22 @@
 			osc.type = type;
 		}
 
-		osc.connect(masterGain);
-		lowerGain();
+		/// gainNode.connect(masterGain);
+		osc.connect(gainNode).connect(masterGain);
+		osc.gain = gainNode;
+		lowerGain(osc);
 		osc.start(ctx.currentTime);
 		osc.onended = () => {
-			increaseGain();
+			increaseGain(osc);
 		};
 
 		if (typeof duration === 'number') {
-			const stop = ctx.currentTime + duration;
+			let stop = ctx.currentTime + duration;
+			if (QUICK_FADE) {
+				gainNode.gain.setTargetAtTime(0, stop, MAGIC_NUMBER);
+				stop += MAGIC_NUMBER * 5;
+			}
+
 			osc.stop(stop);
 			setTimeout(() => osc.disconnect(), stop * 1000);
 		}
@@ -270,7 +280,13 @@
 			function stopNote(_e) {
 				if (this.active) {
 					this.classList.remove('beep-active');
-					this.osc.stop(ctx.currentTime);
+					if (QUICK_FADE) {
+						this.osc.gain.gain.setTargetAtTime(0, ctx.currentTime, MAGIC_NUMBER);
+						this.osc.stop(ctx.currentTime + (MAGIC_NUMBER * 5));
+					} else {
+						this.osc.stop(ctx.currentTime);
+					}
+
 					delete this.osc;
 					this.active = false;
 					if (noteDiv.innerHTML === noteToString(value)) {
@@ -521,6 +537,9 @@
 						document.getElementById('beep-hints').style.maxHeight = value ? '0px' : '',
 					);
 				},
+				get value() {
+					return keyboard.style.getPropertyValue('font-size') !== '';
+				},
 			},
 			{
 				id: 'beep-fix-gain',
@@ -531,6 +550,21 @@
 					FIX_GAIN = value;
 					// Reset gain if oscillators are playing
 					resetGain();
+				},
+				get value() {
+					return FIX_GAIN;
+				},
+			},
+			{
+				id: 'beep-quick-fade',
+				label: 'Quick fade',
+				tooltip: 'Quickly lower the gain before stopping an oscillator to avoid audio clicking.',
+				category: 0,
+				set(value) {
+					QUICK_FADE = value;
+				},
+				get value() {
+					return QUICK_FADE;
 				},
 			},
 			{
@@ -556,6 +590,7 @@
 			const item = bools[i];
 			const label = document.createElement('LABEL');
 			const input = document.createElement('INPUT');
+			const value = localStorage.getItem(item.id);
 			label.innerHTML = item.label;
 			label.title = item.tooltip;
 			label.style.setProperty('cursor', 'help');
@@ -567,14 +602,19 @@
 				if (this.checked) {
 					localStorage.setItem(item.id, '1');
 				} else {
-					localStorage.removeItem(item.id);
+					localStorage.setItem(item.id, '0');
 				}
 
 				console.log(item.id, '=', this.checked);
 			};
 
-			if (localStorage.getItem(item.id)) {
-				item.set(true);
+			if (value) {
+				item.set(value === '1');
+			} else {
+				localStorage.setItem(item.id, item.value ? '1' : '0');
+			}
+
+			if (item.value) {
 				input.setAttribute('checked', '');
 			}
 
