@@ -1,7 +1,7 @@
 // Made by dst212 - https://github.com/dst212/dst212.github.io/
 'use strict';
 
-/* global Popup, Page */
+/* global popup, Popup, Page */
 
 (function () {
 	const ctx = new AudioContext();
@@ -268,6 +268,11 @@
 					console.log(`Creating oscillator: key ${key}, A ${A}, temperament ${TEMPERAMENT}, ${freq} Hz`);
 					this.osc = oscillator(freq, TYPE);
 					noteDiv.innerHTML = noteToString(value);
+
+					if (recording.running) {
+						this.recIndex = recording.add(key);
+					}
+
 					return false;
 				}
 			}
@@ -291,6 +296,10 @@
 					this.active = false;
 					if (noteDiv.innerHTML === noteToString(value)) {
 						noteDiv.innerHTML = '';
+					}
+
+					if (recording.running) {
+						recording.write(this.recIndex);
 					}
 
 					return false;
@@ -382,7 +391,9 @@
 			case 'Space': shift.reset();
 				break;
 			default:
-				if (keys[e.code]) {
+				if (e.code === 'KeyS' && e.ctrlKey) {
+					recBtn.click();
+				} else if (keys[e.code]) {
 					keys[e.code].onmousedown(e);
 				} else {
 					return false;
@@ -804,6 +815,212 @@
 		btn.innerHTML = 'settings';
 		btn.classList.add('material-icons', 'md-same', 'square', 'margin');
 		btn.onclick = _e => settingsPopup.isUp() ? settingsPopup.close() : settingsPopup.open();
+		noteDiv.parentNode.insertBefore(btn, noteDiv);
+	})();
+
+	// Autoplaying files and recordings
+	let track;
+	let playing;
+
+	// File loading
+	const fileLoader = document.createElement('INPUT');
+	const fileReader = new FileReader();
+	fileLoader.type = 'file';
+	fileLoader.accept = 'application/json';
+
+	fileLoader.onchange = function () {
+		fileReader.readAsText(this.files[0]);
+	};
+
+	fileReader.onload = function () {
+		track = JSON.parse(this.result);
+	};
+
+	fileReader.onerror = function () {
+		popup('Beep', 'Couldn\'t load the selected file:<br>' + this.error, [{innerHTML: 'Ok'}]);
+	};
+
+	// Play the loaded file
+	const playTrack = (function () {
+		function stopPlaying() {
+			playBtn.innerHTML = 'play_arrow';
+			playing = null;
+		}
+
+		// Step for music notes in tracks while playing a macro.
+		// "timeMod" is the multiplier of the durations.
+		// Since values are saved in the json file in seconds and setTimeouts accepts milliseconds, it defaults to 1000
+		// Same logic applied below in playNext()
+		// "timeMod" can be modified to alter the tempo of a track
+		function playMacro(notes, timeMod = 1000, i = 0) {
+			if (typeof notes[i][0] === 'number') {
+				console.log(`Autoplay (macro): ${notes[i][0]} starting at ${notes[i][1]} for ${notes[i][2]} seconds.`);
+				const fakeEvent = {code: assign[notes[i][0] - offset - (shift.value * 12)]?.[0]};
+				if (pressed(fakeEvent)) {
+					console.log('Assigned key:', fakeEvent.code);
+					setTimeout(released, notes[i][2] * timeMod, fakeEvent);
+				} else {
+				// The assigned key doesn't exist, just beep with the current settings
+					oscillator(frequency(notes[i][0], A, TEMPERAMENT), TYPE, notes[i][2]);
+				}
+			} else {
+				console.error('Unrecognized note (first item is not a number):', notes[i]);
+			}
+
+			if (i < notes.length - 1) {
+				playing = setTimeout(playMacro, (notes[i + 1][1] - notes[i][1]) * timeMod, notes, timeMod, i + 1);
+			} else {
+				console.log('Macro ended.');
+				setTimeout(stopPlaying, notes[i][2] * timeMod);
+			}
+		}
+
+		// Step for music notes in tracks
+		function playNext(notes, {timeMod = 1000, a = 440, temp = 'equal', i = 0}) {
+			if (typeof notes[i][0] === 'number') {
+				oscillator(frequency(notes[i][0], a, temp), TYPE, notes[i][2]);
+			} else {
+				console.error('Unrecognized note (first item is not a number):', notes[i]);
+			}
+
+			if (i < notes.length) {
+				playing = setTimeout(playNext, (notes[i + 1][1] - notes[i][1]) * timeMod, notes, {timeMod, a, temp, i: i + 1});
+			} else {
+				setTimeout(stopPlaying, notes[i][2] * timeMod);
+			}
+		}
+
+		return function (t, macro = false) {
+			if (!t && t !== track) {
+				t = track;
+			}
+
+			if (t?.n?.length > 0) {
+				if (macro) {
+					console.log('Now playing a macro.');
+				} else {
+					console.log('Now playing a track in the background.');
+				}
+
+				playing = macro ? setTimeout(playMacro, t.n[0][1] || 0, t.n, t.m) : setTimeout(playNext, t.n[0][1], t.n, {timeMod: t.m, a: t.a});
+			} else {
+				popup('Beep', 'The track is empty or invalid.', [{innerHTML: 'Ok'}]);
+				playBtn.innerHTML = 'play_arrow';
+			}
+		};
+	})();
+
+	// Recording object
+	const recording = (function () {
+		let save;
+		let start;
+		let startOffset; // Keep track of pauses
+		let ongoing = false;
+		const newRec = () => ({
+			n: [], // Array of [value of note, start, duration]
+			a: A, // Value of A in Hz (defaults to 440)
+			m: 1000, // Time modifier (1000 equals 1x)
+			t: TYPE, // Wave type (defaults to square)
+			temp: TEMPERAMENT, // Temperament used (defaults to equal)
+		});
+		const fileSaver = document.createElement('A');
+		return {
+			get running() {
+				return ongoing;
+			},
+			pause() {
+				startOffset = ctx.currentTime;
+				ongoing = false;
+			},
+			resume() {
+				ongoing = true;
+				start -= ctx.currentTime - startOffset;
+			},
+			start() {
+				save = newRec();
+				// eslint-disable-next-line
+				start = startOffset = ctx.currentTime;
+				this.resume();
+			},
+			stop() {
+				this.pause();
+				this.save();
+			},
+			save() {
+				fileSaver.target = '_self';
+				fileSaver.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(save));
+				fileSaver.download = 'beep-recording-' + (new Date()).toISOString().slice(0, 19).replace(/(-|:)/g, '').replace('T', '-') + '.json';
+				fileSaver.click();
+			},
+			add(value) {
+				save.n.push([value, ctx.currentTime - start, 0]);
+				return save.n.length - 1;
+			},
+			write(i) {
+				if (save.n[i]) {
+					save.n[i][2] = ctx.currentTime - start - save.n[i][1];
+				}
+			},
+		};
+	})();
+
+	// Start/stop recording button
+	const recBtn = (function () {
+		const btn = document.createElement('BUTTON');
+		btn.innerHTML = 'mic';
+		btn.classList.add('material-icons', 'md-same', 'square', 'margin');
+		btn.onclick = function (_e) {
+			if (recording.running) {
+				recording.stop();
+				btn.innerHTML = 'mic';
+				this.classList.remove('blink', 'red');
+			} else {
+				btn.innerHTML = 'fiber_manual_record';
+				this.classList.add('blink', 'red');
+				recording.start();
+			}
+		};
+
+		noteDiv.parentNode.insertBefore(btn, noteDiv);
+		return btn;
+	})();
+
+	// Play/pause button
+	const playBtn = (function () {
+		const btn = document.createElement('BUTTON');
+		btn.innerHTML = 'play_arrow';
+		btn.classList.add('material-icons', 'md-same', 'square', 'margin');
+		btn.onclick = function (_e) {
+			if (playing) {
+				clearTimeout(playing);
+				btn.innerHTML = 'play_arrow';
+				playing = undefined;
+				console.log('Player stopped.');
+			} else {
+				btn.innerHTML = 'pause';
+				playTrack(track, true);
+			}
+		};
+
+		noteDiv.parentNode.insertBefore(btn, noteDiv);
+		return btn;
+	})();
+
+	// Download button
+	(function () {
+		const btn = document.createElement('BUTTON');
+		btn.innerHTML = 'file_download';
+		btn.classList.add('material-icons', 'md-same', 'square', 'margin');
+		btn.onclick = _e => recording.save();
+		noteDiv.parentNode.insertBefore(btn, noteDiv);
+	})();
+
+	// Upload button
+	(function () {
+		const btn = document.createElement('BUTTON');
+		btn.innerHTML = 'file_upload';
+		btn.classList.add('material-icons', 'md-same', 'square', 'margin');
+		btn.onclick = _e => !recording.running && fileLoader.click();
 		noteDiv.parentNode.insertBefore(btn, noteDiv);
 	})();
 })();
