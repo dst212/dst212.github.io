@@ -14,6 +14,21 @@
 	const compressor = ctx.createDynamicsCompressor();
 	const activeNodes = []; // Playing oscillators, needed to display ratios between frequencies etc.
 
+	const noteDiv = document.getElementById('beep-current-note'); // Display current note
+	const ratioDiv = document.getElementById('beep-current-ratio'); // Display current ratio between two pressed keys
+
+	function updateRatioDiv() {
+		if (activeNodes.length === 2) {
+			const f1 = activeNodes[0].frequency.value;
+			const f2 = activeNodes[1].frequency.value;
+			const ratio = f1 > f2 ? f1 / f2 : f2 / f1;
+			ratioDiv.innerHTML = ratio;
+			console.log('Playing oscillators:', f1, f2, '-- Ratio:', ratio);
+		} else {
+			ratioDiv.innerHTML = '';
+		}
+	}
+
 	function resetGain() {
 		masterGain.gain.setTargetAtTime(FIX_GAIN ? DEFAULT_GAIN / (activeNodes.length || 1) : DEFAULT_GAIN, ctx.currentTime, MAGIC_NUMBER);
 	}
@@ -23,6 +38,8 @@
 		if (FIX_GAIN) {
 			masterGain.gain.setTargetAtTime(DEFAULT_GAIN / (activeNodes.length || 1), ctx.currentTime, MAGIC_NUMBER);
 		}
+
+		updateRatioDiv();
 	}
 
 	function increaseGain(osc) {
@@ -30,6 +47,8 @@
 		if (FIX_GAIN) {
 			masterGain.gain.setTargetAtTime(DEFAULT_GAIN / (activeNodes.length || 1), ctx.currentTime, MAGIC_NUMBER);
 		}
+
+		updateRatioDiv();
 	}
 
 	masterGain.connect(compressor).connect(ctx.destination);
@@ -68,7 +87,7 @@
 			32 / 27, // Minor third
 			81 / 64, // Major third
 			4 / 3, // Perfect fourth
-			// Augmented fourth , Diminished fifth
+			// Augmented fourth, Diminished fifth
 			[729 / 512, 1024 / 729],
 			3 / 2, // Perfetct fifth
 			128 / 81, // Minor sixth
@@ -83,7 +102,7 @@
 			6 / 5, // Minor third
 			5 / 4, // Major third
 			4 / 3, // Perfect fourth
-			// Augmented fourth , Diminished fifth
+			// Augmented fourth, Diminished fifth
 			[45 / 32, 64 / 45],
 			3 / 2, // Perfetct fifth
 			8 / 5, // Minor sixth
@@ -98,7 +117,7 @@
 			6 / 5, // Minor third
 			5 / 4, // Major third
 			4 / 3, // Perfect fourth
-			// Augmented fourth , Diminished fifth
+			// Augmented fourth, Diminished fifth
 			[25 / 18, 36 / 25],
 			3 / 2, // Perfetct fifth
 			8 / 5, // Minor sixth
@@ -113,7 +132,7 @@
 			6 / 5, // Minor third
 			5 / 4, // Major third
 			4 / 3, // Perfect fourth
-			// Augmented fourth , Diminished fifth
+			// Augmented fourth, Diminished fifth
 			[7 / 5, 10 / 7],
 			3 / 2, // Perfetct fifth
 			8 / 5, // Minor sixth
@@ -128,7 +147,7 @@
 			6 / 5, // Minor third
 			5 / 4, // Major third
 			4 / 3, // Perfect fourth
-			// Augmented fourth , Diminished fifth
+			// Augmented fourth, Diminished fifth
 			[17 / 12, 24 / 17],
 			3 / 2, // Perfetct fifth
 			8 / 5, // Minor sixth
@@ -171,7 +190,6 @@
 		return ratioN / ratioRef * a * (2 ** Math.floor(n / 12));
 	}
 
-	const noteDiv = document.getElementById('beep-current-note');
 	// 0 → A, 2 → B, -1 → G#...
 	function noteToString(note) {
 		switch (((note % 12) + 12) % 12) {
@@ -393,7 +411,7 @@
 			default:
 				if (e.code === 'KeyS' && e.ctrlKey) {
 					recBtn.click();
-				} else if (keys[e.code]) {
+				} else if (!e.ctrlKey && !e.altKey && !e.shiftKey && keys[e.code]) {
 					keys[e.code].onmousedown(e);
 				} else {
 					return false;
@@ -461,7 +479,7 @@
 		<a target="_blank" href="https://en.wikipedia.org/wiki/Pythagorean_tuning">Pythagorean tuning</a><br>
 		<a target="_blank" href="https://en.wikipedia.org/wiki/Five-limit_tuning#The_just_ratios">5-, 7-, and 17-limit tables</a>
 	</div></section>
-	`, [{innerHTML: 'Ok'}], {draggable: true});
+	`, [], {draggable: true});
 	settingsPopup.content.classList.add('sections');
 
 	const sections = settingsPopup.content.querySelectorAll('section');
