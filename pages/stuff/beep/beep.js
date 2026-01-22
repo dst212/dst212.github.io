@@ -73,12 +73,14 @@
 	const AVAILABLE_TEMPERAMENTS = [
 		{name: 'Equal', value: 'equal'},
 		{name: 'Pythagorean', value: 'pyth'},
-		{name: '5-limit (symmetric)', value: '5-limit-sym'},
+		{name: 'Ramos\'s just (5-limit symetric)', value: '5-limit-sym'},
 		{name: '5-limit (asymmetric extended)', value: '5-limit-asym'},
 		{name: '7-limit', value: '7-limit'},
 		{name: '17-limit', value: '17-limit'},
+		{name: 'Quarter-comma meantone', value: 'quarter-comma'},
 	];
 
+	const fakeFifth = 5 ** (1 / 4); // Perfect fifth for the quarter-comma meantone
 	const ratios = {
 		pyth: [
 			1, // Unison
@@ -154,6 +156,21 @@
 			5 / 3, // Major sixth
 			7 / 4, // Minor seventh
 			13 / 7, // Major seventh
+		],
+		'quarter-comma': [
+			1, // Unison
+			(fakeFifth ** -5) * (2 ** 3), // Minor second
+			(fakeFifth ** 2) / 2, // Major second
+			(fakeFifth ** -3) * (2 ** 2), // Minor third
+			(fakeFifth ** 4) / (2 ** 2), // Major third
+			(fakeFifth ** -1) * 2, // Perfect fourth
+			// Augmented fourth, Diminished fifth
+			[(fakeFifth ** 6) / (2 ** 3), (fakeFifth ** -6) * (2 ** 4)],
+			fakeFifth, // Perfetct fifth
+			(fakeFifth ** -4) * (2 ** 3), // Minor sixth
+			(fakeFifth ** 3) / 2, // Major sixth
+			(fakeFifth ** -2) * (2 ** 2), // Minor seventh
+			(fakeFifth ** 5) / (2 ** 2), // Major seventh
 		],
 	};
 
@@ -477,7 +494,8 @@
 		<a target="_blank" href="https://en.wikipedia.org/wiki/Musical_temperament">What is temperament?</a><br>
 		<a target="_blank" href="https://en.wikipedia.org/wiki/Equal_temperament">Equal temperament</a><br>
 		<a target="_blank" href="https://en.wikipedia.org/wiki/Pythagorean_tuning">Pythagorean tuning</a><br>
-		<a target="_blank" href="https://en.wikipedia.org/wiki/Five-limit_tuning#The_just_ratios">5-, 7-, and 17-limit tables</a>
+		<a target="_blank" href="https://en.wikipedia.org/wiki/Five-limit_tuning#The_just_ratios">5-, 7-, and 17-limit tables</a><br>
+		<a target="_blank" href="https://en.wikipedia.org/wiki/Quarter-comma_meantone">Quarter-comma meantone</a>
 	</div></section>
 	`, [], {draggable: true});
 	settingsPopup.content.classList.add('sections');
